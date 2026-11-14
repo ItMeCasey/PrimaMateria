@@ -3,11 +3,7 @@ package com.itmecasey.primamateria.fluid;
 import java.util.Optional;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
 
 /**
  * How the machines fill and empty the item in a player's hand: through the loader's own item fluid handler, so a bucket, a tank
@@ -35,55 +31,31 @@ public final class ItemFluids {
         boolean drainHeld(Player player, InteractionHand hand, int amount);
     }
 
-    private static final Access VANILLA = new Access() {
+    private static final Access NONE = new Access() {
         @Override
         public Optional<Held> contents(ItemStack stack) {
-            if (stack.getItem() instanceof BucketItem bucket) {
-                String id = FluidIds.idOf(bucket.getContent());
-                return id.isEmpty() ? Optional.empty() : Optional.of(new Held(id, FluidBuckets.BUCKET_AMOUNT));
-            }
             return Optional.empty();
-        }
-
-        private Item bucketFor(String fluid) {
-            return FluidIds.fluidOf(fluid).map(net.minecraft.world.level.material.Fluid::getBucket).orElse(Items.AIR);
         }
 
         @Override
         public boolean canFill(ItemStack stack, String fluid, int amount) {
-            Item bucket = bucketFor(fluid);
-            return stack.is(Items.BUCKET) && amount >= FluidBuckets.BUCKET_AMOUNT && bucket != Items.AIR && bucket != Items.BUCKET;
+            return false;
         }
 
         @Override
         public boolean fillHeld(Player player, InteractionHand hand, String fluid, int amount) {
-            ItemStack held = player.getItemInHand(hand);
-            if (!canFill(held, fluid, amount)) {
-                return false;
-            }
-            player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, new ItemStack(bucketFor(fluid))));
-            return true;
+            return false;
         }
 
         @Override
         public boolean drainHeld(Player player, InteractionHand hand, int amount) {
-            ItemStack held = player.getItemInHand(hand);
-            if (contents(held).isEmpty() || amount < FluidBuckets.BUCKET_AMOUNT) {
-                return false;
-            }
-            player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, new ItemStack(Items.BUCKET)));
-            return true;
+            return false;
         }
     };
 
-    private static Access access = VANILLA;
+    private static Access access = NONE;
 
     private ItemFluids() {
-    }
-
-    /** The game's own bucket handling, for loaders whose item fluid handler is not available. */
-    public static Access vanilla() {
-        return VANILLA;
     }
 
     /** Installed by the loader entry class. */

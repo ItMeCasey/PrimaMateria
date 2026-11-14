@@ -298,6 +298,38 @@ public final class FluidSelfTest {
         SelfTest.verdict("and_it_scoops_back_as_the_real_brine_bucket", wooden.state().amount() == 0
                 && player.getMainHandItem().is(ModFluids.bucket("brine")), String.valueOf(player.getMainHandItem()));
 
+        // the loader's bucket of every fluid (brine and each metal) fills and empties a machine through the item fluid handler:
+        // brine in the wooden barrel, every metal in the clay barrel and in the crucible, and back out into the same bucket
+        int bucketFailures = 0;
+        StringBuilder failed = new StringBuilder();
+        for (String id : Ids.FLUIDS) {
+            String fluid = "primamateria:" + id;
+            Item full = ModFluids.bucket(id);
+            BarrelBlockEntity barrel = ModFluids.isMolten(id) ? clay : wooden;
+            BlockPos barrelPos = ModFluids.isMolten(id) ? m.clay() : m.wooden();
+            barrel.state().restoreFluid("", 0);
+            crucible.state().restoreFluid("", 0);
+            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(full));
+            BarrelLogic.interact(level, barrelPos, player, InteractionHand.MAIN_HAND, player.getMainHandItem());
+            boolean barrelIn = barrel.state().fluid().equals(fluid) && barrel.state().amount() == 1000 && player.getMainHandItem().is(Items.BUCKET);
+            BarrelLogic.interact(level, barrelPos, player, InteractionHand.MAIN_HAND, player.getMainHandItem());
+            boolean barrelOut = barrel.state().amount() == 0 && player.getMainHandItem().is(full);
+            boolean crucibleOk = true;
+            if (ModFluids.isMolten(id)) {
+                CrucibleLogic.useCrucible(level, m.crucible(), player, InteractionHand.MAIN_HAND, player.getMainHandItem());
+                boolean in = crucible.state().fluid().equals(fluid) && crucible.state().amount() == 1000 && player.getMainHandItem().is(Items.BUCKET);
+                CrucibleLogic.useCrucible(level, m.crucible(), player, InteractionHand.MAIN_HAND, player.getMainHandItem());
+                crucibleOk = in && crucible.state().amount() == 0 && player.getMainHandItem().is(full);
+            }
+            if (!(barrelIn && barrelOut && crucibleOk)) {
+                bucketFailures++;
+                failed.append(id).append(' ');
+            }
+            barrel.state().restoreFluid("", 0);
+            crucible.state().restoreFluid("", 0);
+        }
+        SelfTest.verdict("every_fluids_own_bucket_fills_and_empties_the_machines", bucketFailures == 0, Ids.FLUIDS.size() + " fluids, failed: " + failed);
+
         // containers that are not ours: the game's own water and lava buckets fill and empty the machines through the same item handler
         player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.WATER_BUCKET));
         BarrelLogic.interact(level, m.wooden(), player, InteractionHand.MAIN_HAND, player.getMainHandItem());

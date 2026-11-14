@@ -55,6 +55,7 @@ public final class ForgePrimaMateria {
         }
         com.itmecasey.primamateria.fluid.ItemFluids.install(new ForgeItemFluids());
         AttachCapabilitiesEvent.BlockEntities.BUS.addListener(ForgePrimaMateria::attach);
+        AttachCapabilitiesEvent.ItemStacks.BUS.addListener(ForgePrimaMateria::attachBuckets);
         channel = ChannelBuilder.named(net.minecraft.resources.Identifier.fromNamespaceAndPath(com.itmecasey.primamateria.PrimaMateria.MODID, "lookup"))
                 .networkProtocolVersion(1)
                 .optional()
@@ -79,15 +80,23 @@ public final class ForgePrimaMateria {
     }
 
     /** The powered drive takes energy from every side. */
+    /** Forge's own bucket wrapper is the fluid handler of every bucket item (this Forge build attaches none by itself). */
+    private static void attachBuckets(AttachCapabilitiesEvent.ItemStacks event) {
+        if (event.getObject().getItem() instanceof net.minecraft.world.item.BucketItem) {
+            event.addCapability(ModContent.id("fluid_bucket"), new net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper(event.getObject()));
+        }
+    }
+
     /**
-     * The loader's dispenser behavior for fluid containers. This Forge build offers no item fluid handler for any item, and its
-     * behavior then swallows the bucket, so a bucket without a handler goes to the game's own bucket behavior instead.
+     * Forge's {@code DispenseFluidContainer} is the loader's dispenser behavior for fluid containers, but it finds the container's
+     * fluid through {@code FluidUtil.getFluidHandler(ItemStack)}, which this Forge build stubs out ("TEMP FIX"), and then swallows
+     * the bucket. So on Forge the dispensers use the game's own bucket behavior, which it registers for every bucket.
      */
     private static void registerDispensers() {
-        net.minecraft.core.dispenser.DispenseItemBehavior loader = net.minecraftforge.fluids.DispenseFluidContainer.getInstance();
         net.minecraft.core.dispenser.DispenseItemBehavior game = net.minecraft.world.level.block.DispenserBlock.DISPENSER_REGISTRY.get(net.minecraft.world.item.Items.LAVA_BUCKET);
-        com.itmecasey.primamateria.fluid.FluidDispense.register((source, stack) ->
-                stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent() || game == null ? loader.dispense(source, stack) : game.dispense(source, stack));
+        if (game != null) {
+            com.itmecasey.primamateria.fluid.FluidDispense.register(game);
+        }
     }
 
     private static void attach(AttachCapabilitiesEvent.BlockEntities event) {
