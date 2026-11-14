@@ -17,12 +17,12 @@ PKG = "com/itmecasey/primamateria"
 NL = chr(10)
 
 
-def patch_block_codec(name, cls):
+def patch_block_codec(name, cls, factory=None):
     """26.3 blocks no longer declare a codec: drop the CODEC field and the codec() override."""
     p = DST / "main/java" / PKG / "block" / (name + ".java")
     s = p.read_text(encoding="utf-8")
     s = s.replace("import com.mojang.serialization.MapCodec;" + NL, "")
-    s = s.replace("    private static final MapCodec<" + cls + "> CODEC = simpleCodec(" + cls + "::new);" + NL + NL, "")
+    s = s.replace("    private static final MapCodec<" + cls + "> CODEC = simpleCodec(" + (factory or cls + "::new") + ");" + NL + NL, "")
     s = s.replace("    @Override" + NL + "    protected MapCodec<? extends BaseEntityBlock> codec() {" + NL + "        return CODEC;" + NL + "    }" + NL + NL, "")
     assert "MapCodec" not in s, name
     p.write_text(s, encoding="utf-8", newline=NL)
@@ -30,7 +30,10 @@ def patch_block_codec(name, cls):
 
 # Add patch functions here and list them in PATCHES. Each reads a file under DST, replaces text, asserts the old form is gone
 # and writes it back with LF line endings.
-PATCHES = [lambda: patch_block_codec("SieveBlock", "SieveBlock")]
+PATCHES = [
+    lambda: patch_block_codec("SieveBlock", "SieveBlock"),
+    lambda: patch_block_codec("DriveBlock", "DriveBlock", "p -> new DriveBlock(p, DriveKind.WINDUP)"),
+]
 
 
 def copy_tree(name):

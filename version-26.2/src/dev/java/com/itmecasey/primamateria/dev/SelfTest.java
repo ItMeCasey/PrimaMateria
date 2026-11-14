@@ -47,6 +47,10 @@ public final class SelfTest {
     private SelfTest() {
     }
 
+    /** Checks only a loader can do (its own capability system); each loader's dev class sets this before the server starts. */
+    public static java.util.function.Consumer<MinecraftServer> loaderChecks = server -> {
+    };
+
     /** A server player for tests (it has no network connection, so anything that sends it packets must be avoided). */
     public static ServerPlayer testPlayer(MinecraftServer server, ServerLevel level, String name) {
         return new ServerPlayer(server, level, new com.mojang.authlib.GameProfile(UUID.randomUUID(), name), ClientInformation.createDefault());
@@ -70,6 +74,8 @@ public final class SelfTest {
             placeable(server.overworld());
             settings();
             SieveSelfTest.run(server, server.overworld());
+            DriveSelfTest.run(server, server.overworld());
+            loaderChecks.accept(server);
             // each feature adds one line here: FeatureSelfTest.run(server, server.overworld());
         } catch (RuntimeException e) {
             LOGGER.error("SELFTEST error", e);

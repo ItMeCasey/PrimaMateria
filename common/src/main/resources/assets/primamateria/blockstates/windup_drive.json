@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "primamateria:block/windup_drive"
+    },
+    "facing=east": {
+      "model": "primamateria:block/windup_drive",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "primamateria:block/windup_drive",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "primamateria:block/windup_drive",
+      "y": 270
     }
   }
 }

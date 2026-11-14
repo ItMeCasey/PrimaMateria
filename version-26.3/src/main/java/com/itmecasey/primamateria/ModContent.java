@@ -1,6 +1,8 @@
 package com.itmecasey.primamateria;
 
+import com.itmecasey.primamateria.block.DriveBlock;
 import com.itmecasey.primamateria.block.SieveBlock;
+import com.itmecasey.primamateria.blockentity.DriveBlockEntity;
 import com.itmecasey.primamateria.blockentity.SieveBlockEntity;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import com.itmecasey.primamateria.view.DriveKind;
 
 /**
  * Every block, item and sound the mod adds, built once and handed to the loader's registry event. The ids come from {@link Ids}
@@ -56,7 +59,24 @@ public final class ModContent {
     /** The sieve's block entity type. Declared after the block map is filled. */
     public static final BlockEntityType<SieveBlockEntity> SIEVE_BE = new BlockEntityType<>(SieveBlockEntity::new, Set.of(block(Ids.SIEVE)));
 
+    /** The three drives' block entity types (one class, one type per kind). */
+    public static final BlockEntityType<DriveBlockEntity> WINDUP_DRIVE_BE = new BlockEntityType<>(
+            (pos, state) -> new DriveBlockEntity(DriveKind.WINDUP, ModContent.WINDUP_DRIVE_BE, pos, state), Set.of(block(Ids.WINDUP_DRIVE)));
+    public static final BlockEntityType<DriveBlockEntity> FURNACE_DRIVE_BE = new BlockEntityType<>(
+            (pos, state) -> new DriveBlockEntity(DriveKind.FURNACE, ModContent.FURNACE_DRIVE_BE, pos, state), Set.of(block(Ids.FURNACE_DRIVE)));
+    public static final BlockEntityType<DriveBlockEntity> POWERED_DRIVE_BE = new BlockEntityType<>(
+            (pos, state) -> new DriveBlockEntity(DriveKind.POWERED, ModContent.POWERED_DRIVE_BE, pos, state), Set.of(block(Ids.POWERED_DRIVE)));
+
     private ModContent() {
+    }
+
+    /** The block entity type of a drive kind. */
+    public static BlockEntityType<DriveBlockEntity> driveType(DriveKind kind) {
+        return switch (kind) {
+            case WINDUP -> WINDUP_DRIVE_BE;
+            case FURNACE -> FURNACE_DRIVE_BE;
+            default -> POWERED_DRIVE_BE;
+        };
     }
 
     public static Identifier id(String path) {
@@ -78,6 +98,15 @@ public final class ModContent {
     private static Block makeBlock(String name, BlockBehaviour.Properties props) {
         if (name.equals(Ids.SIEVE)) {
             return new SieveBlock(props);
+        }
+        if (name.equals(Ids.WINDUP_DRIVE)) {
+            return new DriveBlock(props, DriveKind.WINDUP);
+        }
+        if (name.equals(Ids.FURNACE_DRIVE)) {
+            return new DriveBlock(props, DriveKind.FURNACE);
+        }
+        if (name.equals(Ids.POWERED_DRIVE)) {
+            return new DriveBlock(props, DriveKind.POWERED);
         }
         return new Block(props);
     }
@@ -129,6 +158,9 @@ public final class ModContent {
 
     public static void registerBlockEntities(BiConsumer<String, BlockEntityType<?>> out) {
         out.accept(Ids.SIEVE, SIEVE_BE);
+        out.accept(Ids.WINDUP_DRIVE, WINDUP_DRIVE_BE);
+        out.accept(Ids.FURNACE_DRIVE, FURNACE_DRIVE_BE);
+        out.accept(Ids.POWERED_DRIVE, POWERED_DRIVE_BE);
     }
 
     public static void registerSounds(BiConsumer<String, SoundEvent> out) {
