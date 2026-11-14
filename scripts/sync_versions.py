@@ -42,9 +42,22 @@ def copy_tree(name):
         shutil.copytree(src, dst)
 
 
+def copy_loader_entries():
+    """The loader entry classes (registration, events) are the same code for 26.2 and 26.3: copy them too."""
+    for loader in ("forge", "neoforge"):
+        for name in ("main", "dev"):
+            src = ROOT / f"{loader}-26.2" / "src" / name / "java"
+            dst = ROOT / f"{loader}-26.3" / "src" / name / "java"
+            if dst.exists():
+                shutil.rmtree(dst)
+            if src.exists():
+                shutil.copytree(src, dst)
+
+
 def main():
     copy_tree("main")
     copy_tree("dev")
+    copy_loader_entries()
     for patch in PATCHES:
         patch()
     print(f"version-26.3 synced from version-26.2 ({len(PATCHES)} patches)")
