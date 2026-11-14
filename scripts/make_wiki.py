@@ -258,6 +258,57 @@ An empty hand takes the buffer's contents; on the windup drive sneak to do that,
     page("drives", "Drives", "Windup, furnace and powered drives that shake sieves and swing the Auto Hammer.", body)
 
 
+
+# ---------------------------------------------------------------- crucible
+def crucible():
+    heat = ["| Block | Heat |", "|---|---|"]
+    for f in sorted((DATA / "primamateria/heat").glob("*.json")):
+        h = load(f)
+        what = h.get("block") or "#" + h.get("tag", "")
+        state = ", ".join(f"{k}={v}" for k, v in h.get("state", {}).items())
+        heat.append(f"| {name(what.lstrip('#'))}{' (' + state + ')' if state else ''} | {h['heat']} |")
+    melt = ["| Item | Result | Amount |", "|---|---|---|"]
+    for rel, r in recipes_of("melting"):
+        melt.append(f"| {name(r['input'])} | {name(r['result'])} | {r['amount']} mB |")
+    cast = ["| Fluid | Amount | Result | Time |", "|---|---|---|---|"]
+    for rel, r in recipes_of("casting"):
+        cast.append(f"| {name(r['fluid'])} | {r['amount']} mB | {name(r['result'])} | {r['time'] / 20:g} s |")
+    rows = settings_table("crucible.")
+    body = f"""
+## Crucible
+
+A fired pot that melts solids into lava or a molten metal, 4000 mB, one fluid at a time. It needs a heat source in the block directly below it; the highest matching source counts, and with none it does not melt. It melts `crucible.mb_per_tick_per_heat` mB per tick for each point of heat.
+
+- **Fire it:** `C C` / `CCC` with clay balls gives an Unfired Crucible; smelt it.
+- **Solids:** use an item on the crucible to put it in (4 slots), or insert from a hopper. An empty hand takes the last one back. Breaking the crucible drops the solids.
+- **Buckets:** a lava bucket or a molten metal bucket fills it; an empty bucket takes 1000 mB of a bucketable fluid out. A water bucket does not go in.
+- **Pouring:** it pours into casting trays placed against its four sides, in the order north, east, south, west, while the tray is empty and it holds enough of a fluid that has a casting recipe.
+
+In this release the molten metals are internal fluids; see [[known-gaps]].
+
+## Heat sources
+
+{chr(10).join(heat)}
+
+## Melting
+
+{chr(10).join(melt)}
+
+## Casting Tray
+
+`CCC` with clay balls gives an Unfired Casting Tray; smelt it. Placed against the side of a crucible it is filled by it, then the fluid cools for the recipe time and the tray holds the result. An empty hand or a hopper below takes it out. One crucible feeds up to four trays. A hot bucket used on a tray casts as many results as the bucket's 1000 mB makes.
+
+{chr(10).join(cast)}
+
+## Settings
+
+| Key | Default | Meaning |
+|---|---|---|
+{chr(10).join(rows)}
+"""
+    page("crucible", "Crucible and Casting Tray", "Heat, melting stone and dust, and casting ingots.", body)
+
+
 # ---------------------------------------------------------------- start, progression, config
 def start():
     rows = settings_table("start.")
@@ -332,6 +383,7 @@ def main():
     sieve()
     barrels()
     drives()
+    crucible()
     start()
     progression()
     config()
