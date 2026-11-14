@@ -152,7 +152,14 @@ public final class IntegrationTour {
     }
 
     private static void frame(String name, String itemId, boolean uses) {
-        then(30, () -> open(itemId, uses));
+        then(30, () -> {
+            Minecraft minecraft = Minecraft.getInstance();
+            if ("bei".equals(VIEWER)) {
+                // BEI draws its popup over an open screen, so give it the inventory.
+                minecraft.gui.setScreen(new net.minecraft.client.gui.screens.inventory.InventoryScreen(minecraft.player));
+            }
+        });
+        then(20, () -> open(itemId, uses));
         then(60, () -> {
             Minecraft minecraft = Minecraft.getInstance();
             LOGGER.info("PRIMAMATERIA-TOUR {}", name);

@@ -35,7 +35,7 @@ public class PrimaEmiPlugin implements EmiPlugin {
 
     private static EmiRecipeCategory category(Cards.Category c) {
         return CATEGORIES.computeIfAbsent(c, key -> {
-            ItemStack station = Stacks.stack(Ids.full(station(key)), 1);
+            ItemStack station = Stacks.stack(Ids.full(key.station()), 1);
             EmiRenderable icon = EmiStack.of(station);
             return new EmiRecipeCategory(Identifier.fromNamespaceAndPath(Ids.MODID, key.path), icon) {
                 @Override
@@ -46,15 +46,6 @@ public class PrimaEmiPlugin implements EmiPlugin {
         });
     }
 
-    private static String station(Cards.Category category) {
-        return switch (category) {
-            case SIFTING, DROPS -> Ids.SIEVE;
-            case CRUSHING -> Ids.HAMMERS.get(0);
-            case COMPOSTING, BARREL -> Ids.WOODEN_BARREL;
-            case MELTING -> Ids.CRUCIBLE;
-            case CASTING -> Ids.CASTING_TRAY;
-        };
-    }
 
     /** An entry as an EMI ingredient: items and tags as stacks, fluids as fluid stacks; melts have none. */
     private static EmiIngredient ingredient(Cards.Entry e) {
@@ -145,7 +136,7 @@ public class PrimaEmiPlugin implements EmiPlugin {
     public void register(EmiRegistry registry) {
         for (Cards.Category c : Cards.Category.values()) {
             registry.addCategory(category(c));
-            ItemStack station = Stacks.stack(Ids.full(station(c)), 1);
+            ItemStack station = Stacks.stack(Ids.full(c.station()), 1);
             if (!station.isEmpty()) {
                 registry.addWorkstation(category(c), EmiStack.of(station));
             }

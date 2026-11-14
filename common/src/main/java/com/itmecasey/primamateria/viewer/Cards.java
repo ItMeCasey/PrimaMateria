@@ -41,6 +41,17 @@ public final class Cards {
             this.height = height;
         }
 
+        /** The id path of the block or item that stands for the category (its tab icon and workstation). */
+        public String station() {
+            return switch (this) {
+                case SIFTING, DROPS -> Ids.SIEVE;
+                case CRUSHING -> Ids.HAMMERS.get(0);
+                case COMPOSTING, BARREL -> Ids.WOODEN_BARREL;
+                case MELTING -> Ids.CRUCIBLE;
+                case CASTING -> Ids.CASTING_TRAY;
+            };
+        }
+
         /** The language key of the category's title. */
         public String titleKey() {
             return "viewer." + MODID + ".category." + path;

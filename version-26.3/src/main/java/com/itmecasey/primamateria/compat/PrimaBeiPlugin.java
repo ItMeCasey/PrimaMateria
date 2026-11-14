@@ -33,15 +33,6 @@ public class PrimaBeiPlugin implements IBeiPlugin {
         return (Cards.Card) recipe.data();
     }
 
-    private static String station(Cards.Category category) {
-        return switch (category) {
-            case SIFTING, DROPS -> Ids.SIEVE;
-            case CRUSHING -> Ids.HAMMERS.get(0);
-            case COMPOSTING, BARREL -> Ids.WOODEN_BARREL;
-            case MELTING -> Ids.CRUCIBLE;
-            case CASTING -> Ids.CASTING_TRAY;
-        };
-    }
 
     /** The card painter: values under the slots, and a tinted square where a melt sits. */
     private static final CardPainter PAINTER = new CardPainter() {
@@ -74,7 +65,7 @@ public class PrimaBeiPlugin implements IBeiPlugin {
         return CATEGORIES.computeIfAbsent(c, key -> {
             RecipeCategory.Builder b = RecipeCategory.builder(Identifier.fromNamespaceAndPath(Ids.MODID, key.path))
                     .title(Component.translatable(key.titleKey()))
-                    .station(Stacks.stack(Ids.full(station(key)), 1))
+                    .station(Stacks.stack(Ids.full(key.station()), 1))
                     .size(key.width, key.height)
                     .painter(PAINTER);
             // Slot positions of a representative card of this category: inputs, then the catalyst (also an input), then outputs.

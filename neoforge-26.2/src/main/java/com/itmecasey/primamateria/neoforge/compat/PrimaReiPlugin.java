@@ -108,9 +108,6 @@ public class PrimaReiPlugin implements REIClientPlugin {
         };
     }
 
-    static String station(Cards.Category category) {
-        return PrimaJeiPlugin.station(category);
-    }
 
     private static final class CardCategory implements DisplayCategory<CardDisplay> {
         private final Cards.Category category;
@@ -131,7 +128,7 @@ public class PrimaReiPlugin implements REIClientPlugin {
 
         @Override
         public Renderer getIcon() {
-            return EntryStacks.of(Stacks.stack(Ids.full(station(category)), 1));
+            return EntryStacks.of(Stacks.stack(Ids.full(category.station()), 1));
         }
 
         @Override
@@ -173,7 +170,7 @@ public class PrimaReiPlugin implements REIClientPlugin {
                 widgets.add(swatch(ox + p.x(), oy + p.y(), e));
             }
             for (Cards.Text t : layout.texts()) {
-                Label label = Widgets.createLabel(new Point(ox + t.x(), oy + t.y()), Component.literal(t.text())).noShadow();
+                Label label = Widgets.createLabel(new Point(ox + t.x(), oy + t.y()), Component.literal(t.text())).noShadow().color(0xFF404040, 0xFFE0E0E0);
                 widgets.add(t.centered() ? label.centered() : label.leftAligned());
             }
             return widgets;
@@ -211,7 +208,7 @@ public class PrimaReiPlugin implements REIClientPlugin {
     public void registerCategories(CategoryRegistry registry) {
         for (Cards.Category c : Cards.Category.values()) {
             registry.add(new CardCategory(c));
-            ItemStack station = Stacks.stack(Ids.full(station(c)), 1);
+            ItemStack station = Stacks.stack(Ids.full(c.station()), 1);
             if (!station.isEmpty()) {
                 registry.addWorkstations(id(c), EntryStacks.of(station));
             }

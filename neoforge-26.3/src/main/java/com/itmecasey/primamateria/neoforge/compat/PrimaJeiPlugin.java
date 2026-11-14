@@ -44,15 +44,6 @@ public class PrimaJeiPlugin implements IModPlugin {
         return TYPES.computeIfAbsent(c, k -> IRecipeType.create(Identifier.fromNamespaceAndPath(Ids.MODID, k.path), Cards.Card.class));
     }
 
-    static String station(Cards.Category category) {
-        return switch (category) {
-            case SIFTING, DROPS -> Ids.SIEVE;
-            case CRUSHING -> Ids.HAMMERS.get(0);
-            case COMPOSTING, BARREL -> Ids.WOODEN_BARREL;
-            case MELTING -> Ids.CRUCIBLE;
-            case CASTING -> Ids.CASTING_TRAY;
-        };
-    }
 
     private static volatile mezz.jei.api.runtime.IJeiRuntime runtime;
 
@@ -102,7 +93,7 @@ public class PrimaJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         for (Cards.Category c : Cards.Category.values()) {
-            ItemStack station = Stacks.stack(Ids.full(station(c)), 1);
+            ItemStack station = Stacks.stack(Ids.full(c.station()), 1);
             if (!station.isEmpty()) {
                 registration.addCraftingStation(type(c), station);
             }
@@ -118,7 +109,7 @@ public class PrimaJeiPlugin implements IModPlugin {
         CardCategory(Cards.Category category, IGuiHelper gui, IPlatformFluidHelper<?> fluids) {
             this.category = category;
             this.fluids = fluids;
-            this.icon = gui.createDrawableItemStack(Stacks.stack(Ids.full(station(category)), 1));
+            this.icon = gui.createDrawableItemStack(Stacks.stack(Ids.full(category.station()), 1));
         }
 
         @Override
