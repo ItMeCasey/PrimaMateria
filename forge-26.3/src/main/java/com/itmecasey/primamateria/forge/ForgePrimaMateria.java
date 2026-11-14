@@ -4,6 +4,7 @@ import com.itmecasey.primamateria.Dev;
 import com.itmecasey.primamateria.Ids;
 import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.PrimaMateria;
+import com.itmecasey.primamateria.fluid.ModFluids;
 import com.itmecasey.primamateria.data.PrimaReload;
 import com.itmecasey.primamateria.recipe.PrimaRecipes;
 import com.itmecasey.primamateria.world.StartIslandPlacer;
@@ -39,8 +40,11 @@ public final class ForgePrimaMateria {
     public ForgePrimaMateria(FMLJavaModLoadingContext context) {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         RegisterEvent.getBus(context.getModBusGroup()).addListener(ForgePrimaMateria::register);
+        net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent.getBus(context.getModBusGroup())
+                .addListener((net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent e) -> e.enqueueWork(com.itmecasey.primamateria.fluid.FluidDispense::register));
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient()) {
             ForgeClient.install(context);
+            ForgeFluidClient.install();
         }
         AttachCapabilitiesEvent.BlockEntities.BUS.addListener(ForgePrimaMateria::attach);
         AddReloadListenerEvent.BUS.addListener((AddReloadListenerEvent e) -> e.addListener(new PrimaReload()));
@@ -55,6 +59,20 @@ public final class ForgePrimaMateria {
     /** The powered drive takes energy from every side. */
     private static void attach(AttachCapabilitiesEvent.BlockEntities event) {
         BlockEntity be = event.getObject();
+        if (be instanceof com.itmecasey.primamateria.blockentity.BarrelBlockEntity
+                || be instanceof com.itmecasey.primamateria.blockentity.CrucibleBlockEntity
+                || be instanceof com.itmecasey.primamateria.blockentity.CastingTrayBlockEntity) {
+            // the barrels, the crucible and the casting tray offer their fluid to pipes and tanks
+            LazyOptional<net.minecraftforge.fluids.capability.IFluidHandler> fluid = LazyOptional.of(() -> MachineFluidHandler.of(be));
+            event.addCapability(ModContent.id("fluid"), new ICapabilityProvider() {
+                @Override
+                public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+                    return cap == ForgeCapabilities.FLUID_HANDLER ? fluid.cast() : LazyOptional.empty();
+                }
+            });
+            event.addListener(fluid::invalidate);
+            return;
+        }
         // Forge attaches capabilities while the block entity is still being constructed, before it knows its kind, so which
         // drives answer is decided when the capability is asked for.
         if (!(be instanceof DriveBlockEntity drive)) {
@@ -104,6 +122,10 @@ public final class ForgePrimaMateria {
     }
 
     private static void register(RegisterEvent event) {
+        event.register(net.minecraftforge.registries.ForgeRegistries.Keys.FLUID_TYPES,
+                helper -> ForgeFluids.registerTypes((name, v) -> helper.register(ModContent.id(name), v)));
+        event.register(Registries.FLUID, helper -> ModFluids.registerFluids((name, v) -> helper.register(ModContent.id(name), v)));
+        event.register(Registries.BLOCK, helper -> ModFluids.registerBlocks((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.BLOCK, helper -> ModContent.registerBlocks((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.ITEM, helper -> ModContent.registerItems((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.BLOCK_ENTITY_TYPE, helper -> ModContent.registerBlockEntities((name, v) -> helper.register(ModContent.id(name), v)));

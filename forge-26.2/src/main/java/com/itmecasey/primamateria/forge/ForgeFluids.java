@@ -39,6 +39,12 @@ public final class ForgeFluids implements ModFluids.Factory {
         return flowing ? new BrineFlowing(id) : new BrineSource(id);
     }
 
+    @Override
+    public Item bucket(String id, Item.Properties properties) {
+        // Forge looks a fluid up in its registry when a bucket is given the fluid itself; the supplier is read later, once it is registered
+        return new net.minecraft.world.item.BucketItem(() -> ModFluids.source(id), properties);
+    }
+
     /** The fluid type of one of our fluids (made on first use). */
     static synchronized FluidType type(String id) {
         return TYPES.computeIfAbsent(id, ForgeFluids::makeType);

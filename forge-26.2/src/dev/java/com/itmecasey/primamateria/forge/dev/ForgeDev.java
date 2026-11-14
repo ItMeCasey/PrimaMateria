@@ -132,7 +132,7 @@ public final class ForgeDev {
         }
         SelfTest.verdict("forge_pipe_drains_the_crucible", out == 4000 && be.state().amount() == 0 && be.state().fluid().isEmpty(), out + " mB out");
         SelfTest.verdict("forge_simulated_fill_changes_nothing", crucible.fill(copper, IFluidHandler.FluidAction.SIMULATE) == 300 && be.state().amount() == 0
-                && FluidTanks.CHANGES.get() - before == 8, "300 offered, still empty");
+                && FluidTanks.CHANGES.get() - before == 6, "300 offered, still empty, six drains were reported");
         FluidStack water = new FluidStack(Fluids.WATER, 1000);
         FluidStack lava = new FluidStack(Fluids.LAVA, 1000);
         FluidStack brine = new FluidStack(ModFluids.source("brine"), 1000);

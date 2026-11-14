@@ -184,7 +184,7 @@ public final class ModContent {
         for (String fluid : Ids.FLUIDS) {
             if (name.equals(fluid + "_bucket")) {
                 // a real bucket: it places and picks up the real fluid; it empties back to a vanilla bucket
-                return new net.minecraft.world.item.BucketItem(com.itmecasey.primamateria.fluid.ModFluids.source(fluid),
+                return com.itmecasey.primamateria.fluid.ModFluids.makeBucket(fluid,
                         props.craftRemainder(net.minecraft.world.item.Items.BUCKET).stacksTo(1));
             }
         }

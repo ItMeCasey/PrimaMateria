@@ -31,6 +31,9 @@ public final class ModFluids {
     /** Builds the loader's fluid classes: the source or the flowing form of one of {@link Ids#FLUIDS}. */
     public interface Factory {
         Fluid create(String id, boolean flowing);
+
+        /** The bucket item for the source fluid of {@code id} (Forge wants the fluid handed over lazily, NeoForge directly). */
+        Item bucket(String id, Item.Properties properties);
     }
 
     private static final String[] FACTORIES = {
@@ -42,8 +45,10 @@ public final class ModFluids {
     private static final Map<String, Fluid> FLOWING = new LinkedHashMap<>();
     private static final Map<String, LiquidBlock> BLOCKS = new LinkedHashMap<>();
 
+    private static final Factory FACTORY = loadFactory();
+
     static {
-        Factory factory = loadFactory();
+        Factory factory = FACTORY;
         for (String id : Ids.FLUIDS) {
             Fluid source = factory.create(id, false);
             SOURCES.put(id, source);
@@ -97,6 +102,11 @@ public final class ModFluids {
     /** The liquid block of an id from {@link Ids#FLUIDS}. */
     public static LiquidBlock block(String id) {
         return BLOCKS.get(id);
+    }
+
+    /** Builds the real bucket item of a fluid; {@link ModContent} calls this while it builds its items. */
+    public static Item makeBucket(String id, Item.Properties properties) {
+        return FACTORY.bucket(id, properties);
     }
 
     /** The bucket item of an id from {@link Ids#FLUIDS}. */
