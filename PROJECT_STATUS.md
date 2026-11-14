@@ -1,7 +1,7 @@
 # Project Status
 <!-- status-format: 1 -->
 Updated: 2026-11-13
-Summary: Prima Materia (sieve, vat and crucible skyblock mod for Forge and NeoForge 26.2 and 26.3) has its design written and a local git repository; no code, models or builds exist yet.
+Summary: Prima Materia (sieve, barrel and crucible skyblock mod for Forge and NeoForge 26.2 and 26.3) has its design written and a local git repository; no code, models or builds exist yet.
 Spend: none
 
 ## Design
@@ -10,37 +10,42 @@ Spend: none
 - [x] Art direction: palette, shading rules, model and texture lists, icon concept (docs/ART.md) (w:2)
 - [x] Architecture: modules, data formats, ModJS, BEI, tests, work split (docs/ARCHITECTURE.md) (w:2)
 - [x] Local git repository with first commit (w:1)
-- [ ] Casey answers the open design questions (license, names, resolution, world type, tier count) (w:1)
+- [ ] Casey answers the open design questions (world type, sieve load, melts, pacing, sounds); answered so far: MIT license, Barrel name, 32x, mesh tiers cloth to netherite, and the Nether and End chain, stamp mill, flux drive, mob drops and all four recipe viewers in the first release (w:1)
 
 ## Foundation
-- [ ] Four Gradle modules (forge and neoforge for 26.2 and 26.3) with shared common/ and version-26.x folders (w:4)
-- [ ] ModContent with every block, item, recipe type, sound, particle and fluid id; placeholder models; lang file (w:3)
-- [ ] Frozen interface files (view records, StateProps, Shapes, RecipeLookup, GameEvents) (w:2)
-- [ ] scripts/sync_versions.py for 26.3 (w:2)
-- [ ] Dev server ports added to the port registry (w:1)
+- [x] Four Gradle modules (forge and neoforge for 26.2 and 26.3) with shared common/ and version-26.x folders (w:4)
+- [x] Ids and ModContent with every block, item and sound registered as placeholders; placeholder models, textures, loot tables; lang file (w:3)
+- [x] Frozen interface files (view records, StateProps, ModShapes, RecipeLookup, GameEvents) (w:2)
+- [x] scripts/sync_versions.py for 26.3 (w:2)
+- [x] Dev server ports 8734 to 8737 in the port registry (w:1)
+- [x] Scaffold unit tests and headless server self test (every id registered, every block placed) on all four builds (w:2)
 
 ## Logic and Data
-- [ ] Config file (config/primamateria.properties) (w:2)
+- [x] Config file (config/primamateria.properties) with every key and default (w:2)
 - [ ] Data readers and reload listeners: mesh tiers, heat sources, melts, compost values, synced to clients (w:3)
 - [ ] Sieve: mesh slot, load of 1 to 4, hold-to-shake, drops rolled at load, residue, hopper in and out, comparator (w:5)
 - [ ] Hammers and crushing recipes (5 tiers, bonus yield) (w:3)
-- [ ] Vat: dew and rain, composting, soaking, mixing, steeping, growing; wooden and clay versions (w:5)
+- [ ] Barrel: dew and rain, composting, soaking, mixing, steeping, growing; wooden and clay versions (w:5)
 - [ ] Brine fluid and bucket (w:2)
 - [ ] Crucible: heat, melting, melts as data, lava out (w:4)
 - [ ] Casting tray: pour, cool, ingot out (w:3)
 - [ ] Windup drive and furnace drive with output buffers (w:4)
+- [ ] Flux drive (FE) (w:3)
+- [ ] Stamp mill (w:3)
+- [ ] Nether and End chain: scoria, pale sand, soul sand sifting, netherite hammer and mesh (w:3)
 - [ ] Shipped recipes and drop tables for the first release (w:3)
 - [ ] Void Island world preset and start island structure (w:3)
 
 ## Blocks, Models and Textures
 - [ ] Sieve model and textures in Blockbench; style approved by Casey (w:4)
 - [ ] Shared material sheets (wood, wood end, stone, clay, brass, iron) (w:3)
-- [ ] Wooden vat and clay vat models (w:3)
+- [ ] Wooden barrel and clay barrel models (w:3)
 - [ ] Crucible and casting tray models (w:3)
 - [ ] Windup drive and furnace drive models (w:4)
-- [ ] Crystal model and four crystal textures (w:2)
+- [ ] Stamp mill and flux drive models (w:4)
+- [ ] Crystal model and five crystal textures (w:2)
 - [ ] Block detail textures (meshes, compost, brine, melt, insides, dial, firebox, stone meal) (w:3)
-- [ ] Item textures (23) (w:3)
+- [ ] Item textures (26) (w:3)
 - [ ] Particle textures (w:1)
 - [ ] Selection shapes and display transforms for every block (w:2)
 
@@ -52,14 +57,27 @@ Spend: none
 - [ ] Sieve renderer: bones, domed material layer, finds on the mesh, clip blending, shake sync (w:5)
 - [ ] Fines and dust particles, pour stream (w:2)
 - [ ] Sounds made and wired (sieve, mesh, drives) (w:3)
-- [ ] Vat, crucible, casting tray and drive renderers and animations (w:4)
+- [ ] Barrel, crucible, casting tray and drive renderers and animations (w:4)
 - [ ] Distance levels, particle and sound caps, resting sieves at zero cost (w:3)
 - [ ] Animation settings: full, reduced, off (block state fallback) (w:2)
 
 ## Integrations
-- [ ] BEI categories: sifting, crushing, vat, crucible (w:3)
-- [ ] ModJS bridge: PrimaMateria global (events, state, content, config) with tests (w:3)
-- [ ] docs/scripting.md (w:1)
+- [ ] Shared card layout and RecipeLookup wiring for all viewers (compat/Cards) (w:2)
+- [ ] BEI: six categories (sifting, crushing, composting, barrel, melting, casting) on all four builds (w:3)
+- [ ] JEI plugin, same categories, NeoForge 26.2 and 26.3 (w:3)
+- [ ] REI plugin, same categories, NeoForge 26.2 and 26.3 (w:3)
+- [ ] EMI plugin written (no EMI build for 26.2 or 26.3 yet: untested until one exists) (w:2)
+- [ ] Drop table information pages per siftable block in every viewer (w:2)
+- [ ] SMWTI lines for every block on all four builds (w:2)
+- [ ] Jade lines, NeoForge 26.2 and 26.3 (w:2)
+- [ ] ModJS bridge: PrimaMateria global (events, state, content, data, config) with tests (w:3)
+- [ ] KubeJS: every recipe, drop table, mesh tier and heat source changeable as datapack JSON, with a remove form, proven by a test pack (w:2)
+- [ ] KubeJS helper bridge for events and reads, unit tested (no KubeJS build for 26.2 or 26.3 yet: client check waits) (w:2)
+- [ ] Run with no optional mod installed passes the self test (w:1)
+- [ ] docs/scripting.md (ModJS, KubeJS, datapacks) (w:1)
+- [x] docs/known-gaps.md with the viewer and scripting builds per version (w:1)
+- [ ] Real-client check per supported integration with frames (BEI, SMWTI, ModJS on four builds; JEI, REI, Jade on NeoForge) (w:4)
+- [ ] When they port: JEI, REI and Jade on Forge 26.2 and 26.3; EMI and KubeJS on any 26.2 or 26.3 build (w:1)
 
 ## Testing
 - [ ] Unit tests of the pure logic in all four modules (w:3)

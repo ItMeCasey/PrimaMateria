@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "primamateria:wooden_barrel"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "primamateria:blocks/wooden_barrel"
+}

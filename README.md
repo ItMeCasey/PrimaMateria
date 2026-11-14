@@ -1,10 +1,10 @@
 # Prima Materia
 
-A skyblock resource mod for Minecraft 26.2 and 26.3 on Forge and NeoForge. You start on a small island in the void and make everything from first matter: crush stone with a hammer, shake it through a sieve, soak and grow it in a vat, melt and cast it in a crucible, and let wound-up and fired drives do the shaking for you.
+A skyblock resource mod for Minecraft 26.2 and 26.3 on Forge and NeoForge. You start on a small island in the void and make everything from first matter: crush stone with a hammer, shake it through a sieve, soak and grow it in a barrel, melt and cast it in a crucible, and let wound-up and fired drives do the shaking for you.
 
 By ItMeCasey Studios. Mod id `primamateria`. First release planned as `2026.11.1`.
 
-**Status: design only.** No code yet. See [PROJECT_STATUS.md](PROJECT_STATUS.md).
+**Status: scaffold.** The four modules build and every block and item exists as a placeholder; no gameplay yet. See [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 ## Design documents
 
@@ -13,10 +13,21 @@ By ItMeCasey Studios. Mod id `primamateria`. First release planned as `2026.11.1
 - [docs/ART.md](docs/ART.md): the 32x art direction, palette, models and textures to make, the icon.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): modules, data formats, ModJS and BEI, tests, the work split.
 
+## Build and test
+
+Each Forge or NeoForge folder is its own Gradle build (Java 25): `forge-26.2`, `neoforge-26.2`, `forge-26.3`, `neoforge-26.3`. Shared pure logic lives in `common/`; everything that touches the game lives in `version-26.2`, and `version-26.3` is generated from it by `scripts/sync_versions.py`. Every Gradle command goes through the slot wrapper.
+
+```
+cd neoforge-26.2 && bash /c/Users/casey/.claude/tools/gradle-slot.sh ./gradlew build --no-daemon   # jar and unit tests
+python scripts/sync_versions.py                 # after every change to version-26.2
+python scripts/server_check.py all              # headless server self test on all four builds (ports 8734 to 8737)
+python scripts/make_placeholders.py             # placeholder textures, models, names and loot tables for new ids
+```
+
 ## Clean-room rule
 
 Prima Materia is an original design. Do not open, read, search or copy the code, textures, models, language files or data of any other sifting or skyblock resource mod while working on it, and do not download their jars. Ideas are free; their files are not ours. See "Originality" in the design document.
 
 ## License
 
-All rights reserved. See [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).

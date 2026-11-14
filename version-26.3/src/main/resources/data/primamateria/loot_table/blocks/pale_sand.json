@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "primamateria:pale_sand"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "primamateria:blocks/pale_sand"
+}

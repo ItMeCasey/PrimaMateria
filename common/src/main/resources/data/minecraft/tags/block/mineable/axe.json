@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "primamateria:sieve",
+    "primamateria:wooden_barrel",
+    "primamateria:windup_drive",
+    "primamateria:stamp_mill"
+  ]
+}

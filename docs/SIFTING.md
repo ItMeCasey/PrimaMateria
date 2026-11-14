@@ -88,7 +88,7 @@ The server owns the facts: load, progress, shake count, the rolled finds and whe
 4. **Sample.** Each frame, for each sieve that is animating, `AnimSampler` evaluates the active clip (and the one it is blending from) at the sieve's clock: binary search per channel, then interpolate. The sieve has 7 bones and about 12 channels, so this is a few dozen float operations.
 5. **Draw.** A block entity renderer draws: the baked bone cubes with the sampled transforms, the layer box, the finds. The static frame is part of the chunk mesh and costs nothing per frame.
 
-The same loader is used for the vat (surface ripple, crystal growth scale), the crucible (melt surface, pour stream), the casting tray (cooling glow) and the drives (windup key turning, furnace door flicker), each with a small `.bbmodel` animation set. The sieve is the first and the reference.
+The same loader is used for the barrel (surface ripple, crystal growth scale), the crucible (melt surface, pour stream), the casting tray (cooling glow) and the drives (windup key turning, furnace door flicker), each with a small `.bbmodel` animation set. The sieve is the first and the reference.
 
 ### Resting sieves cost nothing
 
@@ -111,7 +111,7 @@ All sounds are our own, made by us (recorded or synthesized) and listed with the
 | `primamateria:sieve.shake.soil` | Muffled scrape | Each stop, dirt-class material |
 | `primamateria:sieve.reveal` | One quiet tick, like a pebble on metal | A find shows. Pitch rises a semitone for each find in the load |
 | `primamateria:sieve.finish` | Wood knock and the last fines trailing off | Load done |
-| `primamateria:sieve.mesh` | Wire twang | Mesh fitted or removed. The resonant mesh adds a soft chime |
+| `primamateria:sieve.mesh` | Wire twang | Mesh fitted or removed. The diamond and netherite meshes add a soft chime |
 | `primamateria:drive.crank` | Ratchet clicks | Each turn wound |
 | `primamateria:drive.tick` | Spring clack | Each windup shake, quiet |
 
