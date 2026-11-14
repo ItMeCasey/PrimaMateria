@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "minecraft:gold_ingot",
+  "result": "primamateria:molten_gold",
+  "amount": 100
+}

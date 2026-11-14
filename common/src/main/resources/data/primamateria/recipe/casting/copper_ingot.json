@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_copper",
+  "amount": 100,
+  "result": "minecraft:copper_ingot",
+  "time": 60
+}

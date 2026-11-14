@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CCC"
+  ],
+  "key": {
+    "C": "minecraft:clay_ball"
+  },
+  "result": {
+    "id": "primamateria:raw_casting_tray",
+    "count": 1
+  }
+}

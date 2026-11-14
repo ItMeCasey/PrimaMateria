@@ -70,6 +70,7 @@ public final class SelfTest {
             placeable(server.overworld());
             settings();
             SieveSelfTest.run(server, server.overworld());
+            CrucibleSelfTest.run(server, server.overworld());
             // each feature adds one line here: FeatureSelfTest.run(server, server.overworld());
         } catch (RuntimeException e) {
             LOGGER.error("SELFTEST error", e);

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": "primamateria:raw_casting_tray",
+  "result": {
+    "id": "primamateria:casting_tray"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "minecraft:stone",
+  "result": "minecraft:lava",
+  "amount": 200
+}

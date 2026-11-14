@@ -1,6 +1,10 @@
 package com.itmecasey.primamateria;
 
+import com.itmecasey.primamateria.block.CastingTrayBlock;
+import com.itmecasey.primamateria.block.CrucibleBlock;
 import com.itmecasey.primamateria.block.SieveBlock;
+import com.itmecasey.primamateria.blockentity.CastingTrayBlockEntity;
+import com.itmecasey.primamateria.blockentity.CrucibleBlockEntity;
 import com.itmecasey.primamateria.blockentity.SieveBlockEntity;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,6 +60,10 @@ public final class ModContent {
     /** The sieve's block entity type. Declared after the block map is filled. */
     public static final BlockEntityType<SieveBlockEntity> SIEVE_BE = new BlockEntityType<>(SieveBlockEntity::new, Set.of(block(Ids.SIEVE)));
 
+    /** The crucible's and the casting tray's block entity types. */
+    public static final BlockEntityType<CrucibleBlockEntity> CRUCIBLE_BE = new BlockEntityType<>(CrucibleBlockEntity::new, Set.of(block(Ids.CRUCIBLE)));
+    public static final BlockEntityType<CastingTrayBlockEntity> TRAY_BE = new BlockEntityType<>(CastingTrayBlockEntity::new, Set.of(block(Ids.CASTING_TRAY)));
+
     private ModContent() {
     }
 
@@ -78,6 +86,12 @@ public final class ModContent {
     private static Block makeBlock(String name, BlockBehaviour.Properties props) {
         if (name.equals(Ids.SIEVE)) {
             return new SieveBlock(props);
+        }
+        if (name.equals(Ids.CRUCIBLE)) {
+            return new CrucibleBlock(props);
+        }
+        if (name.equals(Ids.CASTING_TRAY)) {
+            return new CastingTrayBlock(props);
         }
         return new Block(props);
     }
@@ -129,6 +143,8 @@ public final class ModContent {
 
     public static void registerBlockEntities(BiConsumer<String, BlockEntityType<?>> out) {
         out.accept(Ids.SIEVE, SIEVE_BE);
+        out.accept(Ids.CRUCIBLE, CRUCIBLE_BE);
+        out.accept(Ids.CASTING_TRAY, TRAY_BE);
     }
 
     public static void registerSounds(BiConsumer<String, SoundEvent> out) {

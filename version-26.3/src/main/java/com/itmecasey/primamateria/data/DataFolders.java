@@ -26,7 +26,8 @@ public final class DataFolders {
     /** Every folder. Add new ones at the end, one per line. */
     public static List<Folder> all() {
         return List.of(
-                Meshes.FOLDER
+                Meshes.FOLDER,
+                HeatSources.FOLDER
         );
     }
 }

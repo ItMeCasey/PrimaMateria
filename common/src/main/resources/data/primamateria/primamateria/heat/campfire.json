@@ -1,0 +1,7 @@
+{
+  "block": "minecraft:campfire",
+  "state": {
+    "lit": "true"
+  },
+  "heat": 2
+}
