@@ -89,7 +89,8 @@ public class SieveRenderer<T extends BlockEntity & SieveViewSource> implements B
         int mode = ClientConfig.mode();
         BlockState bs = be.getBlockState();
         boolean moving = bs.hasProperty(StateProps.MOVING) && bs.getValue(StateProps.MOVING);
-        SieveView view = be.sieveView();
+        Object forced = DevOverrides.get(be.getBlockPos());
+        SieveView view = forced instanceof SieveView sv ? sv : be.sieveView();
         long nowNanos = System.nanoTime();
         float dt = (nowNanos - c.lastNanos) / 1.0e9F;
         c.lastNanos = nowNanos;

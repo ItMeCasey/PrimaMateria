@@ -107,7 +107,8 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
         BlockEntityRenderer.super.extractRenderState(be, s, partial, cam, crumbling);
         s.draw = false;
         Level level = be.getLevel();
-        Object view = be.machineView();
+        Object forced = DevOverrides.get(be.getBlockPos());
+        Object view = forced != null ? forced : be.machineView();
         if (level == null || view == null) {
             return;
         }
@@ -198,7 +199,7 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
             for (BarrelView.Crystal cr : v.crystals()) {
                 int slot = cr.slot() & 3;
                 c.crystalTex[slot] = MachineAssets.crystal(cr.texture());
-                crystal(c.crystals[slot], SLOT_X[slot], floor, SLOT_Z[slot], 0.2F + 0.8F * cr.progress(), FULL_BRIGHT);
+                crystal(c.crystals[slot], SLOT_X[slot], floor, SLOT_Z[slot], 0.3F + 1.1F * cr.progress(), FULL_BRIGHT);
             }
         }
         if (!v.result().isEmpty()) {
