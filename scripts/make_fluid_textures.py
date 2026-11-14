@@ -80,8 +80,9 @@ def brine_still():
 
 
 def brine_flow():
-    # streaks that run down the face: tall waves (low in y, high in x) that slide one full turn over the loop
-    ws = waves(12, 7, (1, 3), (1, 2), (0, 0))
+    # streaks that run down the face: tall waves (fewer turns in y than in x) that slide one full turn over the loop; the flowing face
+    # shows a half-size window of the 32x32 frame, so the pattern is twice as fine as the still one
+    ws = waves(12, 7, (2, 6), (2, 4), (0, 0))
     cuts = (0.22, 0.40, 0.62, 0.86)
 
     def pixel(x, y, t):
@@ -115,7 +116,7 @@ def molten_still(colors, seed):
 
 
 def molten_flow(colors, seed):
-    ws = waves(seed, 9, (1, 4), (1, 2), (0, 0))
+    ws = waves(seed, 9, (2, 7), (2, 4), (0, 0))
     cuts = (0.34, 0.52, 0.66, 0.80)
 
     def pixel(x, y, t):

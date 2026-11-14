@@ -214,8 +214,9 @@ public final class FluidSelfTest {
                     && ModFluids.source(id).defaultFluidState().is(net.minecraft.tags.FluidTags.WATER) == !molten, molten ? "lava tag" : "water tag");
             Probe ours = probe(level, pos, ModFluids.block(id).defaultBlockState());
             Probe reference = probe(level, pos, (molten ? Blocks.LAVA : Blocks.WATER).defaultBlockState());
-            SelfTest.verdict("entity_in_the_fluid_feels_what_it_does_in_" + (molten ? "lava" : "water") + "_" + id, // NeoForge answers isInLava only for its own lava fluid type, so the lava flag is not compared: swimming and burning are
-                    ours.water() == reference.water() && ours.fire() == molten,
+            // NeoForge counts "in lava" only for lava's own fluid type, so that part is left out of the comparison
+            SelfTest.verdict("entity_in_the_fluid_feels_what_it_does_in_" + (molten ? "lava" : "water") + "_" + id,
+                    ours.water() == reference.water() && ours.fire() == reference.fire() && ours.fire() == molten,
                     "ours " + ours + ", " + (molten ? "lava" : "water") + " " + reference);
             for (int dx = -2; dx <= 2; dx++) {
                 for (int dz = -2; dz <= 2; dz++) {
