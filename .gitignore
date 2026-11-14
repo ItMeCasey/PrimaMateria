@@ -1,0 +1,23 @@
+# Gradle and build output
+.gradle/
+build/
+out/
+run/
+*.class
+*.log
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+run-data/
+runs/
+logs/
+crash-reports/
+release/
+dist/
+
+# Dev tour output
+docs/frames/tmp/
+__pycache__/
