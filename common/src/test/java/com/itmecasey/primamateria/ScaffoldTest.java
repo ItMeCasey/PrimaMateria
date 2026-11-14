@@ -24,7 +24,7 @@ class ScaffoldTest {
         all.addAll(Ids.ITEMS);
         assertEquals(all.size(), new HashSet<>(all).size(), "a block and an item share an id");
         assertEquals(12, Ids.BLOCKS.size());
-        assertEquals(29, Ids.ITEMS.size());
+        assertEquals(29 + com.itmecasey.primamateria.fluid.Metals.ALL.size() - 3, Ids.ITEMS.size());
         assertEquals(Ids.HAMMERS.size(), Ids.HAMMER_DURABILITY.size());
         assertEquals(5, Ids.MESHES.size());
         assertTrue(Ids.BLOCKS.containsAll(Ids.BLOCK_ENTITIES));

@@ -4,6 +4,7 @@ import com.itmecasey.primamateria.Settings;
 import com.itmecasey.primamateria.blockentity.BarrelBlockEntity;
 import com.itmecasey.primamateria.data.CompostValues;
 import com.itmecasey.primamateria.fluid.FluidBuckets;
+import com.itmecasey.primamateria.fluid.ItemFluids;
 import com.itmecasey.primamateria.fluid.FluidIds;
 import com.itmecasey.primamateria.recipe.BarrelRecipes;
 import com.itmecasey.primamateria.recipe.CompostingRecipe;
@@ -144,23 +145,25 @@ public final class BarrelLogic {
         return true;
     }
 
-    /** An empty bucket used on the barrel: takes 1000 mB when the barrel holds that much and nothing is working. */
-    @Nullable
-    public static String scoop(ServerLevel level, BarrelBlockEntity be) {
+    /**
+     * An empty container (a bucket or any mod's tank item) in the player's hand used on the barrel: takes 1000 mB when the barrel
+     * holds that much and nothing is working. Returns whether anything was taken.
+     */
+    public static boolean scoop(ServerLevel level, BarrelBlockEntity be, Player player, InteractionHand hand) {
         BarrelState state = be.state();
         String fluid = state.fluid();
-        if (fluid.isEmpty() || FluidIds.bucketOf(fluid).isEmpty() || !state.canDrain(FluidBuckets.BUCKET_AMOUNT)) {
-            return null;
-        }
-        Identifier bucket = Identifier.tryParse(FluidIds.bucketOf(fluid).get());
-        if (bucket == null || !BuiltInRegistries.ITEM.containsKey(bucket)) {
-            return null;
+        if (fluid.isEmpty() || !state.canDrain(FluidBuckets.BUCKET_AMOUNT) || !ItemFluids.canFillWith(player.getItemInHand(hand), fluid)) {
+            return false;
         }
         state.drain(FluidBuckets.BUCKET_AMOUNT);
+        if (!ItemFluids.fillHeld(player, hand, fluid)) {
+            state.fill(fluid, FluidBuckets.BUCKET_AMOUNT);
+            return false;
+        }
         level.playSound(null, be.getBlockPos(), BarrelState.isHot(fluid) ? SoundEvents.BUCKET_FILL_LAVA : SoundEvents.BUCKET_FILL,
                 SoundSource.BLOCKS, 0.8F, 1.0F);
         be.changed();
-        return bucket.toString();
+        return true;
     }
 
     /** The barrel at {@code pos} used by a player with {@code stack} in hand (empty for an empty hand). */
@@ -172,20 +175,15 @@ public final class BarrelLogic {
             return takeResult(level, be, player) ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
         String itemId = Transfer.itemId(stack);
-        java.util.Optional<String> carried = FluidIds.carriedBy(stack);
+        java.util.Optional<String> carried = ItemFluids.carriedBy(stack);
         if (carried.isPresent()) {
             if (pour(level, be, carried.get())) {
-                swapBucket(player, hand, stack, new ItemStack(Items.BUCKET));
+                ItemFluids.drainHeld(player, hand);
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.FAIL;
         }
-        if (itemId.equals(FluidBuckets.EMPTY_BUCKET)) {
-            String full = scoop(level, be);
-            if (full == null) {
-                return InteractionResult.PASS;
-            }
-            swapBucket(player, hand, stack, Transfer.stackOf(full, 1));
+        if (scoop(level, be, player, hand)) {
             return InteractionResult.SUCCESS;
         }
         if (offer(level, be, stack)) {
@@ -209,15 +207,4 @@ public final class BarrelLogic {
     }
 
     /** The bucket in hand turns into another (full into empty or the other way); creative mode keeps its stack. */
-    private static void swapBucket(Player player, InteractionHand hand, ItemStack inHand, ItemStack replacement) {
-        if (player.getAbilities().instabuild) {
-            return;
-        }
-        if (inHand.getCount() <= 1) {
-            player.setItemInHand(hand, replacement);
-        } else {
-            inHand.shrink(1);
-            Transfer.giveBack(player, replacement);
-        }
-    }
 }

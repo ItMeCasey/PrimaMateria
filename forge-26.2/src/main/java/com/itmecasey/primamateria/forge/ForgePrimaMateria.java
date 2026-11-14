@@ -53,6 +53,7 @@ public final class ForgePrimaMateria {
             ForgeClient.install(context);
             ForgeFluidClient.install();
         }
+        com.itmecasey.primamateria.fluid.ItemFluids.install(new ForgeItemFluids());
         AttachCapabilitiesEvent.BlockEntities.BUS.addListener(ForgePrimaMateria::attach);
         channel = ChannelBuilder.named(net.minecraft.resources.Identifier.fromNamespaceAndPath(com.itmecasey.primamateria.PrimaMateria.MODID, "lookup"))
                 .networkProtocolVersion(1)

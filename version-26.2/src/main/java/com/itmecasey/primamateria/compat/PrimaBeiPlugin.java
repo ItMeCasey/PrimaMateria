@@ -54,10 +54,33 @@ public class PrimaBeiPlugin implements IBeiPlugin {
         }
 
         private void swatch(GuiGraphicsExtractor g, Cards.Entry entry, Cards.Spot spot) {
-            if (entry.kind() == Cards.Kind.MELT) {
-                int color = 0xFF000000 | Stacks.meltColor(entry.id());
-                g.fill(spot.x() + 1, spot.y() + 1, spot.x() + Cards.SLOT - 1, spot.y() + Cards.SLOT - 1, color);
+            if (entry.kind() == Cards.Kind.FLUID) {
+                // BEI slots hold items only, so a fluid is painted as its still texture
+                FluidSprites.draw(g, entry.id(), spot.x() + 1, spot.y() + 1);
             }
+        }
+
+        @Override
+        public List<Component> tooltip(CustomRecipe recipe, int mx, int my) {
+            Cards.Card card = card(recipe);
+            Cards.Layout layout = Cards.layout(card);
+            for (int i = 0; i < card.inputs().size(); i++) {
+                Cards.Entry e = card.inputs().get(i);
+                if (e.kind() == Cards.Kind.FLUID && over(layout.inputs().get(i), mx, my)) {
+                    return FluidSprites.tooltip(e.id(), e.count());
+                }
+            }
+            for (int i = 0; i < card.outputs().size(); i++) {
+                Cards.Entry e = card.outputs().get(i).entry();
+                if (e.kind() == Cards.Kind.FLUID && over(layout.outputs().get(i), mx, my)) {
+                    return FluidSprites.tooltip(e.id(), e.count());
+                }
+            }
+            return List.of();
+        }
+
+        private static boolean over(Cards.Spot spot, int mx, int my) {
+            return mx >= spot.x() && mx < spot.x() + Cards.SLOT && my >= spot.y() && my < spot.y() + Cards.SLOT;
         }
     };
 
@@ -105,7 +128,7 @@ public class PrimaBeiPlugin implements IBeiPlugin {
             RecipeCategory category = category(card.category());
             CustomRecipe.Builder b = CustomRecipe.builder().id(card.id()).data(card);
             for (Cards.Entry in : card.inputs()) {
-                List<ItemStack> items = Stacks.itemsOf(in);
+                List<ItemStack> items = in.kind() == Cards.Kind.FLUID ? List.of() : Stacks.itemsOf(in);
                 if (items.isEmpty()) {
                     b.emptyInput();
                 } else {
@@ -121,7 +144,7 @@ public class PrimaBeiPlugin implements IBeiPlugin {
             }
             boolean any = false;
             for (Cards.Output out : card.outputs()) {
-                List<ItemStack> items = Stacks.itemsOf(out.entry());
+                List<ItemStack> items = out.entry().kind() == Cards.Kind.FLUID ? List.of() : Stacks.itemsOf(out.entry());
                 if (items.isEmpty()) {
                     b.output(ItemStack.EMPTY);
                 } else {

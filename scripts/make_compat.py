@@ -123,6 +123,18 @@ def recipes():
     for tag, ids in GAP_TAGS.items():
         write_json(RES / f"data/c/tags/item/{tag}.json", {"replace": False, "values": [{"id": i, "required": False} for i in ids]})
         count += 1
+    # every tag a recipe takes as an input must exist even when no mod fills it (an input naming a missing tag does not load), so each
+    # one gets an empty tag file; mods that fill the tag add to it
+    used = set()
+    for path in (DATA / "recipe").rglob("compat_*.json"):
+        d = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(d.get("input"), str) and d["input"].startswith("#c:"):
+            used.add(d["input"][3:])
+    for tag in sorted(used):
+        target = RES / f"data/c/tags/item/{tag}.json"
+        if not target.exists():
+            write_json(target, {"replace": False, "values": []})
+            count += 1
     return count
 
 

@@ -3,6 +3,7 @@ package com.itmecasey.primamateria.machine;
 import com.itmecasey.primamateria.blockentity.CastingTrayBlockEntity;
 import com.itmecasey.primamateria.blockentity.CrucibleBlockEntity;
 import com.itmecasey.primamateria.fluid.FluidBuckets;
+import com.itmecasey.primamateria.fluid.ItemFluids;
 import com.itmecasey.primamateria.fluid.FluidIds;
 import com.itmecasey.primamateria.recipe.CrucibleRecipes;
 import com.itmecasey.primamateria.util.Transfer;
@@ -47,7 +48,7 @@ public final class CrucibleLogic {
             return InteractionResult.SUCCESS;
         }
         String id = Transfer.itemId(stack);
-        Optional<String> bucketFluid = FluidIds.carriedBy(stack);
+        Optional<String> bucketFluid = ItemFluids.carriedBy(stack);
         if (bucketFluid.isPresent()) {
             String fluid = bucketFluid.get();
             if (!accepts(level, fluid)) {
@@ -56,19 +57,18 @@ public final class CrucibleLogic {
             if (be.state().fill(fluid, FluidBuckets.BUCKET_AMOUNT)) {
                 be.changed();
                 level.playSound(null, pos, SoundEvents.BUCKET_EMPTY_LAVA, SoundSource.BLOCKS, 0.8F, 1.0F);
-                swapForEmptyBucket(player, hand, stack);
+                ItemFluids.drainHeld(player, hand);
             }
             return InteractionResult.SUCCESS;
         }
-        if (id.equals(FluidBuckets.EMPTY_BUCKET)) {
-            Optional<String> full = FluidIds.bucketOf(be.state().fluid());
-            if (full.isPresent() && be.state().drain(FluidBuckets.BUCKET_AMOUNT)) {
+        String held = be.state().fluid();
+        if (!held.isEmpty() && ItemFluids.canFillWith(stack, held) && be.state().drain(FluidBuckets.BUCKET_AMOUNT)) {
+            if (ItemFluids.fillHeld(player, hand, held)) {
                 be.changed();
                 level.playSound(null, pos, SoundEvents.BUCKET_FILL_LAVA, SoundSource.BLOCKS, 0.8F, 1.0F);
-                swapFor(player, hand, stack, full.get());
                 return InteractionResult.SUCCESS;
             }
-            return InteractionResult.PASS;
+            be.state().fill(held, FluidBuckets.BUCKET_AMOUNT);
         }
         if (be.state().canAddSolid() && CrucibleRecipes.meltFor(level.recipeAccess(), stack) != null) {
             be.state().addSolid(id);
@@ -96,7 +96,7 @@ public final class CrucibleLogic {
             Transfer.giveBack(player, Transfer.stackOf(item, taken));
             return InteractionResult.SUCCESS;
         }
-        Optional<String> bucketFluid = FluidIds.carriedBy(stack);
+        Optional<String> bucketFluid = ItemFluids.carriedBy(stack);
         if (bucketFluid.isEmpty() || !accepts(level, bucketFluid.get())) {
             return InteractionResult.PASS;
         }
@@ -109,28 +109,8 @@ public final class CrucibleLogic {
         int count = Math.max(1, Math.min(FluidBuckets.BUCKET_AMOUNT / cast.amount(), sample.isEmpty() ? 1 : sample.getMaxStackSize()));
         if (be.pour(bucketFluid.get(), cast, count)) {
             level.playSound(null, pos, SoundEvents.BUCKET_EMPTY_LAVA, SoundSource.BLOCKS, 0.8F, 1.0F);
-            swapForEmptyBucket(player, hand, stack);
+            ItemFluids.drainHeld(player, hand);
         }
         return InteractionResult.SUCCESS;
-    }
-
-    // ---- buckets ----
-
-    private static void swapForEmptyBucket(Player player, InteractionHand hand, ItemStack stack) {
-        swapFor(player, hand, stack, FluidBuckets.EMPTY_BUCKET);
-    }
-
-    /** Replaces one item of the hand stack with another (a full bucket for an empty one and back). Creative keeps the stack. */
-    private static void swapFor(Player player, InteractionHand hand, ItemStack stack, String itemId) {
-        if (player.getAbilities().instabuild) {
-            return;
-        }
-        ItemStack replacement = Transfer.stackOf(itemId, 1);
-        if (stack.getCount() == 1) {
-            player.setItemInHand(hand, replacement);
-        } else {
-            stack.shrink(1);
-            Transfer.giveBack(player, replacement);
-        }
     }
 }

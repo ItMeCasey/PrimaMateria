@@ -327,7 +327,7 @@ public final class Cards {
             }
         }
         for (RecipeLookup.Melting r : s.melting()) {
-            Entry out = r.fluid().startsWith("primamateria:molten_") ? Entry.melt(r.fluid(), r.amount()) : Entry.fluid(r.fluid(), r.amount());
+            Entry out = Entry.fluid(r.fluid(), r.amount());
             cards.add(new Card(Category.MELTING, r.id(), List.of(Entry.item(r.input(), 1)), stations,
                     List.of(new Output(out, Fmt.mb(r.amount()), "")), List.of(""), List.of()));
         }
@@ -338,7 +338,7 @@ public final class Cards {
     public static List<Card> casting(Snapshot s) {
         List<Card> cards = new ArrayList<>();
         for (RecipeLookup.Casting r : s.casting()) {
-            cards.add(new Card(Category.CASTING, r.id(), List.of(r.fluid().startsWith("primamateria:molten_") ? Entry.melt(r.fluid(), r.amount()) : Entry.fluid(r.fluid(), r.amount())),
+            cards.add(new Card(Category.CASTING, r.id(), List.of(Entry.fluid(r.fluid(), r.amount())),
                     List.of(Entry.item(Ids.full(Ids.CASTING_TRAY), 1)), List.of(new Output(Entry.item(r.result(), 1), "", "")),
                     List.of(Fmt.mb(r.amount())), List.of(Fmt.seconds(r.time()))));
         }

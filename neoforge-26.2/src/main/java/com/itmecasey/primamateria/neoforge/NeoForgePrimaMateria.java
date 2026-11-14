@@ -36,6 +36,7 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 public final class NeoForgePrimaMateria {
     public NeoForgePrimaMateria(IEventBus modBus) {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
+        com.itmecasey.primamateria.fluid.ItemFluids.install(new NeoForgeItemFluids());
         modBus.addListener(NeoForgePrimaMateria::register);
         modBus.addListener(NeoForgePrimaMateria::capabilities);
         modBus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent e) -> e.enqueueWork(com.itmecasey.primamateria.fluid.FluidDispense::register));

@@ -93,12 +93,12 @@ class ViewerTest {
         // the heatproof mix needs the clay barrel only
         assertEquals(List.of("primamateria:clay_barrel"), barrel.get(1).catalysts().stream().map(Cards.Entry::id).toList());
         List<Cards.Card> melting = Cards.melting(s);
-        assertEquals(Cards.Kind.MELT, melting.get(0).outputs().get(0).entry().kind());
+        assertEquals(Cards.Kind.FLUID, melting.get(0).outputs().get(0).entry().kind());
         assertEquals(Cards.Kind.FLUID, melting.get(1).outputs().get(0).entry().kind());
         assertEquals("primamateria:crucible", melting.get(0).catalysts().get(0).id());
         assertEquals("minecraft:campfire", melting.get(0).catalysts().get(1).id());
         Cards.Card cast = Cards.casting(s).get(0);
-        assertEquals(Cards.Kind.MELT, cast.inputs().get(0).kind());
+        assertEquals(Cards.Kind.FLUID, cast.inputs().get(0).kind());
         assertEquals("100 mB", cast.inputNotes().get(0));
         assertEquals("3 s", cast.values().get(0));
         assertEquals(Cards.all(s).size(), Cards.sifting(s).size() + 1 + 1 + 4 + 2 + 1 + 2);

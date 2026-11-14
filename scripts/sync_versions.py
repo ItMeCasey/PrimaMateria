@@ -109,12 +109,14 @@ def copy_loader_entries():
                      "main/java/com/itmecasey/primamateria/neoforge/NeoForgeFluidClient.java",
                      "main/java/com/itmecasey/primamateria/neoforge/MachineFluidHandler.java",
                      "main/java/com/itmecasey/primamateria/neoforge/LookupPayload.java",
+                     "main/java/com/itmecasey/primamateria/neoforge/NeoForgeItemFluids.java",
                      "dev/java/com/itmecasey/primamateria/neoforge/dev/NeoForgeDev.java"],
         "forge": ["main/java/com/itmecasey/primamateria/forge/ForgePrimaMateria.java",
                   "main/java/com/itmecasey/primamateria/forge/ForgeFluids.java",
                   "main/java/com/itmecasey/primamateria/forge/ForgeFluidClient.java",
                   "main/java/com/itmecasey/primamateria/forge/MachineFluidHandler.java",
                   "main/java/com/itmecasey/primamateria/forge/LookupMessage.java",
+                  "main/java/com/itmecasey/primamateria/forge/ForgeItemFluids.java",
                   "dev/java/com/itmecasey/primamateria/forge/dev/ForgeDev.java"],
     }
     for loader, files in names.items():

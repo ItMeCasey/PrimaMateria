@@ -39,27 +39,8 @@ public final class FluidIds {
         return fluid == Fluids.EMPTY ? Optional.empty() : Optional.of(fluid);
     }
 
-    /** The fluid a full bucket in this stack holds (ours, vanilla's or another mod's), or empty for anything else. */
+    /** The fluid a full container in this stack holds (a bucket or tank item of any mod), by the loader's item fluid handler. */
     public static Optional<String> carriedBy(ItemStack stack) {
-        if (stack.isEmpty()) {
-            return Optional.empty();
-        }
-        if (stack.getItem() instanceof BucketItem bucket) {
-            String id = idOf(bucket.getContent());
-            if (!id.isEmpty()) {
-                return Optional.of(id);
-            }
-        }
-        return com.itmecasey.primamateria.fluid.FluidBuckets.fluidOf(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
-    }
-
-    /** The id of the full bucket item for a fluid, or empty when no bucket carries it. */
-    public static Optional<String> bucketOf(String fluidId) {
-        Optional<String> known = FluidBuckets.bucketOf(fluidId);
-        if (known.isPresent()) {
-            return known;
-        }
-        return fluidOf(fluidId).map(Fluid::getBucket).filter(item -> item != Items.AIR && item != Items.BUCKET)
-                .map(Item::asItem).map(item -> BuiltInRegistries.ITEM.getKey(item).toString());
+        return ItemFluids.carriedBy(stack);
     }
 }

@@ -97,8 +97,11 @@ final class BarrelSelfTest {
         }
         SelfTest.verdict("a_refused_bucket_is_refused", refused == InteractionResult.FAIL, String.valueOf(refused));
         SelfTest.verdict("comparator_follows_the_fill", comparator(level, base) == 15, "full barrel 15");
-        String scooped = BarrelLogic.scoop(level, wood);
-        SelfTest.verdict("empty_bucket_takes_it_back", "minecraft:water_bucket".equals(scooped) && wood.state().amount() == 0, String.valueOf(scooped));
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BUCKET));
+        boolean scooped = BarrelLogic.scoop(level, wood, player, InteractionHand.MAIN_HAND);
+        SelfTest.verdict("empty_bucket_takes_it_back", scooped && player.getMainHandItem().is(Items.WATER_BUCKET) && wood.state().amount() == 0,
+                String.valueOf(player.getMainHandItem()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 
         // ---- composting ----
         wood = place(level, base, Ids.WOODEN_BARREL);

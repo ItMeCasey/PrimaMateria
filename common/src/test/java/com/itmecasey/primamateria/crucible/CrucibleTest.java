@@ -239,10 +239,8 @@ class CrucibleTest {
     }
 
     @Test
-    void bucketsMapBothWays() {
-        assertEquals("minecraft:lava", FluidBuckets.fluidOf("minecraft:lava_bucket").orElseThrow());
-        assertEquals("primamateria:molten_copper_bucket", FluidBuckets.bucketOf("primamateria:molten_copper").orElseThrow());
-        assertTrue(FluidBuckets.fluidOf("minecraft:bucket").isEmpty());
+    void fluidLooks() {
+        assertEquals(1000, FluidBuckets.BUCKET_AMOUNT);
         assertEquals(0xFF6A00, FluidLook.color("minecraft:lava"));
         assertEquals(15, FluidLook.glow("minecraft:lava"));
         assertEquals(0, FluidLook.glow("minecraft:water"));

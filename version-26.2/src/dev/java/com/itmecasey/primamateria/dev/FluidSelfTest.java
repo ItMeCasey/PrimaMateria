@@ -125,10 +125,8 @@ public final class FluidSelfTest {
                 "source and flowing forms share an id; unknown ids are empty");
         SelfTest.verdict("fluid_buckets_found_by_item", FluidIds.carriedBy(new ItemStack(Items.WATER_BUCKET)).orElse("").equals("minecraft:water")
                         && FluidIds.carriedBy(new ItemStack(ModFluids.bucket("molten_gold"))).orElse("").equals("primamateria:molten_gold")
-                        && FluidIds.carriedBy(new ItemStack(Items.BUCKET)).isEmpty() && FluidIds.carriedBy(ItemStack.EMPTY).isEmpty()
-                        && FluidIds.bucketOf("minecraft:lava").orElse("").equals("minecraft:lava_bucket")
-                        && FluidIds.bucketOf("primamateria:brine").orElse("").equals("primamateria:brine_bucket"),
-                "water, lava, brine and the molten buckets resolve both ways");
+                        && FluidIds.carriedBy(new ItemStack(Items.BUCKET)).isEmpty() && FluidIds.carriedBy(ItemStack.EMPTY).isEmpty(),
+                "the loader's item fluid handler names the fluid in a water, lava, brine or molten bucket");
     }
 
     // ---- placing and picking up ----
@@ -299,6 +297,25 @@ public final class FluidSelfTest {
         BarrelLogic.interact(level, m.wooden(), player, InteractionHand.MAIN_HAND, player.getMainHandItem());
         SelfTest.verdict("and_it_scoops_back_as_the_real_brine_bucket", wooden.state().amount() == 0
                 && player.getMainHandItem().is(ModFluids.bucket("brine")), String.valueOf(player.getMainHandItem()));
+
+        // containers that are not ours: the game's own water and lava buckets fill and empty the machines through the same item handler
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.WATER_BUCKET));
+        BarrelLogic.interact(level, m.wooden(), player, InteractionHand.MAIN_HAND, player.getMainHandItem());
+        SelfTest.verdict("a_vanilla_water_bucket_fills_a_barrel", wooden.state().fluid().equals("minecraft:water") && wooden.state().amount() == 1000
+                && player.getMainHandItem().is(Items.BUCKET), wooden.state().fluid());
+        BarrelLogic.interact(level, m.wooden(), player, InteractionHand.MAIN_HAND, player.getMainHandItem());
+        SelfTest.verdict("and_an_empty_bucket_empties_it_into_a_vanilla_water_bucket", wooden.state().amount() == 0 && player.getMainHandItem().is(Items.WATER_BUCKET),
+                String.valueOf(player.getMainHandItem()));
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.LAVA_BUCKET));
+        CrucibleLogic.useCrucible(level, m.crucible(), player, InteractionHand.MAIN_HAND, player.getMainHandItem());
+        SelfTest.verdict("a_vanilla_lava_bucket_fills_the_crucible", crucible.state().fluid().equals("minecraft:lava") && crucible.state().amount() == 1000
+                && player.getMainHandItem().is(Items.BUCKET), crucible.state().fluid());
+        CrucibleLogic.useCrucible(level, m.crucible(), player, InteractionHand.MAIN_HAND, player.getMainHandItem());
+        SelfTest.verdict("and_an_empty_bucket_takes_the_lava_back", crucible.state().amount() == 0 && player.getMainHandItem().is(Items.LAVA_BUCKET),
+                String.valueOf(player.getMainHandItem()));
+        // a full bucket of something the casting tray cannot cast, and a stick, change nothing
+        SelfTest.verdict("a_bucket_of_lava_on_the_tray_does_nothing_to_it", CrucibleLogic.useTray(level, m.tray(), player, InteractionHand.MAIN_HAND,
+                player.getMainHandItem()) != null && player.getMainHandItem().is(Items.LAVA_BUCKET), "kept");
         player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
     }
 
