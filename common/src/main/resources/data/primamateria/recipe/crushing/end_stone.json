@@ -1,0 +1,10 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:end_stone",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "primamateria:pale_sand"
+    }
+  ]
+}

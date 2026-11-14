@@ -1,0 +1,9 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:gravel",
+  "results": [
+    {
+      "item": "minecraft:sand"
+    }
+  ]
+}

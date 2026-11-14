@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "HH",
+    " S",
+    " S"
+  ],
+  "key": {
+    "H": "#minecraft:planks",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "primamateria:wooden_hammer",
+    "count": 1
+  }
+}

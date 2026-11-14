@@ -1,0 +1,10 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:red_sandstone",
+  "results": [
+    {
+      "item": "minecraft:red_sand",
+      "count": 2
+    }
+  ]
+}

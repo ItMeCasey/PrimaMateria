@@ -3,7 +3,11 @@ package com.itmecasey.primamateria;
 import com.itmecasey.primamateria.block.BarrelBlock;
 import com.itmecasey.primamateria.block.SieveBlock;
 import com.itmecasey.primamateria.blockentity.BarrelBlockEntity;
+import com.itmecasey.primamateria.block.AutoHammerBlock;
+import com.itmecasey.primamateria.block.SieveBlock;
+import com.itmecasey.primamateria.blockentity.AutoHammerBlockEntity;
 import com.itmecasey.primamateria.blockentity.SieveBlockEntity;
+import com.itmecasey.primamateria.item.HammerItem;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +21,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -33,6 +38,10 @@ import net.minecraft.world.level.material.MapColor;
  */
 public final class ModContent {
     public static final String MODID = Ids.MODID;
+
+    /** The tool material behind each hammer tier (mining speed and attack bonus); durability comes from {@link Ids#HAMMER_DURABILITY}. */
+    private static final ToolMaterial[] HAMMER_MATERIALS = {ToolMaterial.WOOD, ToolMaterial.STONE, ToolMaterial.COPPER, ToolMaterial.IRON,
+            ToolMaterial.DIAMOND, ToolMaterial.NETHERITE};
 
     /** Blocks by id path, in {@link Ids#BLOCKS} order. */
     public static final Map<String, Block> BLOCKS = new LinkedHashMap<>();
@@ -61,6 +70,9 @@ public final class ModContent {
     /** The block entity type of both barrels. */
     public static final BlockEntityType<BarrelBlockEntity> BARREL_BE = new BlockEntityType<>(BarrelBlockEntity::new,
             Set.of(block(Ids.WOODEN_BARREL), block(Ids.CLAY_BARREL)));
+    /** The auto hammer's block entity type. */
+    public static final BlockEntityType<AutoHammerBlockEntity> AUTO_HAMMER_BE =
+            new BlockEntityType<>(AutoHammerBlockEntity::new, Set.of(block(Ids.AUTO_HAMMER)));
 
     private ModContent() {
     }
@@ -88,13 +100,18 @@ public final class ModContent {
         if (name.equals(Ids.WOODEN_BARREL) || name.equals(Ids.CLAY_BARREL)) {
             return new BarrelBlock(props, name.equals(Ids.CLAY_BARREL));
         }
+        if (name.equals(Ids.AUTO_HAMMER)) {
+            return new AutoHammerBlock(props);
+        }
         return new Block(props);
     }
 
     private static Item makeItem(String name, Item.Properties props) {
         int hammer = Ids.HAMMERS.indexOf(name);
         if (hammer >= 0) {
-            return new Item(props.stacksTo(1).durability(Ids.HAMMER_DURABILITY.get(hammer)));
+            ToolMaterial material = HAMMER_MATERIALS[hammer];
+            return new HammerItem(material.applyToolProperties(props, HammerItem.MINEABLE, 3.0F + material.attackDamageBonus(), -3.2F, 0.0F)
+                    .durability(Ids.HAMMER_DURABILITY.get(hammer)), hammer + 1);
         }
         if (Ids.MESHES.contains(name) || name.equals(Ids.BRINE_BUCKET)) {
             return new Item(props.stacksTo(1));
@@ -139,6 +156,7 @@ public final class ModContent {
     public static void registerBlockEntities(BiConsumer<String, BlockEntityType<?>> out) {
         out.accept(Ids.SIEVE, SIEVE_BE);
         out.accept("barrel", BARREL_BE);
+        out.accept(Ids.AUTO_HAMMER, AUTO_HAMMER_BE);
     }
 
     public static void registerSounds(BiConsumer<String, SoundEvent> out) {

@@ -1,0 +1,10 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:netherrack",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "primamateria:scoria"
+    }
+  ]
+}

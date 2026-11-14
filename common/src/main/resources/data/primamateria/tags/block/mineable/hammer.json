@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:leaves",
+    "minecraft:stone",
+    "minecraft:cobblestone",
+    "minecraft:gravel",
+    "minecraft:sand",
+    "minecraft:red_sand",
+    "minecraft:sandstone",
+    "minecraft:red_sandstone",
+    "minecraft:smooth_sandstone",
+    "minecraft:netherrack",
+    "minecraft:end_stone",
+    "minecraft:deepslate",
+    "minecraft:cobbled_deepslate",
+    "minecraft:dirt",
+    "minecraft:soul_sand",
+    "primamateria:stone_meal",
+    "primamateria:scoria",
+    "primamateria:pale_sand"
+  ]
+}

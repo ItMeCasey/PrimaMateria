@@ -71,6 +71,7 @@ public final class SelfTest {
             settings();
             SieveSelfTest.run(server, server.overworld());
             BarrelSelfTest.run(server, server.overworld());
+            HammerSelfTest.run(server, server.overworld());
             // each feature adds one line here: FeatureSelfTest.run(server, server.overworld());
             failures += IntegrationCheck.run(server);
             WorldSelfTest.run(server, server.overworld());

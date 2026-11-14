@@ -7,9 +7,13 @@ import com.itmecasey.primamateria.PrimaMateria;
 import com.itmecasey.primamateria.data.PrimaReload;
 import com.itmecasey.primamateria.recipe.PrimaRecipes;
 import com.itmecasey.primamateria.world.StartIslandPlacer;
+import com.itmecasey.primamateria.hammer.HammerLogic;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -24,6 +28,10 @@ public final class ForgePrimaMateria {
         ForgeClient.install(context);
         AddReloadListenerEvent.BUS.addListener((AddReloadListenerEvent e) -> e.addListener(new PrimaReload()));
         ServerStartedEvent.BUS.addListener((ServerStartedEvent e) -> StartIslandPlacer.onServerStarted(e.getServer()));
+        // A hammer crushes the block it breaks: HammerLogic does the work and the original break is canceled (true cancels).
+        BlockEvent.BreakEvent.BUS.addListener((BlockEvent.BreakEvent e) ->
+                e.getPlayer() instanceof ServerPlayer player && e.getLevel() instanceof ServerLevel level
+                        && HammerLogic.onBreak(player, level, e.getPos(), e.getState()));
         Dev.call("com.itmecasey.primamateria.forge.dev.ForgeDev", "install", context);
     }
 

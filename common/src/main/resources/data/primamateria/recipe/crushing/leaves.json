@@ -1,0 +1,13 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#minecraft:leaves",
+  "results": [
+    {
+      "item": "primamateria:plant_fiber"
+    },
+    {
+      "item": "primamateria:plant_fiber",
+      "chance": 0.35
+    }
+  ]
+}
