@@ -61,5 +61,33 @@
       "primamateria:drive/tick_2",
       "primamateria:drive/tick_3"
     ]
+  },
+  "auto_hammer.strike": {
+    "sounds": [
+      "primamateria:auto_hammer/strike_1",
+      "primamateria:auto_hammer/strike_2",
+      "primamateria:auto_hammer/strike_3"
+    ]
+  },
+  "crucible.pour": {
+    "sounds": [
+      "primamateria:crucible/pour_1",
+      "primamateria:crucible/pour_2",
+      "primamateria:crucible/pour_3"
+    ]
+  },
+  "casting_tray.cool": {
+    "sounds": [
+      "primamateria:casting_tray/cool_1",
+      "primamateria:casting_tray/cool_2",
+      "primamateria:casting_tray/cool_3"
+    ]
+  },
+  "barrel.finish": {
+    "sounds": [
+      "primamateria:barrel/finish_1",
+      "primamateria:barrel/finish_2",
+      "primamateria:barrel/finish_3"
+    ]
   }
 }

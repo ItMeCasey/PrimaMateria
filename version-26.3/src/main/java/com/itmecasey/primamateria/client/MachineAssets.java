@@ -15,7 +15,7 @@ final class MachineAssets {
     static final Identifier IRON = file("minecraft", "block/iron_block");
     static final Identifier WOOD = file("minecraft", "block/oak_planks");
     static final Identifier AMETHYST = file("minecraft", "block/amethyst_block");
-    static final Identifier CRYSTAL_FALLBACK = file("minecraft", "block/amethyst_cluster");
+    static final Identifier CRYSTAL_FALLBACK = file("primamateria", "block/crystal_quartz");
 
     private static final Map<String, Identifier> FLUIDS = new HashMap<>();
     private static final Map<String, Identifier> CRYSTALS = new HashMap<>();

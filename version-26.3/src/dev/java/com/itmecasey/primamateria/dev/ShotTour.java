@@ -2,7 +2,6 @@ package com.itmecasey.primamateria.dev;
 
 import com.itmecasey.primamateria.Dev;
 import com.itmecasey.primamateria.Settings;
-import com.itmecasey.primamateria.blockentity.SievePreviewBlockEntity;
 import com.itmecasey.primamateria.view.DriveKind;
 import com.itmecasey.primamateria.view.SieveView;
 import java.io.IOException;
@@ -155,10 +154,6 @@ public final class ShotTour {
         return "primamateria:block/mesh_" + TIERS[tier];
     }
 
-    private static SievePreviewBlockEntity be(BlockPos pos) {
-        return Minecraft.getInstance().level.getBlockEntity(pos) instanceof SievePreviewBlockEntity s ? s : null;
-    }
-
     private static void place(BlockPos pos, int slot, boolean moving) {
         server("setblock " + pos.getX() + " " + pos.getY() + " " + pos.getZ() + " primamateria:sieve[mesh=" + slot + ",moving=" + moving + "]");
     }
@@ -168,27 +163,40 @@ public final class ShotTour {
     }
 
     private static void sift(BlockPos pos, int tier, DriveKind kind, int load, int shakes, String block) {
-        SievePreviewBlockEntity s = be(pos);
-        if (s == null) {
-            throw new IllegalStateException("no sieve at " + pos);
-        }
-        s.startSift(meshId(tier), meshTexture(tier), block, load, kind, shakes, pos.asLong(), FINDS);
+        long start = Minecraft.getInstance().level.getGameTime();
+        int ticksPerShake = switch (kind) {
+            case WINDUP -> 8;
+            case FURNACE -> 4;
+            case POWERED -> 2;
+            default -> 6;
+        };
+        long seed = pos.asLong();
+        SieveView first = new SieveView(meshId(tier), meshTexture(tier), block, load, 0F, 0, 0L, kind, false, seed, FINDS);
+        com.itmecasey.primamateria.client.DevOverrides.put(pos, new java.util.function.Supplier<Object>() {
+            private int last = -1;
+            private SieveView view = first;
+
+            @Override
+            public Object get() {
+                long elapsed = Minecraft.getInstance().level.getGameTime() - start - 6;
+                int sh = elapsed < 0 ? 0 : (int) (elapsed / ticksPerShake) + 1;
+                if (sh != last) {
+                    last = sh;
+                    view = sh >= shakes ? SieveView.EMPTY : new SieveView(meshId(tier), meshTexture(tier), block, load,
+                            Math.min(1F, sh / (float) shakes), sh, start + 6 + (long) (sh - 1) * ticksPerShake, kind, false, seed, FINDS);
+                }
+                return view;
+            }
+        });
     }
 
     private static void show(int x, int y, Object view) {
-        if (Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, 10)) instanceof com.itmecasey.primamateria.blockentity.MachinePreviewBlockEntity m) {
-            m.show(view);
-        } else {
-            throw new IllegalStateException("no machine at " + x);
-        }
+        com.itmecasey.primamateria.client.DevOverrides.put(new BlockPos(x, y, 10), () -> view);
     }
 
     private static void fixed(BlockPos pos, int tier, String block, int load, float progress, int shakes) {
-        SievePreviewBlockEntity s = be(pos);
-        if (s == null) {
-            throw new IllegalStateException("no sieve at " + pos);
-        }
-        s.show(new SieveView(meshId(tier), meshTexture(tier), block, load, progress, shakes, 0L, DriveKind.HAND, false, 7L, FINDS));
+        SieveView v = new SieveView(meshId(tier), meshTexture(tier), block, load, progress, shakes, 0L, DriveKind.HAND, false, 7L, FINDS);
+        com.itmecasey.primamateria.client.DevOverrides.put(pos, () -> v);
     }
 
     private static void look(BlockPos p, double side, double height, double back) {
@@ -285,7 +293,7 @@ public final class ShotTour {
                 "windup_drive", "furnace_drive", "powered_drive", "auto_hammer"};
         then(4, () -> {
             for (int i = 0; i < machines.length; i++) {
-                server("setblock " + (-12 + i * 2) + " " + y + " 10 primamateria:" + machines[i] + "[facing=north]");
+                server("setblock " + (-12 + i * 2) + " " + y + " 10 primamateria:" + machines[i] + (machines[i].contains("drive") || machines[i].contains("tray") ? "[facing=north]" : ""));
             }
         });
         then(12, () -> {
@@ -297,8 +305,9 @@ public final class ShotTour {
             show(-8, y, new com.itmecasey.primamateria.view.BarrelView(false, com.itmecasey.primamateria.view.BarrelView.Contents.FLUID, "primamateria:brine", 800,
                     0x45979C, com.itmecasey.primamateria.view.BarrelView.Stage.GROWING, 0.5F, "", "", List.of(
                     new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.9F, 0),
-                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.5F, 1),
-                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.2F, 3))));
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_emerald", 0.7F, 1),
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_amethyst", 0.8F, 2),
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_lapis", 0.6F, 3))));
             show(-6, y, new com.itmecasey.primamateria.view.BarrelView(true, com.itmecasey.primamateria.view.BarrelView.Contents.FLUID, "minecraft:lava", 600,
                     0xFFFFFF, com.itmecasey.primamateria.view.BarrelView.Stage.MIXING, 0.4F, "minecraft:cobblestone", "", List.of()));
             show(-4, y, new com.itmecasey.primamateria.view.CrucibleView("primamateria:molten_iron", 2600, 0xD8742A, 12, 2, "primamateria:iron_dust", 3, 8));
@@ -311,8 +320,12 @@ public final class ShotTour {
         });
         then(2, () -> moveTo(new Vec3(-9.0, y + 3.3, 7.6), new Vec3(-9.0, y + 0.8, 10.5)));
         shoot("machines_barrels", 30);
+        then(2, () -> moveTo(new Vec3(-8.0, y + 3.2, 9.0), new Vec3(-8.0, y + 0.6, 10.5)));
+        shoot("machines_crystals", 10);
         then(2, () -> moveTo(new Vec3(-2.0, y + 3.3, 7.6), new Vec3(-2.0, y + 0.8, 10.5)));
         shoot("machines_crucible_tray", 20);
+        shoot("machines_pour", 3);
+        shoot("machines_pour_b", 2);
         then(2, () -> moveTo(new Vec3(5.5, y + 2.6, 6.6), new Vec3(5.5, y + 0.6, 10.5)));
         shoot("machines_drives", 20);
         then(2, () -> moveTo(new Vec3(3.5, y + 3.2, 6.0), new Vec3(3.5, y + 0.6, 10.5)));

@@ -85,6 +85,15 @@ def sprite(rows, primary, secondary=None):
     return img
 
 
+# The growing crystals: a faceted face, lit from the top left, one pattern of tall facets (quartz, lapis, diamond, emerald) and a
+# second one with shorter, tilted facets (amethyst, like the vanilla cluster). Placed by hand; the tones are the gem's own ramp.
+CRYSTAL_A = ["4533211445332114", "5543221455432214", "5543221455432214", "5444322155443221", "5444322155443221", "5544322155443221",
+             "5443321155433211", "5443321155433211", "5433221155433221", "5433221254332212", "4543322145433221", "4533221245332212",
+             "4533221244332212", "3533221243332112", "3422211132221111", "3322111032211110"]
+CRYSTAL_B = ["5443211254432112", "5544321155443211", "4554321144554321", "4455432114455432", "3445543211445543", "3344554322344554",
+             "2334455432233445", "2233445543223344", "1223344554122334", "1122334455112233", "5112233445511223", "5511223344551122",
+             "4551122334455112", "4455112233445511", "3445511223344551", "3344551122334455"]
+
 # ------------------------------------------------------------------ item pixel maps
 
 DUST = ["................", "................", "................", ".......11.......", "......1541......", ".....145431.....",
@@ -258,6 +267,8 @@ def build():
     out[i + "salt_dust"] = sprite(DUST, R["salt"])
     for name in ("quartz", "amethyst", "lapis", "diamond", "emerald"):
         out[i + name + "_seed"] = sprite(SEED, R[name])
+    for name in ("quartz", "amethyst", "lapis", "diamond", "emerald"):
+        out[b + "crystal_" + name] = sprite(CRYSTAL_B if name == "amethyst" else CRYSTAL_A, R[name])
     out[i + "raw_crucible"] = sprite(RAW_CRUCIBLE, R["clay"])
     out[i + "raw_casting_tray"] = sprite(RAW_TRAY, R["clay"])
     out[i + "raw_clay_barrel"] = sprite(RAW_BARREL, R["clay"])
@@ -341,6 +352,32 @@ def review_sheet(out, target, vanilla):
     sheet.save(target)
 
 
+def crystal_review(out, target, vanilla):
+    """The five crystal textures (top row) over the vanilla gems they were sampled from (bottom row), each labeled."""
+    from PIL import ImageDraw, ImageFont
+    names = ["quartz", "amethyst", "lapis", "diamond", "emerald"]
+    vanilla_names = ["quartz", "amethyst_shard", "lapis_lazuli", "diamond", "emerald"]
+    scale, cw = 8, 16 * 8 + 40
+    try:
+        font = ImageFont.truetype("arial.ttf", 14)
+    except OSError:
+        font = ImageFont.load_default()
+    sheet = Image.new("RGBA", (5 * cw + 20, 2 * (16 * scale + 50) + 50), (198, 198, 198, 255))
+    d = ImageDraw.Draw(sheet)
+    d.text((12, 8), "Top: Prima Materia crystal textures (block/crystal_*.png).   Bottom: the real Minecraft gems they are sampled from.", fill=(30, 30, 30, 255), font=font)
+    for n, (ours, theirs) in enumerate(zip(names, vanilla_names)):
+        for row, (img, label, dark) in enumerate(((out["block/crystal_" + ours], "crystal_" + ours, False),
+                                                   (Image.open(Path(vanilla) / "item" / (theirs + ".png")) if vanilla else None, "MC: " + theirs, True))):
+            if img is None:
+                continue
+            x, y = 16 + n * cw, 40 + row * (16 * scale + 50)
+            sheet.paste(Image.new("RGBA", (16 * scale + 8, 16 * scale + 8), (104, 104, 120, 255) if dark else (139, 139, 139, 255)), (x - 4, y - 4))
+            big = img.convert("RGBA").crop((0, 0, 16, 16)).resize((16 * scale, 16 * scale), Image.NEAREST)
+            sheet.paste(big, (x, y), big)
+            d.text((x, y + 16 * scale + 10), label, fill=(70, 70, 100, 255) if dark else (30, 30, 30, 255), font=font)
+    sheet.save(target)
+
+
 def main():
     out = build()
     for name, img in out.items():
@@ -348,6 +385,9 @@ def main():
         path.parent.mkdir(parents=True, exist_ok=True)
         img.save(path)
     print(f"textures: {len(out)} written")
+    if "--crystal-review" in sys.argv:
+        vanilla = sys.argv[sys.argv.index("--vanilla") + 1] if "--vanilla" in sys.argv else None
+        crystal_review(out, sys.argv[sys.argv.index("--crystal-review") + 1], vanilla)
     if "--sheet" in sys.argv:
         vanilla = sys.argv[sys.argv.index("--vanilla") + 1] if "--vanilla" in sys.argv else None
         review_sheet(out, sys.argv[sys.argv.index("--sheet") + 1], vanilla)

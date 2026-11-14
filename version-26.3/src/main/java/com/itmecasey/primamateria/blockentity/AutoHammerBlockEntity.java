@@ -131,7 +131,7 @@ public class AutoHammerBlockEntity extends BlockEntity implements com.itmecasey.
         }
         String finished = state.stroke(now, Settings.getInt("auto_hammer.strokes_per_block"));
         setMoving(true);
-        serverLevel.playSound(null, worldPosition, SoundEvents.STONE_HIT, SoundSource.BLOCKS, 0.5F, 0.8F + serverLevel.getRandom().nextFloat() * 0.3F);
+        com.itmecasey.primamateria.ModSounds.play(serverLevel, worldPosition, "auto_hammer.strike", 0.6F, 1.0F);
         if (finished != null) {
             List<Drop> drops = HammerLogic.crush(serverLevel, worldPosition, Transfer.stackOf(finished, 1), Transfer.itemId(hammer),
                     HammerItem.tierOf(hammer), true, null);
