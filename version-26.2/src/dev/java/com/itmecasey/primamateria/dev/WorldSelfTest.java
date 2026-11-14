@@ -40,6 +40,16 @@ final class WorldSelfTest {
                 voidWorld ? "void preset world" : "flat test world");
 
         BlockPos c = SelfTest.area(level, 8);
+        // the test world is kept between runs: clear the three test spots (and the margin around them) first
+        for (BlockPos spot : new BlockPos[] {c, c.offset(20, 0, 0), c.offset(0, 0, 20)}) {
+            for (int dx = -4; dx <= 6; dx++) {
+                for (int dz = -4; dz <= 6; dz++) {
+                    for (int dy = -4; dy <= 9; dy++) {
+                        level.setBlockAndUpdate(spot.offset(dx, dy, dz), Blocks.AIR.defaultBlockState());
+                    }
+                }
+            }
+        }
         LevelData.RespawnData spawnBefore = level.getRespawnData();
         IslandData fresh = new IslandData();
         SelfTest.verdict("never_places_nothing", !StartIslandPlacer.apply(level, StartMode.NEVER, true, fresh, c, true)
