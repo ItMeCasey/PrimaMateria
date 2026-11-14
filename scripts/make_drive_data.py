@@ -54,10 +54,11 @@ def main():
     variants = facing_variants(PM + "block/furnace_drive", ",lit=false")
     variants.update(facing_variants(PM + "block/furnace_drive_lit", ",lit=true"))
     write(ASSETS / "blockstates/furnace_drive.json", {"variants": variants})
-    write(ASSETS / "models/block/furnace_drive_lit.json", {
-        "parent": "minecraft:block/orientable",
-        "textures": {"top": MC + "block/blast_furnace_top", "front": MC + "block/blast_furnace_front_on",
-                     "side": MC + "block/blast_furnace_side"}})
+    # the lit model is the unlit machine model with only the firebox face swapped to the glowing texture (same shape, same faces)
+    lit = json.loads((ASSETS / "models/block/furnace_drive.json").read_text(encoding="utf-8"))
+    lit["textures"]["firebox"] = MC + "block/blast_furnace_front_on"
+    lit["elements"][4]["faces"]["north"]["texture"] = "#firebox"
+    write(ASSETS / "models/block/furnace_drive_lit.json", lit)
     print("drive data written")
 
 

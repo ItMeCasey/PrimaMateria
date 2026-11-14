@@ -198,12 +198,36 @@ def check_lang():
             fail(f"lang {key}: not a plain name: {value!r}")
 
 
+def check_state_models_share_geometry():
+    """The models of one blockstate (lit and unlit, charge levels) must have the same elements; only textures may differ."""
+    def boxes(model_id):
+        path = ASSETS / "models" / (model_id.split(":")[1].split("/", 1)[1] + ".json")
+        d = load(path) if path.exists() else None
+        if not isinstance(d, dict) or "elements" not in d:
+            return None
+        return [(tuple(e["from"]), tuple(e["to"]), tuple(sorted(e["faces"]))) for e in d["elements"]]
+    for p in (ASSETS / "blockstates").glob("*.json"):
+        d = load(p)
+        models = set()
+        for v in (d or {}).get("variants", {}).values():
+            for x in (v if isinstance(v, list) else [v]):
+                if x.get("model", "").startswith("primamateria:block/"):
+                    models.add(x["model"])
+        shapes = {m: boxes(m) for m in models}
+        known = {m: s for m, s in shapes.items() if s is not None}
+        if len({tuple(s) for s in known.values()}) > 1:
+            fail(f"blockstate {p.name}: its models do not share one geometry: {sorted(known)}")
+        if known and len(known) != len(shapes):
+            fail(f"blockstate {p.name}: some models are not custom element models while others are: {sorted(shapes)}")
+
+
 def main():
     n = check_json_parses()
     r = check_recipes()
     check_assets_per_id()
     check_models()
     check_texture_sizes()
+    check_state_models_share_geometry()
     check_lang()
     if errors:
         print(f"check_data: {len(errors)} problems")
