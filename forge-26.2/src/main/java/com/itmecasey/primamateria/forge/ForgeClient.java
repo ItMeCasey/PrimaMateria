@@ -16,11 +16,16 @@ final class ForgeClient {
     static void install(FMLJavaModLoadingContext context) {
         EntityRenderersEvent.RegisterRenderers.BUS.addListener(ForgeClient::renderers);
         RegisterParticleProvidersEvent.BUS.addListener(ForgeClient::particles);
+        net.minecraftforge.client.event.RegisterColorHandlersEvent.Block.BUS.addListener(ForgeClient::tints);
     }
 
     private static void renderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModAnim.SIEVE_PREVIEW, SieveRenderer<SievePreviewBlockEntity>::new);
         event.registerBlockEntityRenderer(ModAnim.MACHINE_PREVIEW, com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.MachinePreviewBlockEntity>::new);
+    }
+
+    private static void tints(net.minecraftforge.client.event.RegisterColorHandlersEvent.Block event) {
+        event.register(java.util.List.of(new com.itmecasey.primamateria.client.FillTint()), com.itmecasey.primamateria.ModContent.block(com.itmecasey.primamateria.Ids.SIEVE));
     }
 
     private static void particles(RegisterParticleProvidersEvent event) {
