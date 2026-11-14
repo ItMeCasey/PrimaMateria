@@ -341,3 +341,18 @@ Delivers: wiki, listing text, CI files. The CurseForge description describes the
 3. Integration (one builder): B's real models into C's renderers, `sync_versions.py` to 26.3 with its patches, full self test on four builds, client tour on one Forge and one NeoForge build.
 4. Casey plays; balance pass on the data files only.
 5. The PM pushes, runs CI, creates the repository and the CurseForge project, tags `2026.11.1` and releases. Builders commit locally and never push.
+
+## 8. Requests from workstream C (animation renderer, models)
+
+Written 2026-11-13 for the PM and workstream A. Nothing frozen was changed.
+
+1. **Sieve block entity.** Implement `com.itmecasey.primamateria.anim.SieveViewSource` (`sieveView()`, `renderCache()`, `renderCache(Object)`) on the real sieve block entity, return the synced `SieveView` from a field (no allocation), and register the renderer for that block entity type in `NeoForgeClient` / `ForgeClient` (`SieveRenderer<YourBlockEntity>::new`). Until then `SievePreviewBlock` / `SievePreviewBlockEntity` (ModContent's sieve) and `ModAnim` carry the renderer; delete them when A's block lands, and remove the one `makeBlock` line in `ModContent`.
+2. **`FILL` is rounded down.** Set `fill = floor(load * (1 - progress))` (0 to 4), so the still layer in the block model is always hidden inside the renderer's layer. The block model draws the tray, mesh and fill only while `moving=false`.
+3. **`moving`.** Set it when shaking starts and clear it 20 ticks after the last shake (as `SIFTING.md` says). With `client.animations=off` the renderer still draws the tray, mesh and a flat layer at rest while `moving=true`, because the block model has only the frame then (a small change from "does nothing").
+4. **Sounds are played by the client renderer** (from `SieveView` changes, with volume by progress and a per-tick cap). A must not also play sieve sounds on the server. Drive sounds (`drive.crank`, `drive.tick`) have files and `sounds.json` entries but no trigger yet.
+5. **`SieveView` timing.** `lastShakeTick` must be the game time of the shake and `shakeCount` must grow by one per shake; the clip falls back to idle 10 ticks after the last shake, so a machine that shakes more slowly than every 10 ticks needs the view to stay current.
+6. **Settings.** Added `client.animation_distance` (48) and `client.sounds_per_tick` (4) to `Settings.java`.
+7. **Gradle.** Added `testImplementation "com.google.code.gson:gson:2.11.0"` to the four `build.gradle` files (the animation loader tests need Gson).
+8. **Particles** are registered in `ModAnim` and wired in the loader entry and client classes (`registerParticles`, `registerBlockEntityTypes` calls were added to the two register methods).
+9. **Blockstate and models.** `blockstates/sieve.json` is now a multipart file written by `scripts/export_anims.py`; the barrel, crucible, auto hammer and powered drive models come from `scripts/make_models.py` (the `.bbmodel` sources are in `branding/models`). Re-run `make_models.py` then `export_anims.py` after editing the spec; edit in Blockbench and re-export by hand otherwise.
+10. **Not done (outside the delivered scope):** renderers for barrel, crucible, tray and drives; the color handler that tints the `fill` models (they draw white-gray until it exists); the blockstates for the powered drive's `charge` and `facing` (the segment models `powered_drive_charge_1..5` are exported, the multipart waits for A's block to have those properties).

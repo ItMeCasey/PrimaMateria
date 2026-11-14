@@ -1,1 +1,65 @@
-{}
+{
+  "sieve.load": {
+    "sounds": [
+      "primamateria:sieve/load_1",
+      "primamateria:sieve/load_2",
+      "primamateria:sieve/load_3"
+    ]
+  },
+  "sieve.shake.coarse": {
+    "sounds": [
+      "primamateria:sieve/shake_coarse_1",
+      "primamateria:sieve/shake_coarse_2",
+      "primamateria:sieve/shake_coarse_3"
+    ]
+  },
+  "sieve.shake.fine": {
+    "sounds": [
+      "primamateria:sieve/shake_fine_1",
+      "primamateria:sieve/shake_fine_2",
+      "primamateria:sieve/shake_fine_3"
+    ]
+  },
+  "sieve.shake.soil": {
+    "sounds": [
+      "primamateria:sieve/shake_soil_1",
+      "primamateria:sieve/shake_soil_2",
+      "primamateria:sieve/shake_soil_3"
+    ]
+  },
+  "sieve.reveal": {
+    "sounds": [
+      "primamateria:sieve/reveal_1",
+      "primamateria:sieve/reveal_2",
+      "primamateria:sieve/reveal_3"
+    ]
+  },
+  "sieve.finish": {
+    "sounds": [
+      "primamateria:sieve/finish_1",
+      "primamateria:sieve/finish_2",
+      "primamateria:sieve/finish_3"
+    ]
+  },
+  "sieve.mesh": {
+    "sounds": [
+      "primamateria:sieve/mesh_1",
+      "primamateria:sieve/mesh_2",
+      "primamateria:sieve/mesh_3"
+    ]
+  },
+  "drive.crank": {
+    "sounds": [
+      "primamateria:drive/crank_1",
+      "primamateria:drive/crank_2",
+      "primamateria:drive/crank_3"
+    ]
+  },
+  "drive.tick": {
+    "sounds": [
+      "primamateria:drive/tick_1",
+      "primamateria:drive/tick_2",
+      "primamateria:drive/tick_3"
+    ]
+  }
+}

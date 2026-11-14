@@ -69,6 +69,10 @@ public final class ModContent {
     }
 
     private static Block makeBlock(String name, BlockBehaviour.Properties props) {
+        if (name.equals(Ids.SIEVE)) {
+            // workstream C: the sieve shell the renderer is bound to; workstream A's real SieveBlock replaces this line
+            return new com.itmecasey.primamateria.block.SievePreviewBlock(props);
+        }
         return new Block(props);
     }
 

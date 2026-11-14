@@ -46,6 +46,8 @@ public final class Settings {
         def("start.island", "preset_only", "When the start island is placed: preset_only (Void Island worlds), always, never.");
         def("client.animations", "full", "Animation level: full, reduced or off. Client side.");
         def("client.particles", true, "Show sifting dust and falling fines. Client side.");
+        def("client.animation_distance", 48, "Blocks within which moving sieves are animated; half of it is the full detail range. Client side.");
+        def("client.sounds_per_tick", 4, "Most sieve shake sounds played in one tick. Client side.");
     }
 
     /** Every setting key, in file order. */

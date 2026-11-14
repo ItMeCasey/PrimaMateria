@@ -1,12 +1,31 @@
 package com.itmecasey.primamateria.neoforge;
 
+import com.itmecasey.primamateria.ModAnim;
 import com.itmecasey.primamateria.PrimaMateria;
+import com.itmecasey.primamateria.blockentity.SievePreviewBlockEntity;
+import com.itmecasey.primamateria.client.SieveRenderer;
+import com.itmecasey.primamateria.client.SiftParticles;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
-/** Client-only setup. Never loaded on a dedicated server. Workstream C adds renderers, particles and color handlers here. */
+/** Client-only setup: the sieve renderer and the sifting particles. Never loaded on a dedicated server. */
 @EventBusSubscriber(modid = PrimaMateria.MODID, value = Dist.CLIENT)
 public final class NeoForgeClient {
     private NeoForgeClient() {
+    }
+
+    @SubscribeEvent
+    public static void renderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModAnim.SIEVE_PREVIEW, SieveRenderer<SievePreviewBlockEntity>::new);
+    }
+
+    @SubscribeEvent
+    public static void particles(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ModAnim.particle("fines"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.fines(level, x, y, z, sprites));
+        event.registerSpriteSet(ModAnim.particle("pour"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.fines(level, x, y, z, sprites));
+        event.registerSpriteSet(ModAnim.particle("sift_dust"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.dust(level, x, y, z, sprites));
     }
 }

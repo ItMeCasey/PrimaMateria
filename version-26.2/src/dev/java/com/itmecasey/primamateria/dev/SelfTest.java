@@ -39,6 +39,7 @@ public final class SelfTest {
             registered();
             placeable(server.overworld());
             settings();
+            AnimChecks.run(server.overworld(), SelfTest::verdict);
         } catch (RuntimeException e) {
             LOGGER.error("SELFTEST error", e);
             verdict("selftest_ran_clean", false, e.toString());
@@ -47,7 +48,7 @@ public final class SelfTest {
         return failures;
     }
 
-    private static void verdict(String name, boolean ok, String detail) {
+    static void verdict(String name, boolean ok, String detail) {
         if (ok) {
             LOGGER.info("SELFTEST PASS {} ({})", name, detail);
         } else {

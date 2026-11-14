@@ -48,6 +48,7 @@ public final class SieveAnimator {
     private boolean oneShot;
     private boolean sampledOnce;
     private int frameCount;
+    private boolean restReady;
 
     // layer: [height in quarters, velocity]
     private final float[] layer = new float[2];
@@ -188,11 +189,15 @@ public final class SieveAnimator {
         }
 
         if (lod == LOD_FAR) {
-            System.arraycopy(model.restPose(), 0, pose, 0, pose.length);
-            model.computeMatrices(pose, mats);
+            if (!restReady) {
+                System.arraycopy(model.restPose(), 0, pose, 0, pose.length);
+                model.computeMatrices(pose, mats);
+                restReady = true;
+            }
             current = base;
             return;
         }
+        restReady = false;
         pickClip(view, gameTime);
         frameCount++;
         if (lod == LOD_MID && (frameCount & 1) == 1 && sampledOnce) {
