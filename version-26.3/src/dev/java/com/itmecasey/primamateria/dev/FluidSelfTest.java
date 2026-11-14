@@ -206,6 +206,18 @@ public final class FluidSelfTest {
                 }
             }
             SelfTest.verdict("fluid_sets_flammables_alight_only_when_molten_" + id, (fires > 0) == molten, fires + " fires");
+
+            // an animal standing in it: lava's tag makes it "in lava" and sets it alight, water's tag makes brine swimmable and harmless
+            level.setBlock(pos, ModFluids.block(id).defaultBlockState(), 2);
+            SelfTest.verdict("fluid_belongs_to_its_tag_" + id, ModFluids.source(id).defaultFluidState().is(net.minecraft.tags.FluidTags.LAVA) == molten
+                    && ModFluids.flowing(id).defaultFluidState().is(net.minecraft.tags.FluidTags.LAVA) == molten
+                    && ModFluids.source(id).defaultFluidState().is(net.minecraft.tags.FluidTags.WATER) == !molten, molten ? "lava tag" : "water tag");
+            Probe ours = probe(level, pos, ModFluids.block(id).defaultBlockState());
+            Probe reference = probe(level, pos, (molten ? Blocks.LAVA : Blocks.WATER).defaultBlockState());
+            // NeoForge counts "in lava" only for lava's own fluid type, so that part is left out of the comparison
+            SelfTest.verdict("entity_in_the_fluid_feels_what_it_does_in_" + (molten ? "lava" : "water") + "_" + id,
+                    ours.water() == reference.water() && ours.fire() == reference.fire() && ours.fire() == molten,
+                    "ours " + ours + ", " + (molten ? "lava" : "water") + " " + reference);
             for (int dx = -2; dx <= 2; dx++) {
                 for (int dz = -2; dz <= 2; dz++) {
                     for (int dy = 0; dy <= 3; dy++) {
@@ -215,6 +227,26 @@ public final class FluidSelfTest {
             }
         }
         level.getGameRules().set(radius, oldRadius, level.getServer());
+    }
+
+    /** What an animal standing in a block feels after two ticks: in lava, in water, on fire. */
+    private record Probe(boolean lava, boolean water, boolean fire) {
+    }
+
+    private static Probe probe(ServerLevel level, BlockPos pos, BlockState state) {
+        level.setBlock(pos, state, 2);
+        Pig pig = net.minecraft.world.entity.EntityTypes.PIG.create(level, EntitySpawnReason.COMMAND);
+        if (pig == null) {
+            return new Probe(false, false, false);
+        }
+        pig.setPos(pos.getX() + 0.5, pos.getY() + 0.1, pos.getZ() + 0.5);
+        level.addFreshEntity(pig);
+        pig.tick();
+        pig.tick();
+        Probe probe = new Probe(pig.isInLava(), pig.isInWater(), pig.isOnFire());
+        pig.discard();
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+        return probe;
     }
 
     // ---- real buckets with the machines ----

@@ -62,7 +62,8 @@ final class FluidTour {
                 int tx = 40 + index * 3;
                 String tank = "primamateria:" + id;
                 ShotTour.then(2, () -> ShotTour.server("fill " + tx + " " + y + " 20 " + (tx + 6) + " " + (y + 6) + " 26 minecraft:stone_bricks",
-                        "fill " + (tx + 1) + " " + (y + 1) + " 21 " + (tx + 5) + " " + (y + 5) + " 25 " + tank));
+                        "fill " + (tx + 1) + " " + (y + 1) + " 21 " + (tx + 5) + " " + (y + 5) + " 25 " + tank,
+                        "fill " + tx + " " + (y + 6) + " 20 " + (tx + 6) + " " + (y + 6) + " 26 minecraft:air"));
                 ShotTour.then(6, () -> ShotTour.moveTo(new Vec3(tx + 3.5, y + 3.0, 23.5), new Vec3(tx + 3.5, y + 3.0, 26.5)));
                 ShotTour.shoot("fluids_" + id + "_inside", 30);
             }
