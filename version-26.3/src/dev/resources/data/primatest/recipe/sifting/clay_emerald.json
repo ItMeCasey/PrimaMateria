@@ -1,0 +1,10 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:clay",
+  "result": "minecraft:emerald",
+  "count": [
+    2,
+    3
+  ],
+  "chance": 1.0
+}

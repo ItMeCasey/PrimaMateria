@@ -1,0 +1,8 @@
+{
+  "type": "primamateria:sifting",
+  "input": "#minecraft:logs",
+  "result": "minecraft:diamond",
+  "chance": 1.0,
+  "mesh_min": 2,
+  "mesh_max": 2
+}

@@ -138,6 +138,8 @@ One composting recipe is active (the highest-priority datapack's). `time` is in 
   "result": "minecraft:iron_ingot", "time": 60 }
 ```
 
+**Adding a sifting material is only a recipe file.** A datapack (or KubeJS, or ModJS) adds a file under `data/<any namespace>/recipe/` of type `primamateria:sifting` with an input ingredient (an item, a `#tag` or a list), a result, a count, a chance and a mesh range (`mesh_min`, `mesh_max`). That is all: the sieve accepts the item, rolls the drops, shows the block it holds and hands the results out. No id, texture, tier or sound is written per material anywhere in code. What the sieve looks like while it works comes from the loaded block itself (the renderer reads the block's own texture and sound type), so a block from any mod looks right without any data from us. The self test proves it with a pack in another namespace (`data/primatest/recipe/sifting/` in the dev resources: an unlisted vanilla block, a tag input, a mesh range, a result naming a missing mod item that is skipped).
+
 Notes on how the sifting types behave (implemented):
 
 - `input` is a vanilla ingredient (an item, a `#tag`, or a list), tested against the item the player offers, so one file can cover every block in a tag. A sieve accepts an item when at least one sifting recipe matches it.

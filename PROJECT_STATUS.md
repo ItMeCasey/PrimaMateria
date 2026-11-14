@@ -100,6 +100,10 @@ Spend: none
 - [ ] Wiki pages on itmecasey.com (w:3)
 - [ ] README and CHANGELOG for 2026.11.1 (w:1)
 
+## After 2026.11.1
+- [ ] Real placeable fluids: brine and molten copper, iron and gold (fluid type, source, flowing fluid, block, bucket, client fluid model on both loaders and both versions) and fluid handlers on the barrels, the crucible and the casting tray, so other mods' tanks and pipes can move them (cut from the first release, w:5)
+- [ ] Our own recorded or synthesized sounds (the first release uses the vanilla block sounds) (w:2)
+
 ## Release and CI
 - [ ] build.yml, release.yml, changed-builds-only plan_matrix.py, issue templates (w:3)
 - [ ] GitHub repository, push, CI run (Project Manager) (w:2)

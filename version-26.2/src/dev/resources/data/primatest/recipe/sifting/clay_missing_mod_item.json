@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:clay",
+  "result": "fakemod:rare_gem",
+  "chance": 1.0
+}

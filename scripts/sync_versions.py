@@ -42,9 +42,19 @@ def copy_tree(name):
         shutil.copytree(src, dst)
 
 
+def copy_dev_resources():
+    src = SRC / "dev" / "resources"
+    dst = DST / "dev" / "resources"
+    if dst.exists():
+        shutil.rmtree(dst)
+    if src.exists():
+        shutil.copytree(src, dst)
+
+
 def main():
     copy_tree("main")
     copy_tree("dev")
+    copy_dev_resources()
     for patch in PATCHES:
         patch()
     print(f"version-26.3 synced from version-26.2 ({len(PATCHES)} patches)")

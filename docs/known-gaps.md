@@ -18,4 +18,4 @@ Our own BEI, SMWTI and ModJS have builds for all four targets.
 
 | Gap | Since | Plan |
 |---|---|---|
-| No gameplay yet: every block and item is a placeholder | 2026-11-13 (scaffold) | Workstreams A to E, see `ARCHITECTURE.md` |
+| **Molten metals and brine are not real fluids.** In 2026.11.1 they are internal fluids (an id and an amount) held by the barrels, the crucible and the casting tray and moved by bucket. They cannot be placed in the world, and other mods' pipes and tanks cannot move them (no fluid handler on our machines). Casey asked for real, storable fluids; this is not delivered in the first release. | 2026-11-13 (cut, see `DECISIONS_OVERNIGHT.md`) | First step of the next release: register four fluids with a fluid type, source, flowing fluid, block, bucket and client fluid model on both loaders, then expose the barrels, the crucible and the casting tray as fluid handlers |

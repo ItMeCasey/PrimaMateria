@@ -155,6 +155,31 @@ final class SieveSelfTest {
         sift(level, three[1]);
         com.itmecasey.primamateria.Settings.reset();
 
+        // a pack adds sifting materials with recipe files only: data/primatest/recipe/sifting/*.json in the dev resources
+        PrimaRecipes.Sifts clay = PrimaRecipes.siftsFor(level.recipeAccess(), new ItemStack(Items.CLAY_BALL));
+        PrimaRecipes.Sifts clayBlock = PrimaRecipes.siftsFor(level.recipeAccess(), new ItemStack(Items.CLAY));
+        SelfTest.verdict("pack_recipe_for_an_unlisted_block_is_found", clayBlock.drops().size() == 1 && clayBlock.residue().size() == 1
+                && clayBlock.drops().get(0).item().equals("minecraft:emerald") && clay.drops().isEmpty(),
+                clayBlock.drops().size() + " drops (the recipe naming a missing mod item is skipped), " + clayBlock.residue().size() + " residue");
+        BlockPos packPos = base.offset(0, 0, 20);
+        level.setBlockAndUpdate(packPos.below(), Blocks.AIR.defaultBlockState());
+        level.setBlockAndUpdate(packPos.below(), Blocks.CHEST.defaultBlockState());
+        SieveBlockEntity packSieve = placeSieve(level, packPos);
+        packSieve.state().setMesh("primamateria:copper_mesh", 2, 1.0);
+        SieveLogic.insert(level, packSieve, new ItemStack(Items.CLAY), player);
+        sift(level, packSieve);
+        Container packChest = HopperBlockEntity.getContainerAt(level, packPos.below());
+        int emeralds = count(packChest, Items.EMERALD);
+        SelfTest.verdict("pack_added_material_sifts_and_drops_with_no_code_change", emeralds >= 2 && emeralds <= 3 && count(packChest, Items.SAND) == 1,
+                emeralds + " emeralds, " + count(packChest, Items.SAND) + " sand");
+        SieveLogic.insert(level, packSieve, new ItemStack(Items.OAK_LOG), player);
+        sift(level, packSieve);
+        SelfTest.verdict("pack_recipe_by_item_tag_respects_the_mesh_range", count(packChest, Items.DIAMOND) == 1, count(packChest, Items.DIAMOND) + " diamond");
+        packSieve.state().setMesh("primamateria:iron_mesh", 3, 1.25);
+        SieveLogic.insert(level, packSieve, new ItemStack(Items.BIRCH_LOG), player);
+        sift(level, packSieve);
+        SelfTest.verdict("mesh_above_the_pack_range_gives_nothing", count(packChest, Items.DIAMOND) == 1, count(packChest, Items.DIAMOND) + " diamond");
+
         // taking the mesh back out with a sneaking empty hand
         BlockPos last = base.offset(0, 0, 14);
         SieveBlockEntity b = placeSieve(level, last);

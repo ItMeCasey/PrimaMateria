@@ -105,6 +105,7 @@ dependencies {
 // build and the release jars never contain them.
 if (project.hasProperty('devTools')) {
     sourceSets.main.java.srcDir '../version-26.3/src/dev/java'
+    sourceSets.main.resources.srcDir '../version-26.3/src/dev/resources'
     sourceSets.main.java.srcDir 'src/dev/java'
 }
 

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting_residue",
+  "input": "minecraft:clay",
+  "result": "minecraft:sand",
+  "chance": 1.0
+}
