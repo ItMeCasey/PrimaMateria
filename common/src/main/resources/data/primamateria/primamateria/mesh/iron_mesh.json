@@ -1,0 +1,7 @@
+{
+  "item": "primamateria:iron_mesh",
+  "tier": 3,
+  "speed": 1.25,
+  "texture": "primamateria:block/mesh_iron",
+  "slot": 3
+}

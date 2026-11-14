@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:soul_sand",
+  "result": "minecraft:gunpowder",
+  "chance": 0.08,
+  "mesh_min": 2
+}

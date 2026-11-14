@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:dirt",
+  "result": "minecraft:bamboo",
+  "chance": 0.04,
+  "mesh_min": 2
+}

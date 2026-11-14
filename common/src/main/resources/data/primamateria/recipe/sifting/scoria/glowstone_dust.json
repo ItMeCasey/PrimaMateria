@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:scoria",
+  "result": "minecraft:glowstone_dust",
+  "chance": 0.1,
+  "mesh_min": 2
+}

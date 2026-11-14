@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:scoria",
+  "result": "minecraft:quartz",
+  "chance": 0.18,
+  "count": [
+    1,
+    2
+  ],
+  "mesh_min": 2
+}

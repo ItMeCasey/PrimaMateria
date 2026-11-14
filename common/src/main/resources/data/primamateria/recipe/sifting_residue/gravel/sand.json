@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting_residue",
+  "input": "minecraft:gravel",
+  "result": "minecraft:sand",
+  "chance": 0.15
+}

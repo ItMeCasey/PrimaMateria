@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:soul_sand",
+  "result": "minecraft:wither_skeleton_skull",
+  "chance": 0.003,
+  "mesh_min": 5
+}

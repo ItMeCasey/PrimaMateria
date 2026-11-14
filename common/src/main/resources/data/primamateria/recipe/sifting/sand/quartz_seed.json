@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:sand",
+  "result": "primamateria:quartz_seed",
+  "chance": 0.06,
+  "mesh_min": 3
+}

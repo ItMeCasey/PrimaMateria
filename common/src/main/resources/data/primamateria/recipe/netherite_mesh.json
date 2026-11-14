@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "primamateria:diamond_mesh",
+    "minecraft:netherite_ingot"
+  ],
+  "result": {
+    "id": "primamateria:netherite_mesh",
+    "count": 1
+  }
+}

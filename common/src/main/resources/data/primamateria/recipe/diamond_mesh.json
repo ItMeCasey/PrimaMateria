@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SMS",
+    "MMM",
+    "SMS"
+  ],
+  "key": {
+    "S": "minecraft:stick",
+    "M": "minecraft:diamond"
+  },
+  "result": {
+    "id": "primamateria:diamond_mesh",
+    "count": 1
+  }
+}

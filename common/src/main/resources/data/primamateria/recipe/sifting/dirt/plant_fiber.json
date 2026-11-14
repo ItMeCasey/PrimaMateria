@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:dirt",
+  "result": "primamateria:plant_fiber",
+  "chance": 0.15
+}

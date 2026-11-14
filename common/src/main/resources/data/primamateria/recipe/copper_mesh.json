@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SMS",
+    "MMM",
+    "SMS"
+  ],
+  "key": {
+    "S": "minecraft:stick",
+    "M": "minecraft:copper_ingot"
+  },
+  "result": {
+    "id": "primamateria:copper_mesh",
+    "count": 1
+  }
+}

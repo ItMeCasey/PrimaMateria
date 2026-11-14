@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SMS",
+    "MMM",
+    "SMS"
+  ],
+  "key": {
+    "S": "minecraft:stick",
+    "M": "primamateria:plant_fiber"
+  },
+  "result": {
+    "id": "primamateria:cloth_mesh",
+    "count": 1
+  }
+}

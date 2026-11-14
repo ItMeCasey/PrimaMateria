@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:sand",
+  "result": "minecraft:cactus",
+  "chance": 0.04
+}

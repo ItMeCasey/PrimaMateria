@@ -1,0 +1,7 @@
+{
+  "item": "primamateria:copper_mesh",
+  "tier": 2,
+  "speed": 1.0,
+  "texture": "primamateria:block/mesh_copper",
+  "slot": 2
+}

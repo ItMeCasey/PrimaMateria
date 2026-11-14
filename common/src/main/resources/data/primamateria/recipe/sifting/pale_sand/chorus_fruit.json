@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:pale_sand",
+  "result": "minecraft:chorus_fruit",
+  "chance": 0.08,
+  "mesh_min": 4
+}

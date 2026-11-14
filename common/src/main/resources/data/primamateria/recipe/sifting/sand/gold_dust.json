@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:sand",
+  "result": "primamateria:gold_dust",
+  "chance": 0.08,
+  "mesh_min": 3
+}

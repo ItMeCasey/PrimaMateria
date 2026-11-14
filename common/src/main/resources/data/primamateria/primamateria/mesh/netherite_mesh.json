@@ -1,0 +1,7 @@
+{
+  "item": "primamateria:netherite_mesh",
+  "tier": 5,
+  "speed": 2.0,
+  "texture": "primamateria:block/mesh_netherite",
+  "slot": 5
+}

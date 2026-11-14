@@ -22,9 +22,9 @@ Spend: none
 
 ## Logic and Data
 - [x] Config file (config/primamateria.properties) with every key and default (w:2)
-- [ ] Data readers and reload listeners: mesh tiers, heat sources, compost values, synced to clients (w:3)
-- [ ] Sieve: mesh slot, one block at a time, hold-to-shake, drops rolled when the block goes in, residue, hopper in and out, comparator (w:5)
-- [ ] Linked sieves (sieve.link, sieve.link_radius): shake and refill together (w:3)
+- [~] Data readers and reload listeners: mesh tiers done (server side); heat sources and compost values not written; client sync not written (w:3)
+- [x] Sieve: mesh slot, one block at a time, hold-to-shake, drops rolled when the block goes in, residue, hopper in, comparator, drops to the container below or hopping to the player; unit tests and server self test on four builds (pipes and other mods' item handlers not yet; real-client feel not yet checked) (w:5)
+- [x] Linked sieves (sieve.link, sieve.link_radius): shake and refill together, proven in the server self test (w:3)
 - [ ] Hammers and crushing recipes (5 tiers, bonus yield) (w:3)
 - [ ] Barrel: dew and rain, composting, soaking, mixing, steeping, growing; wooden and clay versions (w:5)
 - [ ] Brine fluid and bucket (w:2)
@@ -35,7 +35,7 @@ Spend: none
 - [ ] Powered drive (FE) (w:3)
 - [ ] Auto hammer (w:3)
 - [ ] Nether and End chain: scoria, pale sand, soul sand sifting, netherite hammer and mesh (w:3)
-- [ ] Shipped recipes and drop tables for the first release (w:3)
+- [~] Shipped recipes and drop tables: all sifting tables, residue, five meshes and the sieve and mesh crafting recipes written by scripts/make_sifting_data.py; hammer, barrel, crucible and the rest not yet (w:3)
 - [ ] Void Island world preset and start island structure (w:3)
 
 ## Blocks, Models and Textures
@@ -82,6 +82,8 @@ Spend: none
 - [ ] Follow-up when a build appears (recheck with curseforge-lookup before every release): JEI, REI and Jade on Forge 26.2 and 26.3 (w:1)
 - [ ] Follow-up when a build appears: EMI client check on any 26.2 or 26.3 build (w:1)
 - [ ] Follow-up when a build appears: KubeJS bridge written against the KubeJS API and client-checked on any 26.2 or 26.3 build (w:1)
+
+- [ ] Compat data for other mods' metals and gems from ore-matrix/PRIMA_COMPAT_LISTS.md (tag-based sifting, crushing, melting and casting entries for 26.2 and 26.3) (w:3)
 
 ## Testing
 - [ ] Unit tests of the pure logic in all four modules (w:3)

@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:scoria",
+  "result": "primamateria:gold_dust",
+  "chance": 0.1,
+  "mesh_min": 3
+}

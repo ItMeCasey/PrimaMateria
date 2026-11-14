@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:scoria",
+  "result": "minecraft:nether_wart",
+  "chance": 0.04,
+  "mesh_min": 3
+}

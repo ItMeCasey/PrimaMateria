@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:soul_sand",
+  "result": "minecraft:slime_ball",
+  "chance": 0.05,
+  "mesh_min": 3
+}

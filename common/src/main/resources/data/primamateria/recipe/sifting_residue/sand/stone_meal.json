@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting_residue",
+  "input": "minecraft:sand",
+  "result": "primamateria:stone_meal",
+  "chance": 0.15
+}

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:dirt",
+  "result": "minecraft:beetroot_seeds",
+  "chance": 0.06
+}

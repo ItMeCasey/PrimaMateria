@@ -1,7 +1,10 @@
 package com.itmecasey.primamateria;
 
+import com.itmecasey.primamateria.block.SieveBlock;
+import com.itmecasey.primamateria.blockentity.SieveBlockEntity;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -14,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 
@@ -49,6 +53,9 @@ public final class ModContent {
         }
     }
 
+    /** The sieve's block entity type. Declared after the block map is filled. */
+    public static final BlockEntityType<SieveBlockEntity> SIEVE_BE = new BlockEntityType<>(SieveBlockEntity::new, Set.of(block(Ids.SIEVE)));
+
     private ModContent() {
     }
 
@@ -69,6 +76,9 @@ public final class ModContent {
     }
 
     private static Block makeBlock(String name, BlockBehaviour.Properties props) {
+        if (name.equals(Ids.SIEVE)) {
+            return new SieveBlock(props);
+        }
         return new Block(props);
     }
 
@@ -115,6 +125,10 @@ public final class ModContent {
 
     public static void registerItems(BiConsumer<String, Item> out) {
         ITEMS.forEach(out);
+    }
+
+    public static void registerBlockEntities(BiConsumer<String, BlockEntityType<?>> out) {
+        out.accept(Ids.SIEVE, SIEVE_BE);
     }
 
     public static void registerSounds(BiConsumer<String, SoundEvent> out) {

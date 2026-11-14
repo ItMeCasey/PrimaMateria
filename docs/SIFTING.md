@@ -12,7 +12,7 @@ One block, by hand, about 2.4 seconds. Linked sieves (`sieve.link`, DESIGN.md se
 |---|---|---|
 | Load | 0.25 s | The block lands in the tray: the material layer rises from nothing to its height with an ease-out and a small overshoot (it "plops"), the tray dips 0.5 px and comes back, a soft thud plays, 4 to 6 dust specks puff up from the surface. |
 | First shake | 0.3 s | The tray slides to one side and back. The layer lags a little behind the tray (it is loose material), so the surface slumps toward the trailing side and levels out again. |
-| Shaking | every 0.3 s | Tray swings left, right, left. The swing is not a sine wave: it accelerates fast and stops hard at each end (ease-in, then a sharp stop), which is what makes shaking look like shaking. On each stop: a rasp sound, a burst of fines under the mesh, and the layer drops a step. |
+| Shaking | every 0.2 s | Tray swings left, right, left. The swing is not a sine wave: it accelerates fast and stops hard at each end (ease-in, then a sharp stop), which is what makes shaking look like shaking. On each stop: a rasp sound, a burst of fines under the mesh, and the layer drops a step. |
 | Thinning | whole block | The layer gets thinner with progress. Its surface texture is the block's own texture, so gravel looks like gravel. The thinner it gets, the more of the mesh shows through at the edges first (the layer is drawn slightly domed: thick in the middle, thin at the rim). |
 | Fines falling | whole block | Under the mesh, thin streams of material-colored specks fall from the tray to the ground or into the container below. More while the layer is thick, fewer as it thins. |
 | Reveal | at set points | A found item appears lying on the mesh as the layer sinks past it: first a corner pokes out, then the whole item, tilted flat. Each reveal has a quiet tick, pitched by its place in the block's drops. Finds stay on the mesh and jiggle with each shake. |
@@ -121,7 +121,7 @@ Shake volume falls as the layer thins, so the sound itself tells progress. Machi
 
 | | Hand | Windup drive | Furnace drive |
 |---|---|---|---|
-| Rhythm | 1 shake per 0.3 s, lively, slightly irregular in direction | 1 per 0.4 s, even, with spring wobble | 1 per 0.2 s, tight tremble |
+| Rhythm | 1 shake per 0.2 s, lively, slightly irregular in direction | 1 per 0.4 s, even, with spring wobble | 1 per 0.2 s, tight tremble |
 | Camera | None. The view never moves and the hand does not swing on every shake; the held item bobs gently | none | none |
 | Player link | Finds hop to the player | Finds drop into the drive | Finds drop into the drive |
 | Sound | Full volume | 60%, plus spring clack | 60%, plus low firebox rumble from the drive |

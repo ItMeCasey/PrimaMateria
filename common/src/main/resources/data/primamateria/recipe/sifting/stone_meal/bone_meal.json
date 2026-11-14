@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:stone_meal",
+  "result": "minecraft:bone_meal",
+  "chance": 0.15
+}

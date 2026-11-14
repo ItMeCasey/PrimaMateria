@@ -1,0 +1,10 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:gravel",
+  "result": "primamateria:copper_dust",
+  "chance": 0.14,
+  "count": [
+    1,
+    2
+  ]
+}

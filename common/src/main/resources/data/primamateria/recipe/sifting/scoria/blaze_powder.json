@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:scoria",
+  "result": "minecraft:blaze_powder",
+  "chance": 0.06,
+  "mesh_min": 3
+}

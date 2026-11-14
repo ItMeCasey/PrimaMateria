@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:soul_sand",
+  "result": "minecraft:ghast_tear",
+  "chance": 0.01,
+  "mesh_min": 4
+}

@@ -138,6 +138,13 @@ One composting recipe is active (the highest-priority datapack's). `time` is in 
   "result": "minecraft:iron_ingot", "time": 60 }
 ```
 
+Notes on how the sifting types behave (implemented):
+
+- `input` is a vanilla ingredient (an item, a `#tag`, or a list), tested against the item the player offers, so one file can cover every block in a tag. A sieve accepts an item when at least one sifting recipe matches it.
+- `result` is kept as an item id (text), so a recipe naming another mod's item loads whether or not that mod is installed and is skipped when the item is missing. This is how optional compat files work.
+- The recipes are looked up once per sifted item and cached until the next datapack reload (`PrimaRecipes.siftsFor`).
+- The recipe types are real recipe types in the game's registry (`primamateria:sifting`, `primamateria:sifting_residue`), registered with a codec and a network codec, and never matched against a crafting grid (`NoInput`).
+
 ### Mesh tiers (`data/<namespace>/primamateria/mesh/<id>.json`)
 
 ```json
@@ -160,6 +167,10 @@ Any item can be made a mesh. `slot` (1 to 8) is the block state value used when 
 ```
 Optional `mature_boost` (0 to 1) shortens the maturing time once.
 
+### Compat with other mods' materials (later in the first release)
+
+Source: `C:\Users\casey\Desktop\Mod-Playbook\ore-matrix\PRIMA_COMPAT_LISTS.md` (the materials per version and loader that need an entry beyond vanilla; the matrix files in the same folder give the exact ids and tags per mod; `data/<version>-<loader>.json` is machine readable). Compat is plain datapack data, so it ships as extra optional files that only apply when the mod's items exist: sifting drops for a metal's raw material or dust, crushing of its ores, melting and casting of its ingots, written against the convention tags (`c:ores/<metal>`, `c:raw_materials/<metal>`, `c:ingots/<metal>`, `c:dusts/<metal>`, `c:gems/<gem>`) so one file covers every mod that follows them. Mod-specific ids are used only where a mod ignores the tags. Only the 26.2 and 26.3 lists apply (NeoForge 26.2: 181 materials, Forge 26.2: 68, NeoForge 26.3: 163, Forge 26.3: 45).
+
 ### World
 
 - `data/primamateria/worldgen/world_preset/void_island.json` and its noise settings: the Void Island preset.
@@ -178,7 +189,7 @@ The studio standard (Mod-Playbook, "Compatibility standard", 2026-11-13) require
 
 Every recipe (crushing, sifting, residue, composting, soaking, mixing, steeping, growing, melting, casting) is a real recipe type under `data/<namespace>/recipe/`, and every mesh tier, heat source, melt and compost value is a JSON file under `data/<namespace>/primamateria/`. So a datapack, KubeJS or ModJS can add, change and remove any of them with no Java:
 
-- **Datapack:** add a file to add, use the same path to replace, and replace with `{ "type": "primamateria:none" }` (recipes) or `{ "remove": true }` (data files) to remove.
+- **Datapack:** add a file to add, use the same path to replace. A replaced mesh file with `{ "remove": true }` removes that mesh; a recipe is removed the usual way for the loader (a load condition that is false) or by setting its `chance` to 0.
 - **KubeJS:** `ServerEvents.recipes` handles our recipe types like any other (`event.custom({ type: 'primamateria:sifting', ... })`, `event.remove({ type: 'primamateria:sifting', input: 'minecraft:gravel' })`); the four data folders are written through KubeJS's generated-data event.
 - **ModJS:** the content calls of the `PrimaMateria` global, below.
 

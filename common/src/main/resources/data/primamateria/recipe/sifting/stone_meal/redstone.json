@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:stone_meal",
+  "result": "minecraft:redstone",
+  "chance": 0.1,
+  "count": [
+    1,
+    2
+  ],
+  "mesh_min": 2
+}

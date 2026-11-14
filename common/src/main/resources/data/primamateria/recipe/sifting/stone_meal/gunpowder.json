@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:stone_meal",
+  "result": "minecraft:gunpowder",
+  "chance": 0.06,
+  "mesh_min": 2
+}

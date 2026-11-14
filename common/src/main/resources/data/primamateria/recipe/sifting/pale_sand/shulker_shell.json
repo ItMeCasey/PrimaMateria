@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:pale_sand",
+  "result": "minecraft:shulker_shell",
+  "chance": 0.015,
+  "mesh_min": 5
+}

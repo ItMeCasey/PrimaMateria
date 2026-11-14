@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:dirt",
+  "result": "minecraft:pumpkin_seeds",
+  "chance": 0.04
+}

@@ -1,0 +1,8 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:stone_meal",
+  "result": "primamateria:diamond_seed",
+  "chance": 0.02,
+  "mesh_min": 3,
+  "mesh_max": 3
+}

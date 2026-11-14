@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:dirt",
+  "result": "minecraft:melon_seeds",
+  "chance": 0.04
+}

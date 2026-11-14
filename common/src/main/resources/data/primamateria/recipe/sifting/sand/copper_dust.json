@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:sand",
+  "result": "primamateria:copper_dust",
+  "chance": 0.08
+}

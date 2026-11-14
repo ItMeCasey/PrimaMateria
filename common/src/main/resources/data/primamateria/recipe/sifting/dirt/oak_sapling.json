@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:dirt",
+  "result": "minecraft:oak_sapling",
+  "chance": 0.03
+}

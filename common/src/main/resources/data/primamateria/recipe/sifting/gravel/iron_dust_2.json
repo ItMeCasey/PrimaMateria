@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:gravel",
+  "result": "primamateria:iron_dust",
+  "chance": 0.16,
+  "count": [
+    1,
+    2
+  ],
+  "mesh_min": 3
+}

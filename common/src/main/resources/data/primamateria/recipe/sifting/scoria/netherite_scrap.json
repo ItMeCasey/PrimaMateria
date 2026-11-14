@@ -1,0 +1,8 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:scoria",
+  "result": "minecraft:netherite_scrap",
+  "chance": 0.01,
+  "mesh_min": 4,
+  "mesh_max": 4
+}

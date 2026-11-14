@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:gravel",
+  "result": "minecraft:coal",
+  "chance": 0.09
+}

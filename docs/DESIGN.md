@@ -99,7 +99,7 @@ Vanilla items the mod hands out directly: flint, coal, redstone, bone meal, gunp
 
 - **Mesh.** Use a mesh item on an empty sieve to fit it. Sneak-use with an empty hand on an empty sieve to take it out. A sieve without a mesh takes no material.
 - **One block at a time.** Use a siftable block on the sieve to put it in. A sieve holds a single block and has no storage: nothing more goes in until that block is done. The block shows as a layer in the tray that thins as it is sifted.
-- **Shake.** Hold use on a filled sieve with any item or an empty hand. While you hold, the sieve shakes once every 6 ticks. Nothing happens when you only tap; holding is the action. You may hold a stack of the same material in your hand: when a block finishes, the sieve takes the next one from that stack, so you never stop.
+- **Shake.** Hold use on a filled sieve with any item or an empty hand. While you hold, the sieve shakes once every 4 ticks (the game repeats a held use that often). Nothing happens when you only tap; holding is the action. You may hold a stack of the same material in your hand: when a block finishes, the sieve takes the next one from that stack, so you never stop.
 - **Work.** A block needs 8 shakes with a mesh of speed 1.0. The mesh `speed` divides the shake count.
 - **Linked sieves.** Sieves next to each other at the same height work as one. Shaking a sieve also shakes every filled sieve within `sieve.link_radius` blocks of it (default 1, so a 3 by 3 square of nine; up to 3), and putting a block in from a stack also fills each empty linked sieve from the same stack. Each sieve keeps its own mesh and rolls its own drops. `sieve.link=false` switches linking off. A drive shakes only the sieve on top of it.
 - **Drops.** The server rolls every drop when the block goes in, from the sifting recipes that match the block and the mesh tier. The rolled drops are revealed on the mesh as the layer thins and are handed out when the block is done: into the inventory below the sieve (or below its drive) when there is one, otherwise they hop off the tray toward the player who shook it.
@@ -150,7 +150,7 @@ A drive sits directly under a sieve and shakes it. Drives have no screen.
 
 | Drive | Power | Rate | Details |
 |---|---|---|---|
-| Hand | Hold use | 1 shake per 6 ticks | Refills from the stack in your hand; works linked sieves too. |
+| Hand | Hold use | 1 shake per 4 ticks | Refills from the stack in your hand; works linked sieves too. |
 | `windup_drive` | Hold use on the drive to crank: 1 turn per 5 ticks, stores up to 48 turns, shown by a brass dial on the front that sweeps a quarter circle | 1 shake per 8 ticks, 1 turn per shake | Runs while it has turns and the sieve has a load. Recipe: 4 planks, 3 copper ingots, 1 iron ingot, 1 stick. |
 | `furnace_drive` | Furnace fuel, put in by hand or hopper (1 slot, 64 items); the firebox glows while burning | 1 shake per 4 ticks | Burns only while the sieve above holds a block. Recipe: 1 furnace, 1 windup drive, 4 iron ingots, 2 gold ingots. |
 

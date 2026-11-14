@@ -1,0 +1,10 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:dirt",
+  "result": "primamateria:rock_chip",
+  "chance": 0.7,
+  "count": [
+    1,
+    2
+  ]
+}

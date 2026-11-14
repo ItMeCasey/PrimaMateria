@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:stone_meal",
+  "result": "minecraft:glowstone_dust",
+  "chance": 0.05,
+  "mesh_min": 3
+}

@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:pale_sand",
+  "result": "minecraft:ender_pearl",
+  "chance": 0.06,
+  "mesh_min": 4
+}

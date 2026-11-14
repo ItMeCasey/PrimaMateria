@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:soul_sand",
+  "result": "minecraft:rotten_flesh",
+  "chance": 0.12,
+  "mesh_min": 2
+}

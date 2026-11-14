@@ -1,0 +1,7 @@
+{
+  "item": "primamateria:cloth_mesh",
+  "tier": 1,
+  "speed": 1.0,
+  "texture": "primamateria:block/mesh_cloth",
+  "slot": 1
+}
