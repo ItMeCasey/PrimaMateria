@@ -176,6 +176,11 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
         c.surface.box(x0, y - 0.01F, z0, x1, y, z1, rgb, alpha, light, true, MachineAssets.frame(tex));
     }
 
+    /** True for a fluid texture that already carries its own color (lava, or a fluid with its own still texture): no tint on top. */
+    private static boolean ownLook(Identifier tex) {
+        return tex != MachineAssets.WATER;
+    }
+
     private static void barrel(Cache c, State s, BarrelView v, int light, boolean near, Level level) {
         boolean clay = c.kind == Kind.CLAY_BARREL;
         float lo = clay ? 3.5F : 2.5F;
@@ -188,7 +193,7 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
             boolean lava = tex == MachineAssets.LAVA;
             // with crystals growing the fluid is more see-through, so they stay visible below the surface
             int alpha = lava ? 255 : v.crystals().isEmpty() ? 210 : 110;
-            surface(c, s, tex, !lava, lava ? 0xFFFFFF : v.color(), alpha, lava ? FULL_BRIGHT : light, lo, lo, hi, hi, y);
+            surface(c, s, tex, !lava, ownLook(tex) ? 0xFFFFFF : v.color(), alpha, lava ? FULL_BRIGHT : light, lo, lo, hi, hi, y);
         } else if (v.amount() > 0 && v.contents() == BarrelView.Contents.COMPOST) {
             surface(c, s, MachineAssets.COMPOST, false, v.color(), 255, light, lo, lo, hi, hi, y);
         }
@@ -267,7 +272,7 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
             } else {
                 Identifier tex = MachineAssets.fluid(v.contentId());
                 boolean lava = tex == MachineAssets.LAVA;
-                surface(c, s, tex, !lava, lava ? 0xFFFFFF : v.color(), lava ? 255 : 210, lava ? FULL_BRIGHT : glow, 3.5F, 3.5F, 12.5F, 12.5F, y);
+                surface(c, s, tex, !lava, ownLook(tex) ? 0xFFFFFF : v.color(), lava ? 255 : 210, lava ? FULL_BRIGHT : glow, 3.5F, 3.5F, 12.5F, 12.5F, y);
             }
         }
         if (!near) {
