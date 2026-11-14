@@ -21,5 +21,12 @@ Casey was asleep and asked for Prima Materia to be completed and released as 202
 | # | Cut | Why | Follow-up |
 |---|---|---|---|
 | 1 | **Real, placeable molten metals and brine, and fluid handlers for pipes and tanks of other mods.** In 2026.11.1 these fluids are internal (an id and an amount) held by the barrels, the crucible and the casting tray and moved by bucket. Casey asked for real fluids ("storable as real fluids"); this is not delivered in the first release. | Each fluid needs a fluid type, a source and a flowing fluid, a block, a bucket and client fluid models on both loaders and both versions, plus fluid handler capabilities on every machine. That is a large change that could not be tested safely overnight. | First step of the next release (`PROJECT_STATUS.md`, `docs/known-gaps.md`) |
-
-Further cuts and decisions from the feature work are appended below as the feature branches are merged.
+| 2 | **Recipe viewers on a dedicated server.** The recipe lookup that BEI, JEI, REI, SMWTI, Jade and scripts read is built on the server after every reload. In single player and on a LAN host the client shares it; players joining a dedicated server get no lookup because the client sync (a network payload on each loader) is not written. | Needs a payload registered on both loaders and both versions, untestable without a real client and server pair tonight | Step in `PROJECT_STATUS.md` (After 2026.11.1) |
+| 3 | **Nothing was played by hand in a real game client.** The server self tests, the unit tests and the animation and integration sessions' client tours are the evidence. | Time and the rule of one game at a time | Casey plays a fresh Void Island |
+| 4 | The Void Island start island is placed from code, not from a structure file | A saved flag and a code plan were quicker to test headlessly | `world/StartIslandPlacer` |
+| 5 | A bucket of molten metal used on a casting tray casts as many ingots as 1000 mB makes (10) | A bucket cannot be partly used and nothing should be lost | `CastingTrayBlockEntity` |
+| 6 | Mixing: the poured bucket's fluid counts as the second 1000 mB (obsidian is lava in the barrel with water poured in, stone is the reverse, both in the clay barrel) | A barrel holds 1000 mB | Recipes `primamateria:mixing` |
+| 7 | Breaking a barrel drops waiting results only; the contents are lost | Fluids are internal ids | `BarrelBlockEntity` |
+| 8 | Invented recipes: auto hammer `PHP` / `SIS` / `PPP` (planks, iron hammer, sticks, iron ingot); windup drive `PCP` / `CIC` / `PSP`; hammers `HH` / ` S` / ` S`; sieve and mesh shapes | The design gave only ingredient lists | The recipe files |
+| 9 | Hammers break blocks through a block-break event on each loader (not right click); creative and spectator players are skipped | Works the same on both loaders | `HammerLogic` |
+| 10 | The powered drive accepts energy on every side and never gives any back | Simplest safe behavior | `DriveBlockEntity` |
