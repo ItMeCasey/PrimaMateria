@@ -29,7 +29,7 @@ sourceSets {
 minecraft {
     runs {
         configureEach {
-            workingDir = layout.projectDirectory.dir('run')
+            workingDir = layout.projectDirectory.dir(project.findProperty('runDir') ?: 'run')
             if (project.hasProperty('devTools')) { systemProperty 'primamateria.dev', 'true' }
             systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
         }

@@ -28,6 +28,9 @@ public final class ForgeDev {
         if (FMLEnvironment.dist.isClient() && System.getenv("PRIMAMATERIA_SHOTS") != null) {
             TickEvent.ClientTickEvent.Post.BUS.addListener((TickEvent.ClientTickEvent.Post e) -> ShotTour.tick());
         }
+        if (FMLEnvironment.dist.isClient() && com.itmecasey.primamateria.dev.IntegrationTour.requested()) {
+            TickEvent.ClientTickEvent.Post.BUS.addListener((TickEvent.ClientTickEvent.Post e) -> com.itmecasey.primamateria.dev.IntegrationTour.tick());
+        }
     }
 
     /** The powered drive takes energy through Forge's energy capability, never gives any back. */
