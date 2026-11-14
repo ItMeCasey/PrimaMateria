@@ -32,7 +32,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * One casting tray. A crucible against its side (or a bucket in a hand) pours into it, it cools, and then it holds the cast
  * item until a hand or a hopper takes it. It is a one-slot container that only gives items out.
  */
-public class CastingTrayBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer {
+public class CastingTrayBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, com.itmecasey.primamateria.anim.MachineViewSource, WorldlyContainer {
     private final TrayState state = new TrayState();
 
     public CastingTrayBlockEntity(BlockPos pos, BlockState blockState) {
@@ -203,5 +203,29 @@ public class CastingTrayBlockEntity extends BlockEntity implements com.itmecasey
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction face) {
         return state.done();
+    }
+
+    // ---- renderer access ----
+
+    private Object machineViewCache;
+    private long machineViewTick = Long.MIN_VALUE;
+    private Object renderCacheField;
+
+    /** The view record the machine renderer reads: rebuilt at most once per game tick, never per frame. */
+    public Object machineView() {
+        long now = level == null ? 0L : level.getGameTime();
+        if (machineViewCache == null || now != machineViewTick) {
+            machineViewCache = view();
+            machineViewTick = now;
+        }
+        return machineViewCache;
+    }
+
+    public Object renderCache() {
+        return renderCacheField;
+    }
+
+    public void renderCache(Object cache) {
+        this.renderCacheField = cache;
     }
 }

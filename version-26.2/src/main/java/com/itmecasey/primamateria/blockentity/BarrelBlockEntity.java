@@ -32,7 +32,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * two-slot container for hoppers: slot 0 takes one item from above or the side (the slot always reads empty; the item is used the
  * moment it is offered), slot 1 shows the first finished result and can be taken from below.
  */
-public class BarrelBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer {
+public class BarrelBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, com.itmecasey.primamateria.anim.MachineViewSource, WorldlyContainer {
     private final BarrelState state;
     private long lastTick = -1;
     private boolean dirty;
@@ -256,5 +256,29 @@ public class BarrelBlockEntity extends BlockEntity implements com.itmecasey.prim
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction face) {
         return slot == 1 && face == Direction.DOWN;
+    }
+
+    // ---- renderer access ----
+
+    private Object machineViewCache;
+    private long machineViewTick = Long.MIN_VALUE;
+    private Object renderCacheField;
+
+    /** The view record the machine renderer reads: rebuilt at most once per game tick, never per frame. */
+    public Object machineView() {
+        long now = level == null ? 0L : level.getGameTime();
+        if (machineViewCache == null || now != machineViewTick) {
+            machineViewCache = view();
+            machineViewTick = now;
+        }
+        return machineViewCache;
+    }
+
+    public Object renderCache() {
+        return renderCacheField;
+    }
+
+    public void renderCache(Object cache) {
+        this.renderCacheField = cache;
     }
 }

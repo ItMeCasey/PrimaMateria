@@ -23,7 +23,7 @@ def patch_block_codec(name, cls):
     p = DST / "main/java" / PKG / "block" / (name + ".java")
     s = p.read_text(encoding="utf-8")
     s = s.replace("import com.mojang.serialization.MapCodec;" + NL, "")
-    s = re.sub(r"    private static final MapCodec<" + cls + r"> CODEC = [^;]*;" + NL + NL, "", s)
+    s = re.sub(r"    private static final MapCodec<" + cls + r"> CODEC = [^;]*;" + NL + "(?:" + NL + ")?", "", s)
     s = re.sub(r"    @Override" + NL + r"    protected MapCodec<\? extends \w+> codec\(\) \{" + NL + "        return CODEC;" + NL + "    }" + NL + NL, "", s)
     assert "MapCodec" not in s, name
     p.write_text(s, encoding="utf-8", newline=NL)
@@ -60,7 +60,8 @@ PATCHES = [patch_drive_fuel,
            lambda: patch_block_codec("SieveBlock", "SieveBlock"), lambda: patch_block_codec("BarrelBlock", "BarrelBlock"),
            lambda: patch_block_codec("AutoHammerBlock", "AutoHammerBlock"), lambda: patch_block_codec("DriveBlock", "DriveBlock"),
            lambda: patch_block_codec("SievePreviewBlock", "SievePreviewBlock"),
-           lambda: patch_block_codec("CrucibleBlock", "CrucibleBlock"), lambda: patch_block_codec("CastingTrayBlock", "CastingTrayBlock")]
+           lambda: patch_block_codec("CrucibleBlock", "CrucibleBlock"), lambda: patch_block_codec("CastingTrayBlock", "CastingTrayBlock"),
+           lambda: patch_block_codec("MachinePreviewBlock", "MachinePreviewBlock")]
 
 
 def copy_tree(name):

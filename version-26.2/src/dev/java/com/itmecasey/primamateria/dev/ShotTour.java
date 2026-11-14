@@ -175,6 +175,14 @@ public final class ShotTour {
         s.startSift(meshId(tier), meshTexture(tier), block, load, kind, shakes, pos.asLong(), FINDS);
     }
 
+    private static void show(int x, int y, Object view) {
+        if (Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, 10)) instanceof com.itmecasey.primamateria.blockentity.MachinePreviewBlockEntity m) {
+            m.show(view);
+        } else {
+            throw new IllegalStateException("no machine at " + x);
+        }
+    }
+
     private static void fixed(BlockPos pos, int tier, String block, int load, float progress, int shakes) {
         SievePreviewBlockEntity s = be(pos);
         if (s == null) {
@@ -236,7 +244,7 @@ public final class ShotTour {
         shoot("sieve_full_load_sand", 12);
         then(2, () -> server("setblock 0 " + y + " 0 minecraft:air"));
         // 4b. other materials: none of them is in our tables; the layer and fines come from the block's own texture
-        String[] others = {"minecraft:red_sand", "minecraft:soul_sand", "minecraft:grass_block", "minecraft:magma_block", "test:no_such_block"};
+        String[] others = {"minecraft:red_sand", "minecraft:soul_sand", "minecraft:hay_block", "minecraft:bookshelf", "minecraft:grass_block"};
         then(4, () -> {
             for (int i = 0; i < 5; i++) {
                 place(new BlockPos(-8 + i * 2, y, -4), 2, true);
@@ -254,6 +262,48 @@ public final class ShotTour {
             for (int i = 0; i < 5; i++) {
                 place(new BlockPos(-8 + i * 2, y, -4), 0, false);
                 server("setblock " + (-8 + i * 2) + " " + y + " -4 minecraft:air");
+            }
+        });
+        // 4c. barrels, crucible, casting tray, drives and the auto hammer, each with a made-up state
+        String[] machines = {"wooden_barrel", "wooden_barrel", "wooden_barrel", "clay_barrel", "crucible", "casting_tray", "casting_tray",
+                "windup_drive", "furnace_drive", "powered_drive", "auto_hammer"};
+        then(4, () -> {
+            for (int i = 0; i < machines.length; i++) {
+                server("setblock " + (-12 + i * 2) + " " + y + " 10 primamateria:" + machines[i] + "[facing=north]");
+            }
+        });
+        then(12, () -> {
+            long now = Minecraft.getInstance().level.getGameTime();
+            show(-12, y, new com.itmecasey.primamateria.view.BarrelView(false, com.itmecasey.primamateria.view.BarrelView.Contents.FLUID, "minecraft:water", 700,
+                    0x3F76E4, com.itmecasey.primamateria.view.BarrelView.Stage.IDLE, 0F, "", "", List.of()));
+            show(-10, y, new com.itmecasey.primamateria.view.BarrelView(false, com.itmecasey.primamateria.view.BarrelView.Contents.COMPOST, "", 550,
+                    0x7A5B34, com.itmecasey.primamateria.view.BarrelView.Stage.COMPOSTING, 0.5F, "", "", List.of()));
+            show(-8, y, new com.itmecasey.primamateria.view.BarrelView(false, com.itmecasey.primamateria.view.BarrelView.Contents.FLUID, "primamateria:brine", 800,
+                    0x45979C, com.itmecasey.primamateria.view.BarrelView.Stage.GROWING, 0.5F, "", "", List.of(
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.9F, 0),
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.5F, 1),
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.2F, 3))));
+            show(-6, y, new com.itmecasey.primamateria.view.BarrelView(true, com.itmecasey.primamateria.view.BarrelView.Contents.FLUID, "minecraft:lava", 600,
+                    0xFFFFFF, com.itmecasey.primamateria.view.BarrelView.Stage.MIXING, 0.4F, "minecraft:cobblestone", "", List.of()));
+            show(-4, y, new com.itmecasey.primamateria.view.CrucibleView("primamateria:molten_iron", 2600, 0xD8742A, 12, 2, "primamateria:iron_dust", 3, 8));
+            show(-2, y, new com.itmecasey.primamateria.view.TrayView("primamateria:molten_iron", 0xD8742A, com.itmecasey.primamateria.view.TrayView.Stage.FILLING, 0.7F, ""));
+            show(0, y, new com.itmecasey.primamateria.view.TrayView("primamateria:molten_iron", 0xD8742A, com.itmecasey.primamateria.view.TrayView.Stage.COOLING, 0.8F, "minecraft:iron_ingot"));
+            show(2, y, new com.itmecasey.primamateria.view.DriveView(DriveKind.WINDUP, 0.8F, true, false, now));
+            show(4, y, new com.itmecasey.primamateria.view.DriveView(DriveKind.FURNACE, 0.7F, true, false, now));
+            show(6, y, new com.itmecasey.primamateria.view.DriveView(DriveKind.POWERED, 0.6F, true, false, now));
+            show(8, y, new com.itmecasey.primamateria.view.AutoHammerView("primamateria:iron_hammer", "minecraft:cobblestone", 3, 0.4F, DriveKind.WINDUP, now));
+        });
+        then(2, () -> moveTo(new Vec3(-9.0, y + 3.3, 7.6), new Vec3(-9.0, y + 0.8, 10.5)));
+        shoot("machines_barrels", 30);
+        then(2, () -> moveTo(new Vec3(-2.0, y + 3.3, 7.6), new Vec3(-2.0, y + 0.8, 10.5)));
+        shoot("machines_crucible_tray", 20);
+        then(2, () -> moveTo(new Vec3(5.5, y + 2.6, 6.6), new Vec3(5.5, y + 0.6, 10.5)));
+        shoot("machines_drives", 20);
+        then(2, () -> moveTo(new Vec3(3.5, y + 3.2, 6.0), new Vec3(3.5, y + 0.6, 10.5)));
+        shoot("machines_drives_b", 5);
+        then(2, () -> {
+            for (int i = 0; i < machines.length; i++) {
+                server("setblock " + (-12 + i * 2) + " " + y + " 10 minecraft:air");
             }
         });
         // 5. twenty sieves in view, all moving; frame time per animation level

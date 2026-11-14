@@ -22,6 +22,21 @@ public final class NeoForgeClient {
         event.registerBlockEntityRenderer(ModAnim.SIEVE_PREVIEW, SieveRenderer<SievePreviewBlockEntity>::new);
         event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.SIEVE_BE,
                 SieveRenderer<com.itmecasey.primamateria.blockentity.SieveBlockEntity>::new);
+        event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.BARREL_BE,
+                com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.BarrelBlockEntity>::new);
+        event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.CRUCIBLE_BE,
+                com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.CrucibleBlockEntity>::new);
+        event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.TRAY_BE,
+                com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.CastingTrayBlockEntity>::new);
+        event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.WINDUP_DRIVE_BE,
+                com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.DriveBlockEntity>::new);
+        event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.FURNACE_DRIVE_BE,
+                com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.DriveBlockEntity>::new);
+        event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.POWERED_DRIVE_BE,
+                com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.DriveBlockEntity>::new);
+        event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.AUTO_HAMMER_BE,
+                com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.AutoHammerBlockEntity>::new);
+        event.registerBlockEntityRenderer(ModAnim.MACHINE_PREVIEW, com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.MachinePreviewBlockEntity>::new);
     }
 
     @SubscribeEvent

@@ -41,7 +41,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * in {@code auto_hammer.strokes_per_block} strokes. The results go into the container below (the drive). A hopper can offer blocks
  * from above and the sides; the slot always reads empty, a block is taken the moment it is offered.
  */
-public class AutoHammerBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer, Drivable {
+public class AutoHammerBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, com.itmecasey.primamateria.anim.MachineViewSource, WorldlyContainer, Drivable {
     private final AutoHammerState state = new AutoHammerState();
     private ItemStack hammer = ItemStack.EMPTY;
 
@@ -265,5 +265,29 @@ public class AutoHammerBlockEntity extends BlockEntity implements com.itmecasey.
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction face) {
         return false;
+    }
+
+    // ---- renderer access ----
+
+    private Object machineViewCache;
+    private long machineViewTick = Long.MIN_VALUE;
+    private Object renderCacheField;
+
+    /** The view record the machine renderer reads: rebuilt at most once per game tick, never per frame. */
+    public Object machineView() {
+        long now = level == null ? 0L : level.getGameTime();
+        if (machineViewCache == null || now != machineViewTick) {
+            machineViewCache = view();
+            machineViewTick = now;
+        }
+        return machineViewCache;
+    }
+
+    public Object renderCache() {
+        return renderCacheField;
+    }
+
+    public void renderCache(Object cache) {
+        this.renderCacheField = cache;
     }
 }

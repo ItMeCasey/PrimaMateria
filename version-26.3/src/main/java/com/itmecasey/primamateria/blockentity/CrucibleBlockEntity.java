@@ -36,7 +36,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * its fluid into casting trays against its four sides. It is also a one-slot container so hoppers can drop solids in (the slot
  * always reads empty; an item is taken the moment it is offered).
  */
-public class CrucibleBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer {
+public class CrucibleBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, com.itmecasey.primamateria.anim.MachineViewSource, WorldlyContainer {
     private final CrucibleState state = new CrucibleState();
     private int heat;
     private boolean dirty;
@@ -252,5 +252,29 @@ public class CrucibleBlockEntity extends BlockEntity implements com.itmecasey.pr
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction face) {
         return false;
+    }
+
+    // ---- renderer access ----
+
+    private Object machineViewCache;
+    private long machineViewTick = Long.MIN_VALUE;
+    private Object renderCacheField;
+
+    /** The view record the machine renderer reads: rebuilt at most once per game tick, never per frame. */
+    public Object machineView() {
+        long now = level == null ? 0L : level.getGameTime();
+        if (machineViewCache == null || now != machineViewTick) {
+            machineViewCache = view();
+            machineViewTick = now;
+        }
+        return machineViewCache;
+    }
+
+    public Object renderCache() {
+        return renderCacheField;
+    }
+
+    public void renderCache(Object cache) {
+        this.renderCacheField = cache;
     }
 }

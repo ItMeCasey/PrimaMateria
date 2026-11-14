@@ -1,0 +1,585 @@
+{
+ "meta": {
+  "format_version": "5.0",
+  "model_format": "java_block",
+  "box_uv": false
+ },
+ "name": "crystal",
+ "parent": "",
+ "java_block_version": 2,
+ "ambientocclusion": true,
+ "front_gui_light": false,
+ "visible_box": [
+  1,
+  1,
+  0
+ ],
+ "variable_placeholders": "",
+ "variable_placeholder_buttons": [],
+ "unhandled_root_fields": {},
+ "resolution": {
+  "width": 16,
+  "height": 16
+ },
+ "elements": [
+  {
+   "name": "base",
+   "box_uv": false,
+   "render_order": "default",
+   "rescale": false,
+   "locked": false,
+   "shade_direction_override": "",
+   "light_emission": 0,
+   "export": true,
+   "scope": 0,
+   "allow_mirror_modeling": true,
+   "from": [
+    5,
+    0,
+    5
+   ],
+   "to": [
+    11,
+    1,
+    11
+   ],
+   "autouv": 0,
+   "color": 8,
+   "origin": [
+    8.0,
+    0.5,
+    8.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      5,
+      15,
+      11,
+      16
+     ],
+     "texture": 0
+    },
+    "east": {
+     "uv": [
+      5,
+      15,
+      11,
+      16
+     ],
+     "texture": 0
+    },
+    "south": {
+     "uv": [
+      5,
+      15,
+      11,
+      16
+     ],
+     "texture": 0
+    },
+    "west": {
+     "uv": [
+      5,
+      15,
+      11,
+      16
+     ],
+     "texture": 0
+    },
+    "up": {
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "texture": 0
+    },
+    "down": {
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ],
+     "texture": 0
+    }
+   },
+   "type": "cube",
+   "uuid": "1f114cac-a65f-5047-a458-6fd2ef3563cc"
+  },
+  {
+   "name": "prism_a",
+   "box_uv": false,
+   "render_order": "default",
+   "rescale": false,
+   "locked": false,
+   "shade_direction_override": "",
+   "light_emission": 0,
+   "export": true,
+   "scope": 0,
+   "allow_mirror_modeling": true,
+   "from": [
+    6,
+    1,
+    6
+   ],
+   "to": [
+    8,
+    9,
+    8
+   ],
+   "autouv": 0,
+   "color": 8,
+   "origin": [
+    7.0,
+    5.0,
+    7.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      8,
+      7,
+      10,
+      15
+     ],
+     "texture": 1
+    },
+    "east": {
+     "uv": [
+      8,
+      7,
+      10,
+      15
+     ],
+     "texture": 1
+    },
+    "south": {
+     "uv": [
+      6,
+      7,
+      8,
+      15
+     ],
+     "texture": 1
+    },
+    "west": {
+     "uv": [
+      6,
+      7,
+      8,
+      15
+     ],
+     "texture": 1
+    },
+    "up": {
+     "uv": [
+      6,
+      6,
+      8,
+      8
+     ],
+     "texture": 1
+    },
+    "down": {
+     "uv": [
+      6,
+      8,
+      8,
+      10
+     ],
+     "texture": 1
+    }
+   },
+   "type": "cube",
+   "uuid": "b16e79ae-d454-5928-ae14-3be6a7e41ab8"
+  },
+  {
+   "name": "prism_b",
+   "box_uv": false,
+   "render_order": "default",
+   "rescale": false,
+   "locked": false,
+   "shade_direction_override": "",
+   "light_emission": 0,
+   "export": true,
+   "scope": 0,
+   "allow_mirror_modeling": true,
+   "from": [
+    8,
+    1,
+    7
+   ],
+   "to": [
+    10,
+    6,
+    9
+   ],
+   "autouv": 0,
+   "color": 8,
+   "origin": [
+    9.0,
+    3.5,
+    8.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      6,
+      10,
+      8,
+      15
+     ],
+     "texture": 1
+    },
+    "east": {
+     "uv": [
+      7,
+      10,
+      9,
+      15
+     ],
+     "texture": 1
+    },
+    "south": {
+     "uv": [
+      8,
+      10,
+      10,
+      15
+     ],
+     "texture": 1
+    },
+    "west": {
+     "uv": [
+      7,
+      10,
+      9,
+      15
+     ],
+     "texture": 1
+    },
+    "up": {
+     "uv": [
+      8,
+      7,
+      10,
+      9
+     ],
+     "texture": 1
+    },
+    "down": {
+     "uv": [
+      8,
+      7,
+      10,
+      9
+     ],
+     "texture": 1
+    }
+   },
+   "type": "cube",
+   "uuid": "9085baa2-d208-5fec-9694-4f668e4a6a83"
+  },
+  {
+   "name": "prism_c",
+   "box_uv": false,
+   "render_order": "default",
+   "rescale": false,
+   "locked": false,
+   "shade_direction_override": "",
+   "light_emission": 0,
+   "export": true,
+   "scope": 0,
+   "allow_mirror_modeling": true,
+   "from": [
+    6,
+    1,
+    8
+   ],
+   "to": [
+    8,
+    5,
+    10
+   ],
+   "autouv": 0,
+   "color": 8,
+   "origin": [
+    7.0,
+    3.0,
+    9.0
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      8,
+      11,
+      10,
+      15
+     ],
+     "texture": 1
+    },
+    "east": {
+     "uv": [
+      6,
+      11,
+      8,
+      15
+     ],
+     "texture": 1
+    },
+    "south": {
+     "uv": [
+      6,
+      11,
+      8,
+      15
+     ],
+     "texture": 1
+    },
+    "west": {
+     "uv": [
+      8,
+      11,
+      10,
+      15
+     ],
+     "texture": 1
+    },
+    "up": {
+     "uv": [
+      6,
+      8,
+      8,
+      10
+     ],
+     "texture": 1
+    },
+    "down": {
+     "uv": [
+      6,
+      6,
+      8,
+      8
+     ],
+     "texture": 1
+    }
+   },
+   "type": "cube",
+   "uuid": "113e57cd-8b36-521a-9873-22aa19af00c8"
+  }
+ ],
+ "groups": [],
+ "outliner": [
+  {
+   "name": "body",
+   "origin": [
+    8,
+    0,
+    8
+   ],
+   "color": 0,
+   "uuid": "80c5e8d8-d8c0-5167-850f-8c5e70566c27",
+   "export": true,
+   "isOpen": true,
+   "locked": false,
+   "visibility": true,
+   "autouv": 0,
+   "children": [
+    "1f114cac-a65f-5047-a458-6fd2ef3563cc",
+    "b16e79ae-d454-5928-ae14-3be6a7e41ab8",
+    "9085baa2-d208-5fec-9694-4f668e4a6a83",
+    "113e57cd-8b36-521a-9873-22aa19af00c8"
+   ]
+  }
+ ],
+ "textures": [
+  {
+   "name": "smooth_stone",
+   "path": "",
+   "folder": "block",
+   "namespace": "minecraft",
+   "id": "0",
+   "group": "",
+   "scope": 0,
+   "width": 16,
+   "height": 16,
+   "uv_width": 16,
+   "uv_height": 16,
+   "particle": false,
+   "use_as_default": false,
+   "layers_enabled": false,
+   "sync_to_project": "",
+   "file_format": "png",
+   "render_mode": "default",
+   "render_sides": "auto",
+   "wrap_mode": "limited",
+   "pbr_channel": "color",
+   "fps": 7,
+   "force_translucent": false,
+   "frame_time": 1,
+   "frame_order_type": "loop",
+   "frame_order": "",
+   "frame_interpolate": false,
+   "visible": true,
+   "internal": false,
+   "saved": false,
+   "uuid": "61b8f1bb-8c14-5a73-aad1-3b42134f5c1e"
+  },
+  {
+   "name": "amethyst_cluster",
+   "path": "",
+   "folder": "block",
+   "namespace": "minecraft",
+   "id": "1",
+   "group": "",
+   "scope": 0,
+   "width": 16,
+   "height": 16,
+   "uv_width": 16,
+   "uv_height": 16,
+   "particle": false,
+   "use_as_default": false,
+   "layers_enabled": false,
+   "sync_to_project": "",
+   "file_format": "png",
+   "render_mode": "default",
+   "render_sides": "auto",
+   "wrap_mode": "limited",
+   "pbr_channel": "color",
+   "fps": 7,
+   "force_translucent": false,
+   "frame_time": 1,
+   "frame_order_type": "loop",
+   "frame_order": "",
+   "frame_interpolate": false,
+   "visible": true,
+   "internal": false,
+   "saved": false,
+   "uuid": "02efb2a6-db18-51a8-8058-1b2c1926eb4e"
+  }
+ ],
+ "display": {
+  "thirdperson_righthand": {
+   "rotation": [
+    75,
+    45,
+    0
+   ],
+   "translation": [
+    0,
+    2.5,
+    0
+   ],
+   "scale": [
+    0.375,
+    0.375,
+    0.375
+   ]
+  },
+  "thirdperson_lefthand": {
+   "rotation": [
+    75,
+    45,
+    0
+   ],
+   "translation": [
+    0,
+    2.5,
+    0
+   ],
+   "scale": [
+    0.375,
+    0.375,
+    0.375
+   ]
+  },
+  "firstperson_righthand": {
+   "rotation": [
+    0,
+    45,
+    0
+   ],
+   "translation": [
+    0,
+    0,
+    0
+   ],
+   "scale": [
+    0.4,
+    0.4,
+    0.4
+   ]
+  },
+  "firstperson_lefthand": {
+   "rotation": [
+    0,
+    225,
+    0
+   ],
+   "translation": [
+    0,
+    0,
+    0
+   ],
+   "scale": [
+    0.4,
+    0.4,
+    0.4
+   ]
+  },
+  "ground": {
+   "rotation": [
+    0,
+    0,
+    0
+   ],
+   "translation": [
+    0,
+    3,
+    0
+   ],
+   "scale": [
+    0.25,
+    0.25,
+    0.25
+   ]
+  },
+  "gui": {
+   "rotation": [
+    30,
+    225,
+    0
+   ],
+   "translation": [
+    0,
+    0,
+    0
+   ],
+   "scale": [
+    0.625,
+    0.625,
+    0.625
+   ]
+  },
+  "fixed": {
+   "rotation": [
+    0,
+    0,
+    0
+   ],
+   "translation": [
+    0,
+    0,
+    0
+   ],
+   "scale": [
+    0.5,
+    0.5,
+    0.5
+   ]
+  }
+ }
+}
