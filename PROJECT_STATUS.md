@@ -1,7 +1,7 @@
 # Project Status
 <!-- status-format: 1 -->
 Updated: 2026-11-14
-Summary: Prima Materia 2026.11.1 is released (GitHub, CurseForge project 1803927, wiki): sieve, hammers, barrels, crucible, drives, void island, renderers and viewer and scripting support on Forge and NeoForge 26.2 and 26.3; open for 2026.11.2: real placeable fluids, dedicated-server recipe sync, drive sound triggers, crystal textures, Casey's texture review and a hands-on play-through.
+Summary: Prima Materia 2026.11.2 is code complete and not released: real placeable fluids with fluid handlers, recipe sync to dedicated-server clients, all sounds and the pour particle triggered, drawn crystal textures, structure-file start island; Casey plays it next.
 Spend: none
 
 ## Design
@@ -100,15 +100,15 @@ Spend: none
 - [x] Wiki pages (sieve, hammers, barrels, crucible, drives, start, progression, config, drop tables, recipes, scripting, compatibility, known gaps), deployed (w:3)
 - [x] README and CHANGELOG for 2026.11.1 (w:1)
 
-## Next release 2026.11.2
-- [ ] Real placeable fluids: brine and molten copper, iron and gold (fluid type, source, flowing fluid, block, bucket, client fluid model on both loaders and both versions) and fluid handlers on the barrels, the crucible and the casting tray, so other mods' tanks and pipes can move them (cut from 2026.11.1, w:5)
-- [ ] Client sync of the recipe lookup so recipe viewers also work for players joining a dedicated server (the lookup is built on the server and shared in single player and LAN) (w:3)
-- [ ] Triggers for the drive sounds (crank and tick have files, nothing plays them) (w:2)
-- [ ] Draw the five crystal textures (the barrel uses the vanilla amethyst cluster for all five) and use the pour stream particle in the renderer (w:2)
-- [ ] Casey reviews the 16x16 textures next to vanilla and asks for redraws (w:1)
-- [ ] Hands-on play-through of a fresh Void Island in a real client, with a balance pass on the drop tables (w:4)
+## Release 2026.11.2
+- [x] Real placeable fluids (brine, molten copper, iron, gold) with fluid handlers on the barrels, crucible and casting tray, both loaders and versions (w:5)
+- [x] Recipe lookup sync to dedicated-server clients; real-client proof on NeoForge 26.2 (BEI, JEI, REI) and Forge 26.3 (BEI) (w:3)
+- [x] Triggers for all sounds and the pour particle (w:2)
+- [x] Five drawn crystal textures, amethyst placeholder removed (w:2)
+- [x] Start island as a replaceable structure file; missing rock chip to cobblestone recipe added (w:2)
+- [ ] Casey plays a fresh Void Island and reviews the 16x16 textures next to vanilla (w:4)
 - [ ] Client checks of SMWTI and Jade lines and of ModJS in a real client (w:3)
-- [ ] EMI plugin and KubeJS bridge compiled and checked when a build exists for 26.2 or 26.3 (w:1)
+- [ ] EMI plugin and KubeJS bridge checked when a build exists for 26.2 or 26.3 (w:1)
 
 ## Release and CI
 - [x] build.yml, release.yml, changed-builds-only plan_matrix.py, issue templates (written by the Project Manager) (w:3)

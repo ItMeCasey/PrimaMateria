@@ -4,7 +4,7 @@ Version 2026.11.2 on all four modules. Nothing pushed, tagged or released.
 
 ## Done (evidence)
 - **Real fluids** (brine, molten copper, iron, gold) on both loaders and versions; barrels, crucible and casting tray expose the fluid handler; dispensers place buckets. Self test pipe checks pass on all four builds; real-client frames on NeoForge 26.2 and Forge 26.3: `docs/testing/fluids.md`, `docs/frames/fluid_*`.
-- **Recipe sync to dedicated-server clients**: proven with a real dedicated server and joining client on NeoForge 26.2 for BEI, JEI and REI (`docs/testing/recipe_sync_*.log`, `docs/frames/sync_*`). Forge 26.3 BEI proof: rerun from main, result not read when this report was written (see `forge-26.3/runs`, `proof_f263b`); until read, Forge is covered by unit and self tests only.
+- **Recipe sync to dedicated-server clients**: proven with a real dedicated server and joining client on NeoForge 26.2 for BEI, JEI and REI (`docs/testing/recipe_sync_*.log`, `docs/frames/sync_*`). Forge 26.3 BEI proof: PASS (real dedicated server plus joining client, 57 sifting recipes sent in 1 frame, 6 frames in `docs/frames/sync_forge-26.3_*`, `docs/testing/recipe_sync_forge-26.3_bei.log`).
 - **Sounds and particle**: all 13 sounds and the pour particle are triggered (`scripts/check_sound_triggers.py`).
 - **Crystal textures**: five drawn, amethyst placeholder removed, visible under the fluid (`docs/frames/crystal_review.png`).
 - **Start island** is now a structure file a datapack can replace (`scripts/make_start_island.py`); code plan stays as fallback.
