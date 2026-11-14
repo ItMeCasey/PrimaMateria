@@ -42,7 +42,15 @@ tray offer the loader's fluid handler.
   wooden barrel refuses lava, a second kind and a drain while soaking, the tray takes one cast and gives nothing back, and the
   round trip crucible, bucket, real source block, bucket, crucible with real buckets. The existing barrel and crucible self tests
   run in the same pass.
-- **Frames** (`scripts/client_tour.py`, `PRIMA_TOUR=fluids`): see `docs/frames/fluids_<layer>_*.png`.
+- **Results.** All four builds: `gradlew build` passes with 156 unit tests each (15 new) and the release jars contain no dev classes;
+  `PRIMA_PORT_BASE=8738 python scripts/server_check.py <layer>` gives SERVER PASS on neoforge-26.2 (435 checks), forge-26.2 (429),
+  neoforge-26.3 (435) and forge-26.3 (438).
+- **Frames** (`PRIMA_TOUR=fluids python scripts/client_tour.py <layer>`, the isolated launcher, the `FluidTour` in `dev/`): TOUR PASS on
+  neoforge-26.2 and forge-26.3, 10 frames each plus the bucket icon strip: `docs/frames/fluids_<layer>_<fluid>_still.png` (a source pool
+  behind glass, the fluid's bucket in hand), `_flowing.png` (a source on a block spilling down its sides and across the floor),
+  `brine_inside.png` and `molten_gold_inside.png` (the camera inside a tank of the fluid), and `bucket_icons.png` (the four bucket icons
+  from the hotbar of a real frame, enlarged). Looked at: the four fluids are teal, orange-red, pale orange and yellow, animated, full bright
+  for the metals, translucent for brine; the flowing faces slide down the block; the underwater and in-lava fog show.
 
 ## Known differences
 
