@@ -28,7 +28,7 @@ ASSETS = RES / "assets/primamateria"
 METALS = {
     "copper": ("Copper", "D8742A", 12, 1358), "iron": ("Iron", "E6C9A8", 13, 1811), "gold": ("Gold", "F5C623", 13, 1337),
     "netherite": ("Netherite", "5B4A4C", 12, 2000),
-    "tin": ("Tin", "C8D2D4", 11, 505), "lead": ("Lead", "6B6F86", 11, 600), "silver": ("Silver", "D6E0EA", 12, 1235),
+    "tin": ("Tin", "C8D2D4", 12, 505), "lead": ("Lead", "6B6F86", 12, 600), "silver": ("Silver", "D6E0EA", 12, 1235),
     "nickel": ("Nickel", "B9C2A8", 12, 1728), "uranium": ("Uranium", "7FA63A", 13, 1405), "aluminum": ("Aluminum", "CFD6DC", 12, 933),
     "titanium": ("Titanium", "8F9BB0", 13, 1941), "palladium": ("Palladium", "B4A8C8", 12, 1828), "steel": ("Steel", "8D949C", 12, 1700),
     "bronze": ("Bronze", "C28A3C", 12, 1190), "electrum": ("Electrum", "E6CF6A", 12, 1300), "invar": ("Invar", "A8B4AA", 12, 1700),
@@ -154,7 +154,7 @@ def fluids():
     for mid, (display, hexcolor, glow, temp) in METALS.items():
         seed += 7
         color = int(hexcolor, 16)
-        entries.append(f'            new Metal("{mid}", 0x{hexcolor}, {glow}, {temp})')
+        entries.append(f'            new Metal("{mid}", 0x{hexcolor}, {glow}, {max(temp, 1300)})')
         fid = f"molten_{mid}"
         lang[f"item.primamateria.{fid}_bucket"] = f"Molten {display} Bucket"
         lang[f"fluid.primamateria.{fid}"] = f"Molten {display}"
@@ -179,6 +179,8 @@ def fluids():
         write_json(ASSETS / f"items/{fid}_bucket.json", {"model": {"type": "minecraft:model", "model": f"primamateria:item/{fid}_bucket"}})
         write_json(ASSETS / f"models/block/{fid}.json", {"textures": {"particle": f"primamateria:block/{fid}_still"}})
         write_json(ASSETS / f"models/item/{fid}_bucket.json", {"parent": "minecraft:item/generated", "textures": {"layer0": f"primamateria:item/{fid}_bucket"}})
+    lava = [f"primamateria:molten_{m}" for m in METALS] + [f"primamateria:flowing_molten_{m}" for m in METALS]
+    write_json(RES / "data/minecraft/tags/fluid/lava.json", {"replace": False, "values": lava})
     java.append(",\n".join(entries))
     java += ["    );", "", "    private Metals() {", "    }", "}", ""]
     out = ROOT / "common/src/main/java/com/itmecasey/primamateria/fluid/Metals.java"

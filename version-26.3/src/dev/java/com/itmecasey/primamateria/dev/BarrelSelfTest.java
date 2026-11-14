@@ -152,7 +152,7 @@ final class BarrelSelfTest {
                 && HopperBlockEntity.addItem(null, wood, stack(Ids.STONE_MEAL, 1), Direction.UP).isEmpty()
                 && wood.state().stage() == BarrelView.Stage.SOAKING && wood.state().amount() == 750, "soaking " + wood.state().amount());
         SelfTest.verdict("a_soaking_barrel_refuses_buckets_and_a_second_soak", wood.state().soakItem().equals("primamateria:stone_meal")
-                && !wood.canPlaceItem(0, stack(Ids.STONE_MEAL, 1)) && BarrelLogic.scoop(level, wood) == null, "busy");
+                && !wood.canPlaceItem(0, stack(Ids.STONE_MEAL, 1)) && !BarrelLogic.scoop(level, wood, player, InteractionHand.MAIN_HAND), "busy");
         finish(level, wood);
         HopperBlockEntity hopper = (HopperBlockEntity) level.getBlockEntity(pos.below());
         boolean sucked = HopperBlockEntity.suckInItems(level, hopper);

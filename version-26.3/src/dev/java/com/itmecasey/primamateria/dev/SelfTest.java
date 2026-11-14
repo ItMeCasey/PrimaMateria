@@ -120,7 +120,7 @@ public final class SelfTest {
             verdict("sound_registered_" + name, BuiltInRegistries.SOUND_EVENT.containsKey(ModContent.id(name)), name);
         }
         verdict("creative_tab_registered", BuiltInRegistries.CREATIVE_MODE_TAB.containsKey(ModContent.id(Ids.CREATIVE_TAB)), Ids.CREATIVE_TAB);
-        verdict("id_counts", ModContent.BLOCKS.size() == 12 && ModContent.ITEMS.size() == 12 + 29,
+        verdict("id_counts", ModContent.BLOCKS.size() == 12 && ModContent.ITEMS.size() == 12 + 29 - 3 + com.itmecasey.primamateria.fluid.Metals.ALL.size(),
                 ModContent.BLOCKS.size() + " blocks, " + ModContent.ITEMS.size() + " items, " + ModContent.SOUNDS.size() + " sounds");
     }
 

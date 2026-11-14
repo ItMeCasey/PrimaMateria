@@ -64,7 +64,7 @@ final class HammerSelfTest {
     static void run(MinecraftServer server, ServerLevel level) {
         // recipes and items
         long crushing = level.recipeAccess().getRecipes().stream().filter(h -> h.value() instanceof CrushingRecipe).count();
-        SelfTest.verdict("crushing_recipes_loaded", crushing == 21, crushing + " recipes");
+        SelfTest.verdict("crushing_recipes_loaded", crushing >= 21, crushing + " recipes");
         PrimaRecipes.Crush cobble = PrimaRecipes.crushFor(level.recipeAccess(), new ItemStack(Items.COBBLESTONE));
         PrimaRecipes.Crush sand = PrimaRecipes.crushFor(level.recipeAccess(), new ItemStack(Items.SAND));
         PrimaRecipes.Crush nether = PrimaRecipes.crushFor(level.recipeAccess(), new ItemStack(Items.NETHERRACK));

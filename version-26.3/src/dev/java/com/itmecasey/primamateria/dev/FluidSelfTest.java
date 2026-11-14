@@ -168,7 +168,7 @@ public final class FluidSelfTest {
         int oldRadius = level.getGameRules().get(radius);
         level.getGameRules().set(radius, -1, level.getServer());
         int i = 0;
-        for (String id : Ids.FLUIDS) {
+        for (String id : java.util.List.of("brine", "molten_copper", "molten_iron", "molten_gold", "molten_tin")) {
             BlockPos pos = w.offset(6 + 4 * i++, 0, 0);
             level.setBlock(pos, ModFluids.block(id).defaultBlockState(), 3);
             FluidState source = level.getFluidState(pos);

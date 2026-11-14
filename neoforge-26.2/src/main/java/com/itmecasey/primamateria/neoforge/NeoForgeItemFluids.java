@@ -42,7 +42,10 @@ final class NeoForgeItemFluids implements ItemFluids.Access {
         if (copy.isEmpty() || f.isEmpty()) {
             return false;
         }
-        ResourceHandler<FluidResource> handler = handler(ItemAccess.forStack(copy));
+        // a slot of a one-item inventory: unlike a bare stack it can swap a bucket for a filled one
+        net.minecraft.core.NonNullList<ItemStack> slot = net.minecraft.core.NonNullList.withSize(1, ItemStack.EMPTY);
+        slot.set(0, copy);
+        ResourceHandler<FluidResource> handler = handler(ItemAccess.forHandlerIndex(new net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler(slot), 0));
         if (handler == null) {
             return false;
         }

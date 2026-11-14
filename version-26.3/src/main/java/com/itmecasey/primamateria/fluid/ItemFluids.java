@@ -81,6 +81,11 @@ public final class ItemFluids {
     private ItemFluids() {
     }
 
+    /** The game's own bucket handling, for loaders whose item fluid handler is not available. */
+    public static Access vanilla() {
+        return VANILLA;
+    }
+
     /** Installed by the loader entry class. */
     public static void install(Access loader) {
         access = loader;
