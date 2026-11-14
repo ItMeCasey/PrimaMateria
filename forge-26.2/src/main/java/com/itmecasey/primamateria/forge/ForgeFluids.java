@@ -3,6 +3,7 @@ package com.itmecasey.primamateria.forge;
 import com.itmecasey.primamateria.Ids;
 import com.itmecasey.primamateria.fluid.FluidLook;
 import com.itmecasey.primamateria.fluid.ModFluids;
+import com.itmecasey.primamateria.fluid.MoltenBehavior;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -87,173 +88,117 @@ public final class ForgeFluids implements ModFluids.Factory {
         return new FluidType(p);
     }
 
-    // ---- brine: water's fluid class ----
+    // ---- the fluids: the loader's own flowing fluid class, with its bucket and block in the Properties ----
 
     private static Item bucket(String id) {
         return ModFluids.bucket(id);
     }
 
-    private static final class BrineSource extends WaterFluid.Source {
-        private final String id;
+    private static net.minecraftforge.fluids.ForgeFlowingFluid.Properties props(String id) {
+        net.minecraftforge.fluids.ForgeFlowingFluid.Properties p = new net.minecraftforge.fluids.ForgeFlowingFluid.Properties(() -> type(id), () -> ModFluids.source(id), () -> ModFluids.flowing(id))
+                .bucket(() -> bucket(id)).block(() -> ModFluids.block(id));
+        if (ModFluids.isMolten(id)) {
+            // lava's numbers: slow, short, heavy
+            p.slopeFindDistance(2).levelDecreasePerBlock(2).tickRate(30).explosionResistance(100F);
+        }
+        return p;
+    }
 
+    /** Brine: the loader's flowing fluid with water's numbers (slope 4, drop 1, tick 5, its type makes it act as water). */
+    private static final class BrineSource extends net.minecraftforge.fluids.ForgeFlowingFluid.Source {
         BrineSource(String id) {
-            this.id = id;
-        }
-
-        @Override
-        public FluidType getFluidType() {
-            return type(id);
-        }
-
-        @Override
-        public Fluid getSource() {
-            return ModFluids.source(id);
-        }
-
-        @Override
-        public Fluid getFlowing() {
-            return ModFluids.flowing(id);
-        }
-
-        @Override
-        public Item getBucket() {
-            return bucket(id);
-        }
-
-        @Override
-        public BlockState createLegacyBlock(FluidState state) {
-            return ModFluids.block(id).defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
-        }
-
-        @Override
-        public boolean isSame(Fluid fluid) {
-            return fluid == getSource() || fluid == getFlowing();
+            super(props(id));
         }
     }
 
-    private static final class BrineFlowing extends WaterFluid.Flowing {
-        private final String id;
-
+    private static final class BrineFlowing extends net.minecraftforge.fluids.ForgeFlowingFluid.Flowing {
         BrineFlowing(String id) {
-            this.id = id;
-        }
-
-        @Override
-        public FluidType getFluidType() {
-            return type(id);
-        }
-
-        @Override
-        public Fluid getSource() {
-            return ModFluids.source(id);
-        }
-
-        @Override
-        public Fluid getFlowing() {
-            return ModFluids.flowing(id);
-        }
-
-        @Override
-        public Item getBucket() {
-            return bucket(id);
-        }
-
-        @Override
-        public BlockState createLegacyBlock(FluidState state) {
-            return ModFluids.block(id).defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
-        }
-
-        @Override
-        public boolean isSame(Fluid fluid) {
-            return fluid == getSource() || fluid == getFlowing();
+            super(props(id));
         }
     }
 
-    // ---- molten metals: lava's fluid class ----
-
-    private static final class MoltenSource extends LavaFluid.Source {
-        private final String id;
-
+    /** A molten metal: the loader's flowing fluid plus lava's fire and stone rules (see {@code MoltenBehavior}). */
+    private static final class MoltenSource extends net.minecraftforge.fluids.ForgeFlowingFluid.Source {
         MoltenSource(String id) {
-            this.id = id;
+            super(props(id));
         }
 
         @Override
-        public FluidType getFluidType() {
-            return type(id);
+        public void animateTick(net.minecraft.world.level.Level level, BlockPos pos, FluidState state, net.minecraft.util.RandomSource random) {
+            MoltenBehavior.animateTick(level, pos, random);
         }
 
         @Override
-        public Fluid getSource() {
-            return ModFluids.source(id);
+        public void randomTick(ServerLevel level, BlockPos pos, FluidState state, net.minecraft.util.RandomSource random) {
+            MoltenBehavior.randomTick(level, pos, random);
         }
 
         @Override
-        public Fluid getFlowing() {
-            return ModFluids.flowing(id);
+        protected boolean isRandomlyTicking() {
+            return true;
         }
 
         @Override
-        public Item getBucket() {
-            return bucket(id);
+        protected void spreadTo(net.minecraft.world.level.LevelAccessor level, BlockPos pos, BlockState state, net.minecraft.core.Direction direction, FluidState target) {
+            if (!MoltenBehavior.spreadTo(level, pos, state, direction)) {
+                super.spreadTo(level, pos, state, direction, target);
+            }
         }
 
         @Override
-        public BlockState createLegacyBlock(FluidState state) {
-            return ModFluids.block(id).defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
+        protected void entityInside(net.minecraft.world.level.Level level, BlockPos pos, net.minecraft.world.entity.Entity entity,
+                                    net.minecraft.world.entity.InsideBlockEffectApplier applier) {
+            applier.apply(net.minecraft.world.entity.InsideBlockEffectType.CLEAR_FREEZE);
+            applier.apply(net.minecraft.world.entity.InsideBlockEffectType.LAVA_IGNITE);
+            applier.runAfter(net.minecraft.world.entity.InsideBlockEffectType.LAVA_IGNITE, net.minecraft.world.entity.Entity::lavaHurt);
         }
 
         @Override
-        public boolean isSame(Fluid fluid) {
-            return fluid == getSource() || fluid == getFlowing();
-        }
-
-        @Override
-        protected boolean canConvertToSource(ServerLevel level) {
-            return false;
+        protected boolean canBeReplacedWith(FluidState state, net.minecraft.world.level.BlockGetter level, BlockPos pos, Fluid other,
+                                            net.minecraft.core.Direction direction) {
+            return state.getHeight(level, pos) >= 0.44444445F && other.is(net.minecraft.tags.FluidTags.WATER);
         }
     }
 
-    private static final class MoltenFlowing extends LavaFluid.Flowing {
-        private final String id;
-
+    private static final class MoltenFlowing extends net.minecraftforge.fluids.ForgeFlowingFluid.Flowing {
         MoltenFlowing(String id) {
-            this.id = id;
+            super(props(id));
         }
 
         @Override
-        public FluidType getFluidType() {
-            return type(id);
+        public void animateTick(net.minecraft.world.level.Level level, BlockPos pos, FluidState state, net.minecraft.util.RandomSource random) {
+            MoltenBehavior.animateTick(level, pos, random);
         }
 
         @Override
-        public Fluid getSource() {
-            return ModFluids.source(id);
+        public void randomTick(ServerLevel level, BlockPos pos, FluidState state, net.minecraft.util.RandomSource random) {
+            MoltenBehavior.randomTick(level, pos, random);
         }
 
         @Override
-        public Fluid getFlowing() {
-            return ModFluids.flowing(id);
+        protected boolean isRandomlyTicking() {
+            return true;
         }
 
         @Override
-        public Item getBucket() {
-            return bucket(id);
+        protected void spreadTo(net.minecraft.world.level.LevelAccessor level, BlockPos pos, BlockState state, net.minecraft.core.Direction direction, FluidState target) {
+            if (!MoltenBehavior.spreadTo(level, pos, state, direction)) {
+                super.spreadTo(level, pos, state, direction, target);
+            }
         }
 
         @Override
-        public BlockState createLegacyBlock(FluidState state) {
-            return ModFluids.block(id).defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
+        protected void entityInside(net.minecraft.world.level.Level level, BlockPos pos, net.minecraft.world.entity.Entity entity,
+                                    net.minecraft.world.entity.InsideBlockEffectApplier applier) {
+            applier.apply(net.minecraft.world.entity.InsideBlockEffectType.CLEAR_FREEZE);
+            applier.apply(net.minecraft.world.entity.InsideBlockEffectType.LAVA_IGNITE);
+            applier.runAfter(net.minecraft.world.entity.InsideBlockEffectType.LAVA_IGNITE, net.minecraft.world.entity.Entity::lavaHurt);
         }
 
         @Override
-        public boolean isSame(Fluid fluid) {
-            return fluid == getSource() || fluid == getFlowing();
-        }
-
-        @Override
-        protected boolean canConvertToSource(ServerLevel level) {
-            return false;
+        protected boolean canBeReplacedWith(FluidState state, net.minecraft.world.level.BlockGetter level, BlockPos pos, Fluid other,
+                                            net.minecraft.core.Direction direction) {
+            return state.getHeight(level, pos) >= 0.44444445F && other.is(net.minecraft.tags.FluidTags.WATER);
         }
     }
 }

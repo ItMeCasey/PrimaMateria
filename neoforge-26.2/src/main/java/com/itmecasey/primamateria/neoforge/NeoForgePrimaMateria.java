@@ -39,7 +39,7 @@ public final class NeoForgePrimaMateria {
         com.itmecasey.primamateria.fluid.ItemFluids.install(new NeoForgeItemFluids());
         modBus.addListener(NeoForgePrimaMateria::register);
         modBus.addListener(NeoForgePrimaMateria::capabilities);
-        modBus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent e) -> e.enqueueWork(com.itmecasey.primamateria.fluid.FluidDispense::register));
+        modBus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent e) -> e.enqueueWork(() -> com.itmecasey.primamateria.fluid.FluidDispense.register(net.neoforged.neoforge.transfer.fluid.DispenseFluidContainer.getInstance())));
         modBus.addListener(NeoForgePrimaMateria::payloads);
         NeoForge.EVENT_BUS.addListener((AddServerReloadListenersEvent e) -> e.addListener(ModContent.id("data"), new PrimaReload()));
         // players of a dedicated server get the recipe lookup when they join and after every reload, before tags and recipes

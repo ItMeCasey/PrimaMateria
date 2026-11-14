@@ -48,7 +48,7 @@ public final class ForgePrimaMateria {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         RegisterEvent.getBus(context.getModBusGroup()).addListener(ForgePrimaMateria::register);
         net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent.getBus(context.getModBusGroup())
-                .addListener((net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent e) -> e.enqueueWork(com.itmecasey.primamateria.fluid.FluidDispense::register));
+                .addListener((net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent e) -> e.enqueueWork(ForgePrimaMateria::registerDispensers));
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient()) {
             ForgeClient.install(context);
             ForgeFluidClient.install();
@@ -79,6 +79,17 @@ public final class ForgePrimaMateria {
     }
 
     /** The powered drive takes energy from every side. */
+    /**
+     * The loader's dispenser behavior for fluid containers. This Forge build offers no item fluid handler for any item, and its
+     * behavior then swallows the bucket, so a bucket without a handler goes to the game's own bucket behavior instead.
+     */
+    private static void registerDispensers() {
+        net.minecraft.core.dispenser.DispenseItemBehavior loader = net.minecraftforge.fluids.DispenseFluidContainer.getInstance();
+        net.minecraft.core.dispenser.DispenseItemBehavior game = net.minecraft.world.level.block.DispenserBlock.DISPENSER_REGISTRY.get(net.minecraft.world.item.Items.LAVA_BUCKET);
+        com.itmecasey.primamateria.fluid.FluidDispense.register((source, stack) ->
+                stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent() || game == null ? loader.dispense(source, stack) : game.dispense(source, stack));
+    }
+
     private static void attach(AttachCapabilitiesEvent.BlockEntities event) {
         BlockEntity be = event.getObject();
         if (be instanceof com.itmecasey.primamateria.blockentity.BarrelBlockEntity
