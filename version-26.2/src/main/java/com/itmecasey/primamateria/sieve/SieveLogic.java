@@ -18,14 +18,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
@@ -108,7 +105,6 @@ public final class SieveLogic {
         state.setMesh(mesh.item(), mesh.tier(), mesh.speed());
         giveBack(player, old);
         consume(player, stack);
-        level.playSound(null, pos, SoundEvents.CHAIN_PLACE, SoundSource.BLOCKS, 0.8F, 1.1F);
         be.changed();
     }
 
@@ -116,7 +112,6 @@ public final class SieveLogic {
         ItemStack back = stackOf(be.state().meshId(), 1);
         be.state().setMesh("", 0, 1.0);
         giveBack(player, back);
-        level.playSound(null, pos, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS, 0.8F, 1.1F);
         be.changed();
     }
 
@@ -124,7 +119,6 @@ public final class SieveLogic {
     private static void putIn(ServerLevel level, BlockPos pos, SieveBlockEntity origin, Player player, ItemStack stack) {
         if (insert(level, origin, stack, player)) {
             consume(player, stack);
-            playPlace(level, pos, stack);
         }
         refillLinked(level, pos, player, stack);
     }
@@ -186,17 +180,12 @@ public final class SieveLogic {
     private static void shakeOne(ServerLevel level, SieveBlockEntity be, @Nullable Player player, ItemStack hand, long now, boolean sound) {
         SiftState state = be.state();
         BlockPos pos = be.getBlockPos();
-        float before = state.progress();
         SiftState.Shake result = state.shake(now);
         be.setMoving(true);
-        if (sound) {
-            playShake(level, pos, state.block(), before);
-        }
         if (result == SiftState.Shake.DONE) {
             finish(level, be, player);
             if (player != null && !hand.isEmpty() && be.state().canAccept() && insert(level, be, hand, player)) {
                 consume(player, hand);
-                playPlace(level, pos, hand);
             }
         }
         be.changed();
@@ -238,7 +227,6 @@ public final class SieveLogic {
             }
         }
         deliver(level, pos, player, drops, residue);
-        level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 0.7F, 0.9F);
     }
 
     /**
@@ -259,21 +247,5 @@ public final class SieveLogic {
 
     private static void consume(Player player, ItemStack stack) {
         Transfer.consume(player, stack);
-    }
-
-    private static void playPlace(ServerLevel level, BlockPos pos, ItemStack stack) {
-        if (stack.getItem() instanceof BlockItem blockItem) {
-            level.playSound(null, pos, blockItem.getBlock().defaultBlockState().getSoundType().getPlaceSound(), SoundSource.BLOCKS, 0.6F, 0.8F);
-        }
-    }
-
-    /** The shake sound is the sound of the block being sifted, softer as the layer thins. */
-    private static void playShake(ServerLevel level, BlockPos pos, String blockId, float progress) {
-        ItemStack stack = stackOf(blockId, 1);
-        if (stack.getItem() instanceof BlockItem blockItem) {
-            float volume = 0.25F + 0.45F * (1F - progress);
-            level.playSound(null, pos, blockItem.getBlock().defaultBlockState().getSoundType().getHitSound(), SoundSource.BLOCKS, volume,
-                    0.9F + level.getRandom().nextFloat() * 0.2F);
-        }
     }
 }

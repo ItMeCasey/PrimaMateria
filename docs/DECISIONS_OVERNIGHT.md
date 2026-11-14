@@ -10,7 +10,7 @@ Casey was asleep and asked for Prima Materia to be completed and released as 202
 | 2 | A sieve holds one block at a time, no storage; sieves within `sieve.link_radius` (default 1) work together | Casey's answer on 2026-11-13 | Config `sieve.link`, `sieve.link_radius` |
 | 3 | Hand shake rate is one shake per 4 ticks | A held use button repeats at that rate in the game | `SiftMath.HAND_MIN_TICKS` |
 | 4 | Pacing targets (iron about 45 minutes, a Nether portal about 2 hours, diamonds about 3 hours) are kept as designed | No play data yet | Edit the drop tables (data files) and the config |
-| 5 | Shaking, placing and finishing use the vanilla sound of the block being sifted | Our own sounds are not recorded; the animation branch may add some | `SieveLogic` sound helpers |
+| 5 | Sieve sounds are our own, played by the client renderer from the sieve state; the server plays none for the sieve (no doubled sounds). Drive sounds (crank, tick) have files but no trigger yet. | The animation branch ships them | `client/SieveFx` |
 | 6 | The current 16x16 textures and the stand-in or Blockbench models are treated as approved | Casey said the PM could decide | Redraw any file; nothing in code depends on a texture |
 | 7 | Adding a sifting material is only a recipe file: no id, texture or tier is written per material anywhere in code | Casey's requirement | Self test `pack_added_material_sifts_and_drops_with_no_code_change` proves it |
 | 8 | Recipe results are kept as item ids (text), so a recipe for another mod's item loads without that mod and is skipped when the item is missing | Optional compat files | `SiftingRecipe` |
