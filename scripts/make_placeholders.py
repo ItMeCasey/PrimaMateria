@@ -1,91 +1,117 @@
-"""Writes the scaffold's placeholder assets and data for every id: 32x32 textures, block and item models, blockstates, item
-definitions, the language file, loot tables (both layouts) and the mineable tags.
+"""Writes the scaffold's stand-in assets and data for every id: block models, blockstates, item definitions and item models,
+the language file, loot tables (both layouts) and the mineable tags.
 
-These are stand-ins so the game runs with every block and item visible from day one. Workstream B replaces the models and
-textures with the real ones (docs/ART.md) and then deletes the matching entries here, or stops running this script.
-It never overwrites a file that exists unless --force is given, so real art is safe.
+Block models here are simple stand-ins built only from Minecraft's own textures, by reference (`minecraft:block/...`), so they
+look like the game and follow the player's resource pack. Workstream B replaces them with Blockbench models that use the same
+vanilla textures (docs/ART.md). Textures the game has no equivalent for are drawn by scripts/make_textures.py.
 
-Usage: python scripts/make_placeholders.py [--force]      (needs Pillow)
+It never overwrites a file that exists unless --force is given.
+
+Usage: python scripts/make_placeholders.py [--force]
 """
 import json
 import sys
 from pathlib import Path
-
-from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "common/src/main/resources/assets/primamateria"
 DATA = ROOT / "common/src/main/resources/data"
 FORCE = "--force" in sys.argv
 MOD = "primamateria"
+MC = "minecraft:block/"
 
-# Five-tone ramps from docs/ART.md, darkest to lightest.
-RAMPS = {
-    "wood": ["#3b2a1c", "#5a4028", "#7d5c38", "#a37f4f", "#c8a56e"],
-    "stone": ["#3d3f48", "#555862", "#71747e", "#9396a0", "#b6b8c0"],
-    "clay": ["#6b3526", "#8f4a35", "#b0654a", "#cb8563", "#e0a888"],
-    "raw_clay": ["#6f7480", "#8a909c", "#a4abb6", "#bfc5ce", "#d9dde3"],
-    "brass": ["#5a4318", "#8a6a24", "#b8923a", "#dcbb5c", "#f3df94"],
-    "copper": ["#6a3423", "#9b4f32", "#c56f45", "#e39766", "#f5c29a"],
-    "iron": ["#3a3d45", "#5b5f69", "#858a94", "#b1b5bd", "#dadde2"],
-    "gold": ["#7a5410", "#b07d18", "#dba928", "#f2cf55", "#fbeba0"],
-    "fiber": ["#5a5930", "#7c7a42", "#a19e58", "#c2bf7c", "#dedba8"],
-    "violet": ["#2e2350", "#4c3a82", "#7458b8", "#a183e0", "#cdb8f5"],
-    "teal": ["#1d4a55", "#2c6f7a", "#45979c", "#78c0bd", "#b5e3db"],
-    "diamond": ["#1c5a63", "#2f8f96", "#55c4c4", "#8fe6df", "#d2faf4"],
-    "netherite": ["#1f1b1f", "#33292e", "#4a3f44", "#665a5f", "#8a7d80"],
-    "quartz": ["#8f857c", "#b8aea4", "#d9d1c8", "#ede8e1", "#fbf9f5"],
-    "lapis": ["#12265e", "#1c3d92", "#2c5bc4", "#5a86e0", "#9db8f2"],
-    "emerald": ["#0d4f2a", "#168a44", "#2cc264", "#6fe296", "#b9f6cd"],
-    "scoria": ["#2a1414", "#48201e", "#6b302a", "#8c463a", "#ab6452"],
-    "pale": ["#a59f78", "#c4be96", "#dcd7b0", "#ece8c8", "#f8f5e2"],
-    "meal": ["#74767c", "#94969c", "#b0b2b7", "#c8cace", "#dfe0e3"],
-}
 
-# id: (display name, base ramp, trim ramp, mining tool)
+def box(frm, to, tex, faces="north south east west up down"):
+    return {"from": frm, "to": to, "faces": {f: {"texture": "#" + tex} for f in faces.split()}}
+
+
+def tub(wall, floor, inside):
+    """An open tub 14 wide and 14 high: four walls, a floor 2 up."""
+    return [
+        box([1, 0, 1], [15, 14, 3], wall), box([1, 0, 13], [15, 14, 15], wall),
+        box([1, 0, 3], [3, 14, 13], wall), box([13, 0, 3], [15, 14, 13], wall),
+        box([3, 1, 3], [13, 2, 13], floor, "up down"),
+        box([3, 2, 3], [13, 14, 3.01], inside, "south"), box([3, 2, 12.99], [13, 14, 13], inside, "north"),
+        box([3, 2, 3], [3.01, 14, 13], inside, "east"), box([12.99, 2, 3], [13, 14, 13], inside, "west"),
+    ]
+
+
+# id: (display name, mining tool, model or None for a plain cube of our own texture)
 BLOCKS = {
-    "sieve": ("Sieve", "wood", "brass", "axe"),
-    "wooden_barrel": ("Wooden Barrel", "wood", "brass", "axe"),
-    "clay_barrel": ("Clay Barrel", "clay", "iron", "pickaxe"),
-    "crucible": ("Crucible", "clay", "clay", "pickaxe"),
-    "casting_tray": ("Casting Tray", "clay", "stone", "pickaxe"),
-    "windup_drive": ("Windup Drive", "wood", "brass", "axe"),
-    "furnace_drive": ("Furnace Drive", "iron", "brass", "pickaxe"),
-    "flux_drive": ("Flux Drive", "iron", "violet", "pickaxe"),
-    "stamp_mill": ("Stamp Mill", "wood", "stone", "axe"),
-    "stone_meal": ("Stone Meal", "meal", None, "shovel"),
-    "scoria": ("Scoria", "scoria", None, "shovel"),
-    "pale_sand": ("Pale Sand", "pale", None, "shovel"),
+    "sieve": ("Sieve", "axe", {
+        "textures": {"particle": MC + "oak_planks", "wood": MC + "oak_planks", "leg": MC + "stripped_oak_log"},
+        "elements": [
+            box([1, 0, 1], [3, 12, 3], "leg"), box([13, 0, 1], [15, 12, 3], "leg"),
+            box([1, 0, 13], [3, 12, 15], "leg"), box([13, 0, 13], [15, 12, 15], "leg"),
+            box([0, 12, 0], [16, 16, 2], "wood"), box([0, 12, 14], [16, 16, 16], "wood"),
+            box([0, 12, 2], [2, 16, 14], "wood"), box([14, 12, 2], [16, 16, 14], "wood"),
+        ]}),
+    "wooden_barrel": ("Wooden Barrel", "axe", {
+        "textures": {"particle": MC + "barrel_side", "wall": MC + "barrel_side", "floor": MC + "barrel_bottom", "in": MC + "spruce_planks"},
+        "elements": tub("wall", "floor", "in")}),
+    "clay_barrel": ("Clay Barrel", "pickaxe", {
+        "textures": {"particle": MC + "terracotta", "wall": MC + "terracotta", "floor": MC + "terracotta", "in": MC + "brown_terracotta"},
+        "elements": tub("wall", "floor", "in")}),
+    "crucible": ("Crucible", "pickaxe", {
+        "textures": {"particle": MC + "terracotta", "wall": MC + "terracotta", "in": MC + "brown_terracotta"},
+        "elements": [
+            box([2, 0, 2], [5, 3, 5], "wall"), box([11, 0, 2], [14, 3, 5], "wall"),
+            box([2, 0, 11], [5, 3, 14], "wall"), box([11, 0, 11], [14, 3, 14], "wall"),
+            box([1, 3, 1], [15, 5, 15], "wall"),
+            box([1, 5, 1], [15, 16, 3], "wall"), box([1, 5, 13], [15, 16, 15], "wall"),
+            box([1, 5, 3], [3, 16, 13], "wall"), box([13, 5, 3], [15, 16, 13], "wall"),
+            box([3, 5, 3], [13, 5.01, 13], "in", "up"),
+        ]}),
+    "casting_tray": ("Casting Tray", "pickaxe", {
+        "textures": {"particle": MC + "terracotta", "wall": MC + "terracotta", "in": MC + "brown_terracotta"},
+        "elements": [
+            box([1, 0, 1], [15, 2, 15], "wall"),
+            box([1, 2, 1], [15, 4, 3], "wall"), box([1, 2, 13], [15, 4, 15], "wall"),
+            box([1, 2, 3], [3, 4, 13], "wall"), box([13, 2, 3], [15, 4, 13], "wall"),
+            box([3, 2, 3], [13, 2.01, 13], "in", "up"),
+        ]}),
+    "windup_drive": ("Windup Drive", "axe", {
+        "textures": {"particle": MC + "oak_planks", "wood": MC + "oak_planks", "stone": MC + "smooth_stone", "metal": MC + "gold_block",
+                     "key": MC + "iron_block"},
+        "elements": [
+            box([0, 0, 0], [16, 4, 16], "stone"), box([1, 4, 1], [15, 16, 15], "wood"),
+            box([5, 7, 0], [11, 13, 1], "metal"), box([7, 9, 15], [9, 11, 16], "key"), box([5, 9.5, 16], [11, 10.5, 16.01], "key", "south"),
+        ]}),
+    "furnace_drive": ("Furnace Drive", "pickaxe", {
+        "parent": "minecraft:block/orientable",
+        "textures": {"top": MC + "blast_furnace_top", "front": MC + "blast_furnace_front", "side": MC + "blast_furnace_side"}}),
+    "powered_drive": ("Powered Drive", "pickaxe", {
+        "textures": {"particle": MC + "iron_block", "case": MC + "iron_block", "stone": MC + "smooth_stone", "strip": MC + "redstone_block"},
+        "elements": [
+            box([0, 0, 0], [16, 4, 16], "stone"), box([1, 4, 1], [15, 16, 15], "case"),
+            box([3, 8, 0], [13, 11, 1], "strip"),
+        ]}),
+    "auto_hammer": ("Auto Hammer", "axe", {
+        "textures": {"particle": MC + "oak_planks", "wood": MC + "oak_planks", "post": MC + "stripped_oak_log", "stone": MC + "smooth_stone",
+                     "head": MC + "iron_block"},
+        "elements": [
+            box([0, 0, 0], [16, 3, 16], "stone"),
+            box([1, 3, 6], [3, 16, 10], "post"), box([13, 3, 6], [15, 16, 10], "post"),
+            box([3, 13, 7], [13, 15, 9], "wood"),
+            box([7, 8, 7], [9, 13, 9], "wood"), box([5, 4, 5], [11, 8, 11], "head"),
+        ]}),
+    "stone_meal": ("Stone Meal", "shovel", None),
+    "scoria": ("Scoria", "shovel", None),
+    "pale_sand": ("Pale Sand", "shovel", None),
 }
 
-# id: (display name, ramp, shape, handheld)
+# id: (display name, held like a tool)
 ITEMS = {
-    "wooden_hammer": ("Wooden Hammer", "wood", "hammer", True),
-    "stone_hammer": ("Stone Hammer", "stone", "hammer", True),
-    "copper_hammer": ("Copper Hammer", "copper", "hammer", True),
-    "iron_hammer": ("Iron Hammer", "iron", "hammer", True),
-    "diamond_hammer": ("Diamond Hammer", "diamond", "hammer", True),
-    "netherite_hammer": ("Netherite Hammer", "netherite", "hammer", True),
-    "cloth_mesh": ("Cloth Mesh", "fiber", "mesh", False),
-    "copper_mesh": ("Copper Mesh", "copper", "mesh", False),
-    "iron_mesh": ("Iron Mesh", "iron", "mesh", False),
-    "diamond_mesh": ("Diamond Mesh", "diamond", "mesh", False),
-    "netherite_mesh": ("Netherite Mesh", "netherite", "mesh", False),
-    "plant_fiber": ("Plant Fiber", "fiber", "heap", False),
-    "rock_chip": ("Rock Chip", "stone", "heap", False),
-    "copper_grains": ("Copper Grains", "copper", "heap", False),
-    "iron_grains": ("Iron Grains", "iron", "heap", False),
-    "gold_grains": ("Gold Grains", "gold", "heap", False),
-    "mineral_salt": ("Mineral Salt", "teal", "heap", False),
-    "quartz_seed": ("Quartz Seed", "quartz", "gem", False),
-    "amethyst_seed": ("Amethyst Seed", "violet", "gem", False),
-    "lapis_seed": ("Lapis Seed", "lapis", "gem", False),
-    "diamond_seed": ("Diamond Seed", "diamond", "gem", False),
-    "emerald_seed": ("Emerald Seed", "emerald", "gem", False),
-    "raw_crucible": ("Unfired Crucible", "raw_clay", "pot", False),
-    "raw_casting_tray": ("Unfired Casting Tray", "raw_clay", "tray", False),
-    "raw_clay_barrel": ("Unfired Clay Barrel", "raw_clay", "pot", False),
-    "brine_bucket": ("Brine Bucket", "teal", "pot", False),
+    "wooden_hammer": ("Wooden Hammer", True), "stone_hammer": ("Stone Hammer", True), "copper_hammer": ("Copper Hammer", True),
+    "iron_hammer": ("Iron Hammer", True), "diamond_hammer": ("Diamond Hammer", True), "netherite_hammer": ("Netherite Hammer", True),
+    "cloth_mesh": ("Cloth Mesh", False), "copper_mesh": ("Copper Mesh", False), "iron_mesh": ("Iron Mesh", False),
+    "diamond_mesh": ("Diamond Mesh", False), "netherite_mesh": ("Netherite Mesh", False),
+    "plant_fiber": ("Plant Fiber", False), "rock_chip": ("Rock Chip", False), "copper_dust": ("Copper Dust", False),
+    "iron_dust": ("Iron Dust", False), "gold_dust": ("Gold Dust", False), "salt_dust": ("Salt Dust", False),
+    "quartz_seed": ("Quartz Seed", False), "amethyst_seed": ("Amethyst Seed", False), "lapis_seed": ("Lapis Seed", False),
+    "diamond_seed": ("Diamond Seed", False), "emerald_seed": ("Emerald Seed", False),
+    "raw_crucible": ("Unfired Crucible", False), "raw_casting_tray": ("Unfired Casting Tray", False),
+    "raw_clay_barrel": ("Unfired Clay Barrel", False), "brine_bucket": ("Brine Bucket", False),
 }
 
 EXTRA_LANG = {
@@ -98,80 +124,16 @@ EXTRA_LANG = {
     "generator.primamateria.void_island": "Void Island",
 }
 
-SHAPES = {
-    # 16x16 masks, doubled to 32x32. '#' body, '+' light, '-' dark.
-    "hammer": ["................", "......++++++....", ".....+######-...", ".....+######-...", ".....+######-...", ".....+######-...",
-               "......------....", "........=-......", "........=-......", "........=-......", "........=-......", "........=-......",
-               "........=-......", "........=-......", "................", "................"],
-    "mesh": ["................", "..============..", "..=+#+#+#+#+#=..", "..=#.#.#.#.#.=..", "..=+#+#+#+#+#=..", "..=#.#.#.#.#.=..",
-             "..=+#+#+#+#+#=..", "..=#.#.#.#.#.=..", "..=+#+#+#+#+#=..", "..=#.#.#.#.#.=..", "..=+#+#+#+#+#=..", "..=#.#.#.#.#.=..",
-             "..=+#+#+#+#+#=..", "..============..", "................", "................"],
-    "heap": ["................", "................", "................", "................", "................", "................",
-             "......++........", ".....+##-..++...", "....+####-+##-..", "...+######+###-.", "..+###########-.", "..+############-",
-             "..-------------.", "................", "................", "................"],
-    "gem": ["................", "................", "................", ".......++.......", "......+##-......", ".....+####-.....",
-            "....+######-....", "....+######-....", ".....+####-.....", "......+##-......", ".......--.......", "................",
-            "................", "................", "................", "................"],
-    "pot": ["................", "................", "...+........-...", "...+#......#-...", "...+#......#-...", "...+#......#-...",
-            "...+#......#-...", "...+#......#-...", "...+#......#-...", "...+##....##-...", "...+########-...", "....+######-....",
-            ".....------.....", "................", "................", "................"],
-    "tray": ["................", "................", "................", "................", "................", "................",
-             "................", ".+............-.", ".+############-.", ".+############-.", "..------------..", "................",
-             "................", "................", "................", "................"],
-}
+# How a model block sits in the hand and in a slot: the vanilla block item transforms.
+BLOCK_PARENT = "minecraft:block/block"
 
 
-def rgb(hex_color):
-    return tuple(int(hex_color[i:i + 2], 16) for i in (1, 3, 5)) + (255,)
-
-
-def write(path, content, binary=False):
+def write(path, content):
     if path.exists() and not FORCE:
         return False
     path.parent.mkdir(parents=True, exist_ok=True)
-    if binary:
-        content.save(path)
-    else:
-        path.write_text(json.dumps(content, indent=2) + "\n", encoding="utf-8", newline="\n")
+    path.write_text(json.dumps(content, indent=2) + "\n", encoding="utf-8", newline="\n")
     return True
-
-
-def block_texture(base, trim):
-    r = [rgb(c) for c in RAMPS[base]]
-    img = Image.new("RGBA", (32, 32), r[2])
-    px = img.load()
-    for i in range(32):
-        px[i, 0] = px[0, i] = r[3]
-        px[i, 31] = px[31, i] = r[1]
-    # a calm two-tone grain so full cubes are not flat
-    for y in range(2, 30, 4):
-        for x in range(2 + (y % 8), 30, 8):
-            px[x, y] = px[x + 1, y] = r[3]
-            px[x, y + 1] = px[x + 1, y + 1] = r[1]
-    if trim:
-        t = [rgb(c) for c in RAMPS[trim]]
-        for cx, cy in ((2, 2), (26, 2), (2, 26), (26, 26)):
-            for dx in range(4):
-                for dy in range(4):
-                    px[cx + dx, cy + dy] = t[2]
-            px[cx, cy] = px[cx + 1, cy] = px[cx, cy + 1] = t[4]
-            px[cx + 3, cy + 3] = px[cx + 2, cy + 3] = px[cx + 3, cy + 2] = t[0]
-    return img
-
-
-def item_texture(ramp, shape):
-    r = [rgb(c) for c in RAMPS[ramp]]
-    wood = [rgb(c) for c in RAMPS["wood"]]
-    key = {"#": r[2], "+": r[4], "-": r[0], "=": wood[2]}
-    img = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
-    px = img.load()
-    for y, row in enumerate(SHAPES[shape]):
-        for x, ch in enumerate(row):
-            if ch in key:
-                for dx in range(2):
-                    for dy in range(2):
-                        px[2 * x + dx, 2 * y + dy] = key[ch]
-    return img
 
 
 def loot(block_id, new_layout):
@@ -187,18 +149,20 @@ def main():
     made = 0
     lang = {}
     tools = {}
-    for bid, (name, base, trim, tool) in BLOCKS.items():
+    for bid, (name, tool, model) in BLOCKS.items():
         lang[f"block.{MOD}.{bid}"] = name
         tools.setdefault(tool, []).append(f"{MOD}:{bid}")
-        made += write(ASSETS / f"textures/block/{bid}.png", block_texture(base, trim), binary=True)
-        made += write(ASSETS / f"models/block/{bid}.json", {"parent": "minecraft:block/cube_all", "textures": {"all": f"{MOD}:block/{bid}"}})
+        if model is None:
+            model = {"parent": "minecraft:block/cube_all", "textures": {"all": f"{MOD}:block/{bid}"}}
+        elif "parent" not in model:
+            model = {"parent": BLOCK_PARENT, **model}
+        made += write(ASSETS / f"models/block/{bid}.json", model)
         made += write(ASSETS / f"blockstates/{bid}.json", {"variants": {"": {"model": f"{MOD}:block/{bid}"}}})
         made += write(ASSETS / f"items/{bid}.json", {"model": {"type": "minecraft:model", "model": f"{MOD}:block/{bid}"}})
         made += write(ROOT / f"version-26.2/src/main/resources/data/{MOD}/loot_table/blocks/{bid}.json", loot(bid, False))
         made += write(ROOT / f"version-26.3/src/main/resources/data/{MOD}/loot_table/blocks/{bid}.json", loot(bid, True))
-    for iid, (name, ramp, shape, handheld) in ITEMS.items():
+    for iid, (name, handheld) in ITEMS.items():
         lang[f"item.{MOD}.{iid}"] = name
-        made += write(ASSETS / f"textures/item/{iid}.png", item_texture(ramp, shape), binary=True)
         parent = "minecraft:item/handheld" if handheld else "minecraft:item/generated"
         made += write(ASSETS / f"models/item/{iid}.json", {"parent": parent, "textures": {"layer0": f"{MOD}:item/{iid}"}})
         made += write(ASSETS / f"items/{iid}.json", {"model": {"type": "minecraft:model", "model": f"{MOD}:item/{iid}"}})
@@ -207,7 +171,7 @@ def main():
     made += write(ASSETS / "sounds.json", {})
     for tool, values in tools.items():
         made += write(DATA / f"minecraft/tags/block/mineable/{tool}.json", {"replace": False, "values": values})
-    print(f"placeholders: {made} files written, {len(BLOCKS)} blocks, {len(ITEMS)} items")
+    print(f"stand-ins: {made} files written, {len(BLOCKS)} blocks, {len(ITEMS)} items")
 
 
 if __name__ == "__main__":

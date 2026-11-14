@@ -1,6 +1,157 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/block",
   "textures": {
-    "all": "primamateria:block/windup_drive"
-  }
+    "particle": "minecraft:block/oak_planks",
+    "wood": "minecraft:block/oak_planks",
+    "stone": "minecraft:block/smooth_stone",
+    "metal": "minecraft:block/gold_block",
+    "key": "minecraft:block/iron_block"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        4,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#stone"
+        },
+        "south": {
+          "texture": "#stone"
+        },
+        "east": {
+          "texture": "#stone"
+        },
+        "west": {
+          "texture": "#stone"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        4,
+        1
+      ],
+      "to": [
+        15,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#wood"
+        },
+        "south": {
+          "texture": "#wood"
+        },
+        "east": {
+          "texture": "#wood"
+        },
+        "west": {
+          "texture": "#wood"
+        },
+        "up": {
+          "texture": "#wood"
+        },
+        "down": {
+          "texture": "#wood"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        7,
+        0
+      ],
+      "to": [
+        11,
+        13,
+        1
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        9,
+        15
+      ],
+      "to": [
+        9,
+        11,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#key"
+        },
+        "south": {
+          "texture": "#key"
+        },
+        "east": {
+          "texture": "#key"
+        },
+        "west": {
+          "texture": "#key"
+        },
+        "up": {
+          "texture": "#key"
+        },
+        "down": {
+          "texture": "#key"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        9.5,
+        16
+      ],
+      "to": [
+        11,
+        10.5,
+        16.01
+      ],
+      "faces": {
+        "south": {
+          "texture": "#key"
+        }
+      }
+    }
+  ]
 }
