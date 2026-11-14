@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "primamateria:molten_copper",
+    "primamateria:molten_iron",
+    "primamateria:molten_gold",
+    "primamateria:flowing_molten_copper",
+    "primamateria:flowing_molten_iron",
+    "primamateria:flowing_molten_gold"
+  ]
+}

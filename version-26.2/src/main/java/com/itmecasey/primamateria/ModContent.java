@@ -181,7 +181,14 @@ public final class ModContent {
             return new HammerItem(material.applyToolProperties(props, HammerItem.MINEABLE, 3.0F + material.attackDamageBonus(), -3.2F, 0.0F)
                     .durability(Ids.HAMMER_DURABILITY.get(hammer)), hammer + 1);
         }
-        if (Ids.MESHES.contains(name) || name.equals(Ids.BRINE_BUCKET)) {
+        for (String fluid : Ids.FLUIDS) {
+            if (name.equals(fluid + "_bucket")) {
+                // a real bucket: it places and picks up the real fluid; it empties back to a vanilla bucket
+                return new net.minecraft.world.item.BucketItem(com.itmecasey.primamateria.fluid.ModFluids.source(fluid),
+                        props.craftRemainder(net.minecraft.world.item.Items.BUCKET).stacksTo(1));
+            }
+        }
+        if (Ids.MESHES.contains(name)) {
             return new Item(props.stacksTo(1));
         }
         return new Item(props);

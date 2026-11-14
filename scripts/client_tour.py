@@ -59,7 +59,8 @@ def tour(layer):
         latest.unlink()
     theme = ''
     # The client holds one of the global Gradle slots (at most 3 builds on this PC) for as long as it runs.
-    command = (r'set PRIMAMATERIA_SHOTS=1&& "' + BASH + r'" /c/Users/casey/.claude/tools/gradle-slot.sh ./gradlew runClient --no-daemon -q -PdevTools -PwindowSize=1904x1041')
+    mode = os.environ.get("PRIMA_TOUR", "1")  # "fluids" runs the fluid tour (FluidTour) instead of the sieve tour
+    command = (r'set PRIMAMATERIA_SHOTS=' + mode + r'&& "' + BASH + r'" /c/Users/casey/.claude/tools/gradle-slot.sh ./gradlew runClient --no-daemon -q -PdevTools -PwindowSize=1904x1041')
     start = time.time()
     subprocess.run(["powershell", "-NoProfile", "-File", LAUNCH, "-Run", "-WorkDir", str(folder), "-Command", command], check=True)
     done = False
@@ -79,7 +80,10 @@ def tour(layer):
     frames.mkdir(parents=True, exist_ok=True)
     names = sorted(p.name for p in shots.glob("*.png")) if shots.exists() else []
     for n in names:
-        shutil.copy2(shots / n, frames / n.replace("primamateria_", f"primamateria_{layer}{'-' + theme if theme else ''}_", 1))
+        if mode == "fluids":
+            shutil.copy2(shots / n, frames / n.replace("primamateria_fluids_", f"fluids_{layer}_", 1))
+        else:
+            shutil.copy2(shots / n, frames / n.replace("primamateria_", f"primamateria_{layer}{'-' + theme if theme else ''}_", 1))
     errors = [l for l in text.splitlines() if re.search(r"PRIMAMATERIA-SHOTS failed|ModLoadingException|Crash report saved|primamateria.*(Exception|Error)", l, re.I)]
     status = "TOUR PASS" if done and not errors else "TOUR FAIL"
     detail = "" if status == "TOUR PASS" else f": done={done} first_error={errors[:1]}"
