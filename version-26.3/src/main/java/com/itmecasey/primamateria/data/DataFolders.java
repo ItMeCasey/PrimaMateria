@@ -27,7 +27,8 @@ public final class DataFolders {
     public static List<Folder> all() {
         return List.of(
                 Meshes.FOLDER,
-                CompostValues.FOLDER
+                CompostValues.FOLDER,
+                HeatSources.FOLDER
         );
     }
 }

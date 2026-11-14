@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "minecraft:raw_copper",
+  "result": "primamateria:molten_copper",
+  "amount": 100
+}

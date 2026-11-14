@@ -45,6 +45,8 @@ public final class PrimaRecipes {
         out.accept("growing", GrowingRecipe.TYPE);
         out.accept("composting", CompostingRecipe.TYPE);
         out.accept("crushing", CrushingRecipe.TYPE);
+        out.accept("melting", MeltingRecipe.TYPE);
+        out.accept("casting", CastingRecipe.TYPE);
     }
 
     public static void registerSerializers(BiConsumer<String, RecipeSerializer<?>> out) {
@@ -56,6 +58,8 @@ public final class PrimaRecipes {
         out.accept("growing", GrowingRecipe.SERIALIZER);
         out.accept("composting", CompostingRecipe.SERIALIZER);
         out.accept("crushing", CrushingRecipe.SERIALIZER);
+        out.accept("melting", MeltingRecipe.SERIALIZER);
+        out.accept("casting", CastingRecipe.SERIALIZER);
     }
 
     /** Forgets the lookup built from the old recipes (called after every datapack reload). */
@@ -63,6 +67,7 @@ public final class PrimaRecipes {
         INDEX.clear();
         BarrelRecipes.clear();
         CRUSH_INDEX.clear();
+        CrucibleRecipes.clear();
     }
 
     /** Every sifting entry that applies to a stack of this item. Results naming a missing item are left out. */

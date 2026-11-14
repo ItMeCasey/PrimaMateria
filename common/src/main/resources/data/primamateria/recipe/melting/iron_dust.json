@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "primamateria:iron_dust",
+  "result": "primamateria:molten_iron",
+  "amount": 20
+}

@@ -59,7 +59,8 @@ def patch_drive_fuel():
 PATCHES = [patch_drive_fuel,
            lambda: patch_block_codec("SieveBlock", "SieveBlock"), lambda: patch_block_codec("BarrelBlock", "BarrelBlock"),
            lambda: patch_block_codec("AutoHammerBlock", "AutoHammerBlock"), lambda: patch_block_codec("DriveBlock", "DriveBlock"),
-           lambda: patch_block_codec("SievePreviewBlock", "SievePreviewBlock")]
+           lambda: patch_block_codec("SievePreviewBlock", "SievePreviewBlock"),
+           lambda: patch_block_codec("CrucibleBlock", "CrucibleBlock"), lambda: patch_block_codec("CastingTrayBlock", "CastingTrayBlock")]
 
 
 def copy_tree(name):

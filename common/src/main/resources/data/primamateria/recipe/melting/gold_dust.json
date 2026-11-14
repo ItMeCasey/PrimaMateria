@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "primamateria:gold_dust",
+  "result": "primamateria:molten_gold",
+  "amount": 20
+}

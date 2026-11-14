@@ -78,6 +78,7 @@ public final class SelfTest {
             HammerSelfTest.run(server, server.overworld());
             DriveSelfTest.run(server, server.overworld());
             loaderChecks.accept(server);
+            CrucibleSelfTest.run(server, server.overworld());
             // each feature adds one line here: FeatureSelfTest.run(server, server.overworld());
             failures += IntegrationCheck.run(server);
             WorldSelfTest.run(server, server.overworld());

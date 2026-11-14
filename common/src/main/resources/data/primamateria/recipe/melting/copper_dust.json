@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "primamateria:copper_dust",
+  "result": "primamateria:molten_copper",
+  "amount": 20
+}

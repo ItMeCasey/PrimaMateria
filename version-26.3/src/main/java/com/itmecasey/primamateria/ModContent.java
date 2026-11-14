@@ -9,6 +9,11 @@ import com.itmecasey.primamateria.blockentity.AutoHammerBlockEntity;
 import com.itmecasey.primamateria.block.DriveBlock;
 import com.itmecasey.primamateria.block.SieveBlock;
 import com.itmecasey.primamateria.blockentity.DriveBlockEntity;
+import com.itmecasey.primamateria.block.CastingTrayBlock;
+import com.itmecasey.primamateria.block.CrucibleBlock;
+import com.itmecasey.primamateria.block.SieveBlock;
+import com.itmecasey.primamateria.blockentity.CastingTrayBlockEntity;
+import com.itmecasey.primamateria.blockentity.CrucibleBlockEntity;
 import com.itmecasey.primamateria.blockentity.SieveBlockEntity;
 import com.itmecasey.primamateria.item.HammerItem;
 import java.util.LinkedHashMap;
@@ -84,6 +89,9 @@ public final class ModContent {
             (pos, state) -> new DriveBlockEntity(DriveKind.FURNACE, ModContent.FURNACE_DRIVE_BE, pos, state), Set.of(block(Ids.FURNACE_DRIVE)));
     public static final BlockEntityType<DriveBlockEntity> POWERED_DRIVE_BE = new BlockEntityType<>(
             (pos, state) -> new DriveBlockEntity(DriveKind.POWERED, ModContent.POWERED_DRIVE_BE, pos, state), Set.of(block(Ids.POWERED_DRIVE)));
+    /** The crucible's and the casting tray's block entity types. */
+    public static final BlockEntityType<CrucibleBlockEntity> CRUCIBLE_BE = new BlockEntityType<>(CrucibleBlockEntity::new, Set.of(block(Ids.CRUCIBLE)));
+    public static final BlockEntityType<CastingTrayBlockEntity> TRAY_BE = new BlockEntityType<>(CastingTrayBlockEntity::new, Set.of(block(Ids.CASTING_TRAY)));
 
     private ModContent() {
     }
@@ -131,6 +139,12 @@ public final class ModContent {
         }
         if (name.equals(Ids.POWERED_DRIVE)) {
             return new DriveBlock(props, DriveKind.POWERED);
+        }
+        if (name.equals(Ids.CRUCIBLE)) {
+            return new CrucibleBlock(props);
+        }
+        if (name.equals(Ids.CASTING_TRAY)) {
+            return new CastingTrayBlock(props);
         }
         return new Block(props);
     }
@@ -189,6 +203,8 @@ public final class ModContent {
         out.accept(Ids.WINDUP_DRIVE, WINDUP_DRIVE_BE);
         out.accept(Ids.FURNACE_DRIVE, FURNACE_DRIVE_BE);
         out.accept(Ids.POWERED_DRIVE, POWERED_DRIVE_BE);
+        out.accept(Ids.CRUCIBLE, CRUCIBLE_BE);
+        out.accept(Ids.CASTING_TRAY, TRAY_BE);
     }
 
     public static void registerSounds(BiConsumer<String, SoundEvent> out) {

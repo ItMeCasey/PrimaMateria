@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "minecraft:raw_iron",
+  "result": "primamateria:molten_iron",
+  "amount": 100
+}
