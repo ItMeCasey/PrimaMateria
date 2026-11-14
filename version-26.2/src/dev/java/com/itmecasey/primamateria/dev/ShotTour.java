@@ -264,6 +264,22 @@ public final class ShotTour {
                 server("setblock " + (-8 + i * 2) + " " + y + " -4 minecraft:air");
             }
         });
+        // 4b2. animations off: the still layer comes from the fill block model, tinted by the loaded block's color
+        then(2, () -> Settings.set("client.animations", "off"));
+        then(2, () -> {
+            server("setblock 0 " + y + " 14 primamateria:sieve[mesh=2,fill=0]", "setblock 2 " + y + " 14 primamateria:sieve[mesh=2,fill=0]");
+        });
+        then(8, () -> {
+            fixed(new BlockPos(0, y, 14), 1, "minecraft:red_sand", 3, 0.1F, 0);
+            fixed(new BlockPos(2, y, 14), 1, "minecraft:soul_sand", 2, 0.1F, 0);
+            server("setblock 0 " + y + " 14 primamateria:sieve[mesh=2,fill=3]", "setblock 2 " + y + " 14 primamateria:sieve[mesh=2,fill=2]");
+        });
+        then(2, () -> moveTo(new Vec3(1.5, y + 3.7, 12.6), new Vec3(1.5, y + 0.9, 14.5)));
+        shoot("sieve_off_fill_tint", 25);
+        then(2, () -> {
+            Settings.set("client.animations", "full");
+            server("setblock 0 " + y + " 14 minecraft:air", "setblock 2 " + y + " 14 minecraft:air");
+        });
         // 4c. barrels, crucible, casting tray, drives and the auto hammer, each with a made-up state
         String[] machines = {"wooden_barrel", "wooden_barrel", "wooden_barrel", "clay_barrel", "crucible", "casting_tray", "casting_tray",
                 "windup_drive", "furnace_drive", "powered_drive", "auto_hammer"};
