@@ -165,7 +165,7 @@ final class AnimChecks {
         try {
             JsonObject sounds = json("sounds.json");
             for (String name : List.of("sieve.load", "sieve.shake.coarse", "sieve.shake.fine", "sieve.shake.soil", "sieve.reveal",
-                    "sieve.finish", "sieve.mesh", "drive.crank", "drive.tick")) {
+                    "sieve.finish", "sieve.mesh", "drive.crank", "drive.tick", "auto_hammer.strike", "crucible.pour", "casting_tray.cool", "barrel.finish")) {
                 boolean ok = sounds.has(name);
                 int files = 0;
                 if (ok) {

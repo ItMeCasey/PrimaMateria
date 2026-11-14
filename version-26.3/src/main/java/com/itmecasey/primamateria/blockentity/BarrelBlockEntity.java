@@ -74,6 +74,9 @@ public class BarrelBlockEntity extends BlockEntity implements com.itmecasey.prim
 
     /** Fires the finished-recipe event for each recipe that just finished. */
     public void fire(ServerLevel serverLevel, java.util.List<BarrelState.Finished> done) {
+        if (!done.isEmpty()) {
+            com.itmecasey.primamateria.ModSounds.play(serverLevel, getBlockPos(), "barrel.finish", 0.6F, 1.0F);
+        }
         for (BarrelState.Finished f : done) {
             BlockPos p = getBlockPos();
             GameEvents.BARREL_FINISHED.fire(new GameEvents.BarrelFinished(new GameEvents.Where(serverLevel, p.getX(), p.getY(), p.getZ(), null),

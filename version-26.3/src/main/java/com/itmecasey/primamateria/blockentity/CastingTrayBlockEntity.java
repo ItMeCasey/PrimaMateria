@@ -82,7 +82,7 @@ public class CastingTrayBlockEntity extends BlockEntity implements com.itmecasey
             GameEvents.CAST.fire(new GameEvents.Cast(
                     new GameEvents.Where(serverLevel, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), null),
                     cast.fluid(), cast.result(), cast.count()));
-            serverLevel.playSound(null, worldPosition, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.4F, 1.6F);
+            com.itmecasey.primamateria.ModSounds.play(serverLevel, worldPosition, "casting_tray.cool", 0.5F, 1.0F);
             changed();
         } else if (state.stage() != before) {
             changed();

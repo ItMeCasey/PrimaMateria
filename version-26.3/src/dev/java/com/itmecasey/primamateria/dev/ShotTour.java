@@ -297,8 +297,9 @@ public final class ShotTour {
             show(-8, y, new com.itmecasey.primamateria.view.BarrelView(false, com.itmecasey.primamateria.view.BarrelView.Contents.FLUID, "primamateria:brine", 800,
                     0x45979C, com.itmecasey.primamateria.view.BarrelView.Stage.GROWING, 0.5F, "", "", List.of(
                     new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.9F, 0),
-                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.5F, 1),
-                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_diamond", 0.2F, 3))));
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_emerald", 0.7F, 1),
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_amethyst", 0.8F, 2),
+                    new com.itmecasey.primamateria.view.BarrelView.Crystal("primamateria:block/crystal_lapis", 0.6F, 3))));
             show(-6, y, new com.itmecasey.primamateria.view.BarrelView(true, com.itmecasey.primamateria.view.BarrelView.Contents.FLUID, "minecraft:lava", 600,
                     0xFFFFFF, com.itmecasey.primamateria.view.BarrelView.Stage.MIXING, 0.4F, "minecraft:cobblestone", "", List.of()));
             show(-4, y, new com.itmecasey.primamateria.view.CrucibleView("primamateria:molten_iron", 2600, 0xD8742A, 12, 2, "primamateria:iron_dust", 3, 8));
@@ -311,8 +312,12 @@ public final class ShotTour {
         });
         then(2, () -> moveTo(new Vec3(-9.0, y + 3.3, 7.6), new Vec3(-9.0, y + 0.8, 10.5)));
         shoot("machines_barrels", 30);
+        then(2, () -> moveTo(new Vec3(-8.0, y + 2.9, 8.3), new Vec3(-8.0, y + 0.7, 10.5)));
+        shoot("machines_crystals", 10);
         then(2, () -> moveTo(new Vec3(-2.0, y + 3.3, 7.6), new Vec3(-2.0, y + 0.8, 10.5)));
         shoot("machines_crucible_tray", 20);
+        shoot("machines_pour", 3);
+        shoot("machines_pour_b", 2);
         then(2, () -> moveTo(new Vec3(5.5, y + 2.6, 6.6), new Vec3(5.5, y + 0.6, 10.5)));
         shoot("machines_drives", 20);
         then(2, () -> moveTo(new Vec3(3.5, y + 3.2, 6.0), new Vec3(3.5, y + 0.6, 10.5)));

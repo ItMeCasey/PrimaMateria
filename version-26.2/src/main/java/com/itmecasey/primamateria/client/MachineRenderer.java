@@ -47,7 +47,9 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
     static final class Cache {
         final Kind kind;
         final QuadBuffer surface = new QuadBuffer();
-        final QuadBuffer crystals = new QuadBuffer();
+        final QuadBuffer[] crystals = {new QuadBuffer(), new QuadBuffer(), new QuadBuffer(), new QuadBuffer()};
+        final Identifier[] crystalTex = new Identifier[4];
+        long lastPourTick = Long.MIN_VALUE;
         final QuadBuffer brass = new QuadBuffer();
         final QuadBuffer iron = new QuadBuffer();
         final QuadBuffer wood = new QuadBuffer();
@@ -68,7 +70,6 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
         boolean draw;
         Identifier surfaceTexture;
         boolean translucent;
-        Identifier crystalTexture;
         boolean showItem;
         float ix;
         float iy;
@@ -125,7 +126,10 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
         float limit = ClientConfig.distance();
         boolean near = mode == ClientConfig.FULL && distSq < (double) limit * limit / 4.0;
         c.surface.clear();
-        c.crystals.clear();
+        for (QuadBuffer q : c.crystals) {
+            q.clear();
+        }
+        java.util.Arrays.fill(c.crystalTex, null);
         c.brass.clear();
         c.iron.clear();
         c.wood.clear();
@@ -134,7 +138,6 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
         s.showItem = false;
         s.translucent = false;
         s.surfaceTexture = null;
-        s.crystalTexture = null;
         s.yaw = 0F;
         if (bs.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING)) {
             Direction d = bs.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING);
@@ -159,7 +162,7 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
             default -> {
             }
         }
-        s.draw = c.surface.count() + c.crystals.count() + c.brass.count() + c.iron.count() + c.wood.count() + c.glow.count() > 0
+        s.draw = c.surface.count() + crystalCount(c) + c.brass.count() + c.iron.count() + c.wood.count() + c.glow.count() > 0
                 || s.showItem;
     }
 
@@ -182,7 +185,9 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
         if (v.amount() > 0 && v.contents() == BarrelView.Contents.FLUID) {
             Identifier tex = MachineAssets.fluid(v.contentId());
             boolean lava = tex == MachineAssets.LAVA;
-            surface(c, s, tex, !lava, lava ? 0xFFFFFF : v.color(), lava ? 255 : 210, lava ? FULL_BRIGHT : light, lo, lo, hi, hi, y);
+            // with crystals growing the fluid is more see-through, so they stay visible below the surface
+            int alpha = lava ? 255 : v.crystals().isEmpty() ? 210 : 110;
+            surface(c, s, tex, !lava, lava ? 0xFFFFFF : v.color(), alpha, lava ? FULL_BRIGHT : light, lo, lo, hi, hi, y);
         } else if (v.amount() > 0 && v.contents() == BarrelView.Contents.COMPOST) {
             surface(c, s, MachineAssets.COMPOST, false, v.color(), 255, light, lo, lo, hi, hi, y);
         }
@@ -190,9 +195,10 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
             return;
         }
         if (!v.crystals().isEmpty()) {
-            s.crystalTexture = MachineAssets.crystal(v.crystals().get(0).texture());
             for (BarrelView.Crystal cr : v.crystals()) {
-                crystal(c.crystals, SLOT_X[cr.slot() & 3], floor, SLOT_Z[cr.slot() & 3], 0.2F + 0.8F * cr.progress(), light);
+                int slot = cr.slot() & 3;
+                c.crystalTex[slot] = MachineAssets.crystal(cr.texture());
+                crystal(c.crystals[slot], SLOT_X[slot], floor, SLOT_Z[slot], 0.2F + 0.8F * cr.progress(), FULL_BRIGHT);
             }
         }
         if (!v.result().isEmpty()) {
@@ -208,6 +214,44 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
         float[][] p = {{-2F, 0F, -2F, 0F, 8F, 0F}, {0F, 0F, -1F, 2F, 5F, 1F}, {-2F, 0F, 0F, 0F, 4F, 2F}};
         for (float[] q : p) {
             b.box(cx + q[0] * k, cy + q[1] * k, cz + q[2] * k, cx + q[3] * k, cy + q[4] * k, cz + q[5] * k, 0xFFFFFF, 255, light, false, 1F);
+        }
+    }
+
+    private static int crystalCount(Cache c) {
+        int n = 0;
+        for (QuadBuffer q : c.crystals) {
+            n += q.count();
+        }
+        return n;
+    }
+
+    /**
+     * The stream from a crucible lip to the casting tray beside it: a few pour particles every game tick, tinted by the fluid,
+     * thrown out toward the tray so they land on it. bit = horizontal index of the side (south, west, north, east).
+     */
+    private static void pourStream(Cache c, State s, CrucibleView v, Level level) {
+        long now = level.getGameTime();
+        if (now == c.lastPourTick || !ClientConfig.particles() || !SiftParticles.hasRoom()) {
+            return;
+        }
+        c.lastPourTick = now;
+        var type = com.itmecasey.primamateria.ModAnim.particle("pour");
+        int rgb = v.color();
+        for (int i = 0; i < 4; i++) {
+            if ((v.pourSides() & (1 << i)) == 0) {
+                continue;
+            }
+            Direction d = Direction.from2DDataValue(i);
+            for (int n = 0; n < 2; n++) {
+                double jitter = (level.getRandom().nextDouble() - 0.5) * 0.06;
+                double x = s.blockPos.getX() + 0.5 + d.getStepX() * 0.47 + (d.getStepZ() != 0 ? jitter : 0);
+                double z = s.blockPos.getZ() + 0.5 + d.getStepZ() * 0.47 + (d.getStepX() != 0 ? jitter : 0);
+                var p = Minecraft.getInstance().particleEngine.createParticle(type, x, s.blockPos.getY() + 0.95, z, 0, 0, 0);
+                if (p instanceof net.minecraft.client.particle.SingleQuadParticle q) {
+                    q.setParticleSpeed(d.getStepX() * 0.09, 0.0, d.getStepZ() * 0.09);
+                    q.setColor(((rgb >> 16) & 255) / 255F, ((rgb >> 8) & 255) / 255F, (rgb & 255) / 255F);
+                }
+            }
         }
     }
 
@@ -231,21 +275,8 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
         if (v.solids() > 0 && !v.solidItem().isEmpty()) {
             item(c, s, v.solidItem(), 8F, Math.max(y, floor) + 1.0F + 0.5F * v.solids(), 8F, 0.7F, 0F, level);
         }
-        // pouring: a thin stream from each lip in use down to the tray below (bit = horizontal index: south, west, north, east)
         if (v.pourSides() != 0 && v.amount() > 0) {
-            int rgb = v.color();
-            if ((v.pourSides() & 1) != 0) {
-                c.glow.box(7.5F, 3F, 14.5F, 8.5F, 15F, 15.5F, rgb, 255, FULL_BRIGHT, false, 1F);
-            }
-            if ((v.pourSides() & 2) != 0) {
-                c.glow.box(0.5F, 3F, 7.5F, 1.5F, 15F, 8.5F, rgb, 255, FULL_BRIGHT, false, 1F);
-            }
-            if ((v.pourSides() & 4) != 0) {
-                c.glow.box(7.5F, 3F, 0.5F, 8.5F, 15F, 1.5F, rgb, 255, FULL_BRIGHT, false, 1F);
-            }
-            if ((v.pourSides() & 8) != 0) {
-                c.glow.box(14.5F, 3F, 7.5F, 15.5F, 15F, 8.5F, rgb, 255, FULL_BRIGHT, false, 1F);
-            }
+            pourStream(c, s, v, level);
         }
     }
 
@@ -352,8 +383,10 @@ public class MachineRenderer<T extends BlockEntity & MachineViewSource> implemen
             collector.submitCustomGeometry(pose, s.translucent ? RenderTypes.entityTranslucent(s.surfaceTexture)
                     : RenderTypes.entityCutout(s.surfaceTexture), c.surface);
         }
-        if (c.crystals.count() > 0 && s.crystalTexture != null) {
-            collector.submitCustomGeometry(pose, RenderTypes.entityCutout(s.crystalTexture), c.crystals);
+        for (int k = 0; k < c.crystals.length; k++) {
+            if (c.crystals[k].count() > 0 && c.crystalTex[k] != null) {
+                collector.submitCustomGeometry(pose, RenderTypes.entityCutout(c.crystalTex[k]), c.crystals[k]);
+            }
         }
         if (c.brass.count() > 0) {
             collector.submitCustomGeometry(pose, RenderTypes.entityCutout(MachineAssets.BRASS), c.brass);
