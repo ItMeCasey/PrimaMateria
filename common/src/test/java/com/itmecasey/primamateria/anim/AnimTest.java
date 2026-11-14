@@ -259,8 +259,8 @@ class AnimTest {
             peak = Math.max(peak, a.layerQuarters());
             assertEquals(0, a.events & SieveAnimator.E_LOAD, "the event fires once");
         }
-        assertTrue(peak > 1F, "the layer overshoots a little: " + peak);
-        assertEquals(1F, a.layerQuarters(), 0.05F);
+        assertTrue(peak > 4F, "the layer overshoots a little: " + peak);
+        assertEquals(4F, a.layerQuarters(), 0.05F);
     }
 
     @Test
