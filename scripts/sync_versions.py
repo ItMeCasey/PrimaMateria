@@ -17,18 +17,31 @@ PKG = "com/itmecasey/primamateria"
 
 # Add patch functions here and list them in PATCHES. Each reads a file under DST, replaces text, asserts the old form is gone
 # and writes it back with newline="\n".
-def patch_sieve_preview_block():
-    """26.3 blocks have no codec: drop the MapCodec field and the codec() override."""
-    p = DST / "main/java" / PKG / "block/SievePreviewBlock.java"
-    s = p.read_text(encoding="utf-8")
-    s = s.replace("import com.mojang.serialization.MapCodec;\n", "")
-    s = s.replace("    private static final MapCodec<SievePreviewBlock> CODEC = simpleCodec(SievePreviewBlock::new);\n\n", "")
-    s = s.replace("    @Override\n    protected MapCodec<? extends Block> codec() {\n        return CODEC;\n    }\n\n", "")
-    assert "MapCodec" not in s
-    p.write_text(s, encoding="utf-8", newline="\n")
+def patch_preview_blocks():
+    """26.3 blocks have no codec: drop the MapCodec field and the codec() override from the preview blocks."""
+    nl = chr(10)
+    for cls in ("SievePreviewBlock", "MachinePreviewBlock"):
+        p = DST / "main/java" / PKG / f"block/{cls}.java"
+        s = p.read_text(encoding="utf-8")
+        lines = s.split(nl)
+        out = []
+        skip = 0
+        for i, line in enumerate(lines):
+            if skip:
+                skip -= 1
+                continue
+            if "import com.mojang.serialization.MapCodec;" in line or "private static final MapCodec" in line:
+                continue
+            if line.strip() == "@Override" and i + 1 < len(lines) and "MapCodec<? extends Block> codec()" in lines[i + 1]:
+                skip = 4
+                continue
+            out.append(line)
+        s = nl.join(out)
+        assert "MapCodec" not in s, cls
+        p.write_text(s, encoding="utf-8", newline=nl)
 
 
-PATCHES = [patch_sieve_preview_block]
+PATCHES = [patch_preview_blocks]
 
 
 def copy_tree(name):

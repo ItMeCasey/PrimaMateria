@@ -19,6 +19,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * only needs a block entity that implements {@code SieveViewSource}.
  */
 public class SievePreviewBlock extends Block implements EntityBlock {
+
     public SievePreviewBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(StateProps.MOVING, false).setValue(StateProps.MESH, 0)

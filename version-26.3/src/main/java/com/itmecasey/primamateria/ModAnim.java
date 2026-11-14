@@ -17,12 +17,23 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 public final class ModAnim {
     public static final Map<String, SimpleParticleType> PARTICLES = new LinkedHashMap<>();
     public static final BlockEntityType<SievePreviewBlockEntity> SIEVE_PREVIEW;
+    public static final BlockEntityType<com.itmecasey.primamateria.blockentity.MachinePreviewBlockEntity> MACHINE_PREVIEW;
+    public static final java.util.List<String> MACHINE_BLOCKS = java.util.List.of(Ids.WOODEN_BARREL, Ids.CLAY_BARREL, Ids.CRUCIBLE,
+            Ids.CASTING_TRAY, Ids.WINDUP_DRIVE, Ids.FURNACE_DRIVE, Ids.POWERED_DRIVE, Ids.AUTO_HAMMER);
 
     static {
         for (String name : Ids.PARTICLES) {
             PARTICLES.put(name, new SimpleParticleType(false));
         }
         SIEVE_PREVIEW = new BlockEntityType<>(SievePreviewBlockEntity::new, java.util.Set.<Block>of(ModContent.block(Ids.SIEVE)));
+    }
+
+    static {
+        java.util.Set<Block> blocks = new java.util.HashSet<>();
+        for (String name : MACHINE_BLOCKS) {
+            blocks.add(ModContent.block(name));
+        }
+        MACHINE_PREVIEW = new BlockEntityType<>(com.itmecasey.primamateria.blockentity.MachinePreviewBlockEntity::new, blocks);
     }
 
     private ModAnim() {
@@ -38,5 +49,6 @@ public final class ModAnim {
 
     public static void registerBlockEntityTypes(BiConsumer<String, BlockEntityType<?>> out) {
         out.accept("sieve_preview", SIEVE_PREVIEW);
+        out.accept("machine_preview", MACHINE_PREVIEW);
     }
 }

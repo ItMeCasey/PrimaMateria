@@ -35,6 +35,7 @@ public final class SieveModels {
         failed = false;
         generation++;
         BLOCK_TEXTURES.clear();
+        TINTED.clear();
         AVERAGES.clear();
         TEXTURE_IDS.clear();
     }
@@ -68,9 +69,53 @@ public final class SieveModels {
         });
     }
 
-    /** The texture drawn on the layer for a loaded block: its own top texture, or the nearest file the packs have. */
+    /** Blocks whose top quad carries a tint index (grass and the like). */
+    private static final java.util.Set<String> TINTED = new java.util.HashSet<>();
+
+    static synchronized boolean tinted(String blockId) {
+        return TINTED.contains(blockId);
+    }
+
+    /** The top face sprite of the block's baked model as a texture file, or null (no model, no top quad, animated). */
+    private static Identifier fromModel(String blockId, Identifier id) {
+        try {
+            net.minecraft.world.level.block.Block block = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getValue(id);
+            if (block == net.minecraft.world.level.block.Blocks.AIR) {
+                return null;
+            }
+            var model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(block.defaultBlockState());
+            java.util.List<net.minecraft.client.renderer.block.dispatch.BlockStateModelPart> parts = new java.util.ArrayList<>();
+            model.collectParts(net.minecraft.util.RandomSource.create(0L), parts);
+            for (var part : parts) {
+                for (var quad : part.getQuads(net.minecraft.core.Direction.UP)) {
+                    var info = quad.materialInfo();
+                    if ((info.flags() & net.minecraft.client.resources.model.geometry.BakedQuad.FLAG_ANIMATED) != 0) {
+                        return null;
+                    }
+                    Identifier name = info.sprite().contents().name();
+                    Identifier file = Identifier.fromNamespaceAndPath(name.getNamespace(), "textures/" + name.getPath() + ".png");
+                    if (Minecraft.getInstance().getResourceManager().getResource(file).isEmpty()) {
+                        return null;
+                    }
+                    if (info.tintIndex() >= 0) {
+                        TINTED.add(blockId);
+                    }
+                    return file;
+                }
+            }
+        } catch (RuntimeException e) {
+            LOGGER.info("Could not read the model of {}: {}", blockId, e.toString());
+        }
+        return null;
+    }
+
+    /** The texture drawn on the layer for a loaded block: the top face of its own baked model, else the nearest file by name. */
     static synchronized Identifier layerTexture(String blockId) {
         return BLOCK_TEXTURES.computeIfAbsent(blockId, k -> {
+            Identifier modelTexture = fromModel(k, Identifier.parse(k));
+            if (modelTexture != null) {
+                return modelTexture;
+            }
             Identifier parsed = Identifier.parse(k);
             String path = parsed.getPath();
             for (String candidate : new String[] {path + "_top", path, path + "_side", path.replace("_block", "")}) {

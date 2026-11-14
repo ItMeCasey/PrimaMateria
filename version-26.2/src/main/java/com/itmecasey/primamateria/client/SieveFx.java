@@ -56,11 +56,10 @@ final class SieveFx {
             c.dry = true;
         }
         c.mapColor = block.defaultMapColor().col;
-        String path = id.getPath();
-        if (path.equals("grass_block")) {
+        c.layerTexture = SieveModels.layerTexture(blockId);
+        if (SieveModels.tinted(blockId)) {
             c.tint = 0x79C05A;
         }
-        c.layerTexture = SieveModels.layerTexture(blockId);
         c.mapColor = SieveModels.averageColor(c.layerTexture);
     }
 

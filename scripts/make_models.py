@@ -32,6 +32,7 @@ TEX = {  # key -> (namespace, folder, name)
     "amethyst": ("minecraft", "block", "amethyst_block"),
     "sift": ("minecraft", "block", "white_concrete_powder"),
     "mesh": ("primamateria", "block", "mesh_cloth"),
+    "crystal": ("minecraft", "block", "amethyst_cluster"),
 }
 MESH_TIERS = ["cloth", "copper", "iron", "diamond", "netherite"]
 
@@ -249,8 +250,6 @@ def auto_hammer_model():
     c += [box("beam_n", 3.5, 12, 1.5, 12.5, 15, 3.5, "wood"), box("beam_s", 3.5, 12, 12.5, 12.5, 15, 14.5, "wood"),
           box("brace_w", 1.5, 8, 3.5, 3.5, 9.5, 12.5, "wood"), box("brace_e", 12.5, 8, 3.5, 14.5, 9.5, 12.5, "wood"),
           box("guide_a", 4, 12, 3.5, 7, 15, 12.5, "dark"), box("guide_b", 9, 12, 3.5, 12, 15, 12.5, "dark")]
-    for n, x in (("a", 4.5), ("b", 9.5)):
-        c += [box("stamp_" + n, x + 0.5, 6, 6, x + 1.5, 12, 10, "wood"), box("shoe_" + n, x, 5, 5.5, x + 2, 6, 10.5, "brass")]
     c += [box("clamp", 7, 9, 5, 9, 11, 11, "iron"), box("clamp_bolt_a", 7.5, 11, 5.5, 8.5, 11.5, 6.5, "brass"),
           box("clamp_bolt_b", 7.5, 11, 9.5, 8.5, 11.5, 10.5, "brass"),
           box("cam_a", 5, 0, 1, 7, 1, 2.5, "brass"), box("cam_b", 9, 0, 1, 11, 1, 2.5, "brass"),
@@ -294,7 +293,6 @@ def windup_drive_model():
          box("band_a", 1, 4, 1, 15, 5, 15, "brass"), box("band_b", 1, 9, 1, 15, 10, 15, "brass"),
          box("top", 2.5, 11, 2.5, 13.5, 12, 13.5, "wood"),
          box("plate", 4, 5.5, 0.5, 12, 9.5, 1.5, "brass"), box("dial", 6.5, 6.5, 0, 9.5, 8.5, 0.5, "dark"),
-         box("key_shaft", 14.5, 6.5, 7, 16, 8, 9, "iron"), box("key_a", 15, 4, 6.5, 16, 10.5, 7.5, "brass"), box("key_b", 15, 4, 8.5, 16, 10.5, 9.5, "brass"),
          box("cam_a", 4, 12, 5, 6, 14, 11, "brass"), box("cam_b", 10, 12, 5, 12, 14, 11, "brass"),
          box("cam_post_a", 4.5, 12, 7.5, 5.5, 14.5, 8.5, "iron"), box("cam_post_b", 10.5, 12, 7.5, 11.5, 14.5, 8.5, "iron"),
          box("rivet_a", 4.5, 6, 0, 5, 6.5, 0.5, "brass"), box("rivet_b", 11, 6, 0, 11.5, 6.5, 0.5, "brass")]
@@ -312,6 +310,12 @@ def furnace_drive_model():
          box("cam_post_a", 3.5, 12, 6.5, 4.5, 14.5, 7.5, "iron"), box("cam_post_b", 7.5, 12, 6.5, 8.5, 14.5, 7.5, "iron")]
     return Group("body", (8, 0, 8), c, static=True)
 
+
+def crystal_model():
+    """Three prisms on a small base; the machine renderer draws the same prisms scaled 0.2 to 1.0 as a seed grows."""
+    c = [box("base", 5, 0, 5, 11, 1, 11, "stone"), box("prism_a", 6, 1, 6, 8, 9, 8, "crystal"),
+         box("prism_b", 8, 1, 7, 10, 6, 9, "crystal"), box("prism_c", 6, 1, 8, 8, 5, 10, "crystal")]
+    return Group("body", (8, 0, 8), c, static=True)
 
 # ---------------------------------------------------------------- output
 
@@ -456,6 +460,7 @@ def main():
         "casting_tray": (casting_tray_model(), (), None),
         "windup_drive": (windup_drive_model(), (), None),
         "furnace_drive": (furnace_drive_model(), (), None),
+        "crystal": (crystal_model(), (), None),
     }
     for name, (root, extra, anims) in models.items():
         doc = bbmodel(name, root, extra, anims, embed)

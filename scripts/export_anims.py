@@ -232,7 +232,7 @@ def powered_drive(doc):
 def main():
     try:
         sieve(load("sieve"))
-        for name in ("wooden_barrel", "clay_barrel", "crucible", "auto_hammer", "casting_tray", "windup_drive", "furnace_drive"):
+        for name in ("wooden_barrel", "clay_barrel", "crucible", "auto_hammer", "casting_tray", "windup_drive", "furnace_drive", "crystal"):
             static_models(name, load(name))
         powered_drive(load("powered_drive"))
     except ExportError as e:

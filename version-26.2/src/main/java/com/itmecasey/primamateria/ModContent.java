@@ -73,7 +73,32 @@ public final class ModContent {
             // workstream C: the sieve shell the renderer is bound to; workstream A's real SieveBlock replaces this line
             return new com.itmecasey.primamateria.block.SievePreviewBlock(props);
         }
+        if (isMachine(name)) {
+            // workstream C: a shell the machine renderer is bound to; workstream A's real blocks replace these
+            return new com.itmecasey.primamateria.block.MachinePreviewBlock(props, shapeOf(name));
+        }
         return new Block(props);
+    }
+
+    private static boolean isMachine(String name) {
+        return switch (name) {
+            case Ids.WOODEN_BARREL, Ids.CLAY_BARREL, Ids.CRUCIBLE, Ids.CASTING_TRAY, Ids.WINDUP_DRIVE, Ids.FURNACE_DRIVE,
+                    Ids.POWERED_DRIVE, Ids.AUTO_HAMMER -> true;
+            default -> false;
+        };
+    }
+
+    private static net.minecraft.world.phys.shapes.VoxelShape shapeOf(String name) {
+        return switch (name) {
+            case Ids.WOODEN_BARREL -> ModShapes.WOODEN_BARREL;
+            case Ids.CLAY_BARREL -> ModShapes.CLAY_BARREL;
+            case Ids.CRUCIBLE -> ModShapes.CRUCIBLE;
+            case Ids.CASTING_TRAY -> ModShapes.CASTING_TRAY;
+            case Ids.WINDUP_DRIVE -> ModShapes.WINDUP_DRIVE;
+            case Ids.FURNACE_DRIVE -> ModShapes.FURNACE_DRIVE;
+            case Ids.POWERED_DRIVE -> ModShapes.POWERED_DRIVE;
+            default -> ModShapes.AUTO_HAMMER;
+        };
     }
 
     private static Item makeItem(String name, Item.Properties props) {
