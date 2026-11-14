@@ -132,7 +132,7 @@ public class CrucibleBlockEntity extends BlockEntity implements com.itmecasey.pr
             if (serverLevel.getBlockEntity(worldPosition.relative(d)) instanceof CastingTrayBlockEntity tray && tray.state().canAccept()) {
                 String fluid = state.fluid();
                 if (state.drain(cast.amount()) && tray.pour(fluid, cast, 1)) {
-                    serverLevel.playSound(null, worldPosition, SoundEvents.LAVA_POP, SoundSource.BLOCKS, 0.4F, 1.3F);
+                    com.itmecasey.primamateria.ModSounds.play(serverLevel, worldPosition, "crucible.pour", 0.6F, 1.0F);
                     changed();
                 }
             }

@@ -152,10 +152,47 @@ def clack(rng, i):
     return mix(shaped(sine(n, 820 + 40 * i, 520), env(n, 0.0004, 0.05, 3)), shaped(highpass(noise(n, rng), 0.35), env(n, 0.0003, 0.01, 2)))
 
 
+def strike(rng, i):
+    n = int(0.2 * RATE)
+    thud = shaped(sine(n, 140 + 12 * i, 70), env(n, 0.001, 0.16, 2.6))
+    clank = shaped(sine(int(0.09 * RATE), 1650 + 90 * i, 1200), env(int(0.09 * RATE), 0.0004, 0.08, 3))
+    grit = shaped(highpass(noise(int(0.06 * RATE), rng), 0.4), env(int(0.06 * RATE), 0.0003, 0.05, 2))
+    return mix(thud, scale(clank, 0.6), scale(grit, 0.5))
+
+
+def pour(rng, i):
+    n = int(0.55 * RATE)
+    stream = shaped(lowpass(highpass(noise(n, rng), 0.05), 0.35), env(n, 0.06, 0.5, 0.9))
+    blips = [0.0]
+    for k in range(5 + i):
+        m = int(0.03 * RATE)
+        blips = mix(blips, delay(scale(shaped(sine(m, 600 + rng.uniform(0, 500), 300), env(m, 0.001, 0.025, 2)), 0.5), rng.uniform(0.05, 0.45)))
+    return mix(stream, blips)
+
+
+def cool(rng, i):
+    n = int(0.6 * RATE)
+    hiss = shaped(highpass(noise(n, rng), 0.55), env(n, 0.02, 0.58, 1.5))
+    m = int(0.05 * RATE)
+    tick = shaped(sine(m, 1900 + 100 * i, 1500), env(m, 0.0004, 0.045, 3))
+    return mix(hiss, scale(delay(tick, 0.42), 0.7))
+
+
+def finish_barrel(rng, i):
+    out = [0.0]
+    for k, f in enumerate((660, 880, 1100)):
+        m = int(0.22 * RATE)
+        out = mix(out, delay(scale(shaped(sine(m, f * (1 + 0.03 * i)), env(m, 0.002, 0.2, 2.2)), 0.7), 0.07 * k))
+    pop = shaped(lowpass(noise(int(0.05 * RATE), rng), 0.3), env(int(0.05 * RATE), 0.0005, 0.04, 2))
+    return mix(out, scale(pop, 0.5))
+
+
 EVENTS = {
     "sieve.load": ("sieve/load", thud), "sieve.shake.coarse": ("sieve/shake_coarse", coarse), "sieve.shake.fine": ("sieve/shake_fine", fine),
     "sieve.shake.soil": ("sieve/shake_soil", soil), "sieve.reveal": ("sieve/reveal", reveal), "sieve.finish": ("sieve/finish", finish),
     "sieve.mesh": ("sieve/mesh", pluck), "drive.crank": ("drive/crank", crank), "drive.tick": ("drive/tick", clack),
+    "auto_hammer.strike": ("auto_hammer/strike", strike), "crucible.pour": ("crucible/pour", pour),
+    "casting_tray.cool": ("casting_tray/cool", cool), "barrel.finish": ("barrel/finish", finish_barrel),
 }
 
 

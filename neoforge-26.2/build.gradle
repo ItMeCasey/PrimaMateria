@@ -31,7 +31,7 @@ neoForge {
 
     runs {
         configureEach {
-            gameDirectory = layout.projectDirectory.dir('run')
+            gameDirectory = layout.projectDirectory.dir(project.findProperty('runDir') ?: 'run')
             if (project.hasProperty('devTools')) { systemProperty 'primamateria.dev', 'true' }
         }
         client {

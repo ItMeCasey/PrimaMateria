@@ -130,6 +130,7 @@ public class DriveBlockEntity extends BlockEntity implements com.itmecasey.prima
         }
         if (state.tick(work)) {
             lastShakeTick = level.getGameTime();
+            com.itmecasey.primamateria.ModSounds.play(level, worldPosition, "drive.tick", 0.35F, 1.0F);
             machine.drive(level, 0);
             setChanged();
             refreshBlockState(level);
@@ -191,7 +192,7 @@ public class DriveBlockEntity extends BlockEntity implements com.itmecasey.prima
         }
         lastWindTick = now;
         setChanged();
-        level.playSound(null, worldPosition, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.5F, 0.8F + 0.6F * state.charge());
+        com.itmecasey.primamateria.ModSounds.play(level, worldPosition, "drive.crank", 0.6F, 0.85F + 0.3F * state.charge());
         GameEvents.DRIVE_WOUND.fire(new GameEvents.DriveWound(
                 new GameEvents.Where(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), player), state.turns()));
         syncToClients(level);

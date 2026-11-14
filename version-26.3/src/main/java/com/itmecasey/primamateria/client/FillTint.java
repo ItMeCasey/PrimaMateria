@@ -19,7 +19,8 @@ public final class FillTint implements BlockTintSource {
     @Override
     public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
         if (level.getBlockEntity(pos) instanceof SieveViewSource source) {
-            String block = source.sieveView().loadBlock();
+            Object forced = DevOverrides.get(pos);
+            String block = (forced instanceof com.itmecasey.primamateria.view.SieveView sv ? sv : source.sieveView()).loadBlock();
             if (!block.isEmpty()) {
                 return 0xFF000000 | SieveModels.averageColor(SieveModels.layerTexture(block));
             }

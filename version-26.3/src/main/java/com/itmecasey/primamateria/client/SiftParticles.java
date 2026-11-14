@@ -68,6 +68,48 @@ public final class SiftParticles {
         }
     }
 
+    /** A drop of a stream pouring from a crucible lip into a casting tray: bright, tinted by the fluid, falls and dies on the tray. */
+    public static final class Pour extends SingleQuadParticle {
+        Pour(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
+            super(level, x, y, z, sprites.get(level.getRandom()));
+            this.gravity = 1.0F;
+            this.friction = 0.98F;
+            this.lifetime = 12;
+            this.quadSize = 0.05F;
+            alive++;
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            if (this.onGround) {
+                this.remove();
+            }
+        }
+
+        @Override
+        public int getLightCoords(float partialTick) {
+            return 15728880;
+        }
+
+        @Override
+        public void remove() {
+            if (!this.removed) {
+                alive--;
+            }
+            super.remove();
+        }
+
+        @Override
+        protected SingleQuadParticle.Layer getLayer() {
+            return SingleQuadParticle.Layer.TRANSLUCENT;
+        }
+    }
+
+    public static Pour pour(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
+        return new Pour(level, x, y, z, sprites);
+    }
+
     public static Fines fines(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
         return new Fines(level, x, y, z, sprites);
     }

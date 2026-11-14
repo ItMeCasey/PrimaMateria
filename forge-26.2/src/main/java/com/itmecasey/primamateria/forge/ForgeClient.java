@@ -16,6 +16,9 @@ final class ForgeClient {
     static void install(FMLJavaModLoadingContext context) {
         EntityRenderersEvent.RegisterRenderers.BUS.addListener(ForgeClient::renderers);
         RegisterParticleProvidersEvent.BUS.addListener(ForgeClient::particles);
+        // the recipe lookup a dedicated server sent is dropped when the player leaves it
+        net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut.BUS.addListener(
+                (net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut e) -> com.itmecasey.primamateria.data.LookupSync.onDisconnect());
         net.minecraftforge.client.event.RegisterColorHandlersEvent.Block.BUS.addListener(ForgeClient::tints);
     }
 
@@ -46,7 +49,7 @@ final class ForgeClient {
 
     private static void particles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModAnim.particle("fines"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.fines(level, x, y, z, sprites));
-        event.registerSpriteSet(ModAnim.particle("pour"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.fines(level, x, y, z, sprites));
+        event.registerSpriteSet(ModAnim.particle("pour"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.pour(level, x, y, z, sprites));
         event.registerSpriteSet(ModAnim.particle("sift_dust"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.dust(level, x, y, z, sprites));
     }
 }
