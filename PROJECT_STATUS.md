@@ -44,7 +44,7 @@ Spend: none
 - [x] Crucible and casting tray models (w:3)
 - [x] Windup drive and furnace drive models (w:4)
 - [x] Auto hammer and powered drive models (static; stamp and cam animations not authored) (w:4)
-- [ ] Crystal model and five crystal textures (w:2)
+- [~] Crystal model done; the five crystal textures are not drawn (placeholder: the vanilla amethyst cluster texture) (w:2)
 - [x] Stand-in block models built from vanilla textures by reference (w:2)
 - [~] Block textures, 16x16: meshes, stone meal, scoria and pale sand drawn (first pass, waiting for review); brine, molten metals and crystals not drawn (w:3)
 - [~] Item textures (26), 16x16: first pass drawn, waiting for Casey's review next to vanilla (w:3)
