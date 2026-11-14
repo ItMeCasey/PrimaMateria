@@ -151,7 +151,7 @@ public class DriveBlockEntity extends BlockEntity implements WorldlyContainer {
         if (fuel.isEmpty()) {
             return;
         }
-        int ticks = level.fuelValues().burnDuration(fuel);
+        int ticks = burnTime(level, fuel);
         if (ticks > 0 && state.ignite(ticks)) {
             fuel.shrink(1);
             setChanged();
@@ -210,9 +210,26 @@ public class DriveBlockEntity extends BlockEntity implements WorldlyContainer {
         return taken;
     }
 
+    /**
+     * How many ticks an item burns. This is the one place that differs between Minecraft versions (26.2 has a fuel table on the
+     * level, 26.3 a cooking fuel component on the item), so the sync script replaces the body for 26.3.
+     */
+    private static int burnTime(Level level, ItemStack stack) {
+        if (!(level instanceof net.minecraft.server.level.ServerLevel serverLevel)) {
+            return 0;
+        }
+        net.minecraft.world.level.storage.loot.LootContext context = new net.minecraft.world.level.storage.loot.LootContext.Builder(
+                new net.minecraft.world.level.storage.loot.LootParams.Builder(serverLevel)
+                        .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.EMPTY))
+                .create(java.util.Optional.empty());
+        return net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt.getFromItem(stack,
+                net.minecraft.core.component.DataComponents.COOKING_FUEL,
+                net.minecraft.world.item.component.CookingFuel::burnTime, context, 0);
+    }
+
     /** True when the stack can be burned here: it has a burn time and leaves nothing behind (a lava bucket would). */
     private boolean isFuel(ItemStack stack) {
-        return level != null && !stack.isEmpty() && !stack.is(Items.LAVA_BUCKET) && level.fuelValues().burnDuration(stack) > 0;
+        return level != null && !stack.isEmpty() && !stack.is(Items.LAVA_BUCKET) && burnTime(level, stack) > 0;
     }
 
     /** Puts as much of the stack in the fuel slot as fits; returns how many were taken. */

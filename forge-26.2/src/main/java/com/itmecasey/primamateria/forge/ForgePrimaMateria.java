@@ -40,14 +40,16 @@ public final class ForgePrimaMateria {
     /** The powered drive takes energy from every side. */
     private static void attach(AttachCapabilitiesEvent.BlockEntities event) {
         BlockEntity be = event.getObject();
-        if (!(be instanceof DriveBlockEntity drive) || drive.kind() != DriveKind.POWERED) {
+        // Forge attaches capabilities while the block entity is still being constructed, before it knows its kind, so which
+        // drives answer is decided when the capability is asked for.
+        if (!(be instanceof DriveBlockEntity drive)) {
             return;
         }
         LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> new DriveEnergy(drive));
         event.addCapability(ModContent.id("energy"), new ICapabilityProvider() {
             @Override
             public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-                return cap == ForgeCapabilities.ENERGY ? energy.cast() : LazyOptional.empty();
+                return cap == ForgeCapabilities.ENERGY && drive.kind() == DriveKind.POWERED ? energy.cast() : LazyOptional.empty();
             }
         });
         event.addListener(energy::invalidate);
