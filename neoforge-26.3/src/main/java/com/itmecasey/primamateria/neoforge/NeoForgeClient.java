@@ -56,4 +56,10 @@ public final class NeoForgeClient {
         event.registerSpriteSet(ModAnim.particle("pour"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.pour(level, x, y, z, sprites));
         event.registerSpriteSet(ModAnim.particle("sift_dust"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.dust(level, x, y, z, sprites));
     }
+
+    /** The loader's own config screen for the two config files (the mod list's Config button). */
+    public static void configScreen(net.neoforged.fml.ModContainer container) {
+        container.registerExtensionPoint(net.neoforged.neoforge.client.gui.IConfigScreenFactory.class,
+                (mc, parent) -> new net.neoforged.neoforge.client.gui.ConfigurationScreen(container, parent));
+    }
 }

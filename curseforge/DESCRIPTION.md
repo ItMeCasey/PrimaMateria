@@ -39,7 +39,7 @@ Prima Materia is a skyblock resource mod for Forge and NeoForge on Minecraft 26.
 
 **Does it need any other mod?** No. Every integration above is optional.
 
-**Where do the numbers live?** In datapack files and in `config/primamateria.properties`. Packs can change every chance, count, time and tier.
+**Where do the numbers live?** In datapack files and in `config/primamateria-common.toml`. Packs can change every chance, count, time and tier.
 
 **Which versions?** Minecraft 26.2 and 26.3, Forge and NeoForge, one jar each. No Fabric, no older versions.
 

@@ -365,10 +365,22 @@ Automation: the windup drive, then the furnace drive, then the powered drive und
 def config():
     text = (ROOT / "common/src/main/java/com/itmecasey/primamateria/Settings.java").read_text(encoding="utf-8")
     rows = []
-    for m in re.finditer(r'def\("([a-z_.]+)",\s*([^,]+),\s*"((?:[^"\\]|\\.)*)"\);', text):
-        rows.append(f"| `{m.group(1)}` | `{m.group(2).strip().strip(chr(34))}` | {m.group(3)} |")
+    for m in re.finditer(r'(flag|whole|real|choice)\(\s*"([a-z_.]+)",(.*?)\);', text, re.S):
+        kind, key, rest = m.group(1), m.group(2), m.group(3)
+        comment = re.findall(r'"((?:[^"\\]|\\.)*)"', rest)[-1]
+        fallback = rest.split(",")[0].strip().strip('"')
+        if kind in ("whole", "real"):
+            parts = [x.strip() for x in rest.split(",")]
+            comment += f" Range {parts[1]} to {parts[2]}."
+        elif kind == "choice":
+            comment += " One of " + ", ".join(re.findall(r'"([a-z_]+)"', rest.split("List.of(")[1].split(")")[0])) + "."
+        rows.append(f"| `{key}` | `{fallback}` | {comment} |")
     body = f"""
-`config/primamateria.properties`, written with every key and a comment on the first start. Edit a value and restart; delete a line to restore its default. `client.*` keys are read on the client only.
+`config/primamateria-common.toml`, made by the loader's own config system on the first start with every key, its range and a comment. Each key sits in a table named after its first part, for example `[sieve]` and `link_radius`; the `client.*` keys are in the `[client]` table and are read on the client only. Edit a value in the file or in the game's config screen (the mod list's Config button on NeoForge).
+
+## Settings from 2026.11.1
+
+Version 2026.11.1 kept its settings in `config/primamateria.properties`. The first time the toml does not exist and that file does, every value you had set is imported into the matching toml key, exactly as it was. A value that is not valid for its setting, and any key that is not a Prima Materia setting, is skipped and logged, and the default is used. Then, once the toml has been written and read back correctly, the old file is moved to `config/primamateria.properties.back` with a first line saying when and where it migrated, followed by its exact original content; the old file is no longer read. If the old file is corrupt or anything fails along the way, it stays where it is, the reason is logged and the defaults are used. An existing `.back` is never overwritten: the next backup is `.back2`, then `.back3`. The import runs only when the toml does not exist, so it never touches a toml you edited.
 
 | Key | Default | Meaning |
 |---|---|---|

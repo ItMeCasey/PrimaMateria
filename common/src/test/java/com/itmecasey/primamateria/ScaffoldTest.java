@@ -60,8 +60,9 @@ class ScaffoldTest {
         assertTrue(Settings.getBool("sieve.link"));
         assertEquals("preset_only", Settings.getString("start.island"));
         assertTrue(Settings.getBool("client.particles"));
-        Settings.load(new StringReader("sieve.link_radius=2\nunknown.key=5\n"));
+        Settings.apply("sieve.link_radius", 2);
         assertEquals(2, Settings.getInt("sieve.link_radius"));
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> Settings.apply("unknown.key", 5));
         Settings.reset();
         assertEquals(1, Settings.getInt("sieve.link_radius"));
     }

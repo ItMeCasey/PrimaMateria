@@ -46,6 +46,9 @@ public final class ForgePrimaMateria {
 
     public ForgePrimaMateria(FMLJavaModLoadingContext context) {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
+        ForgeConfig.register(context::registerConfig, FMLPaths.CONFIGDIR.get());
+        net.minecraftforge.fml.event.config.ModConfigEvent.Loading.getBus(context.getModBusGroup()).addListener(e -> ForgeConfig.onConfig(e.getConfig(), true));
+        net.minecraftforge.fml.event.config.ModConfigEvent.Reloading.getBus(context.getModBusGroup()).addListener(e -> ForgeConfig.onConfig(e.getConfig(), false));
         RegisterEvent.getBus(context.getModBusGroup()).addListener(ForgePrimaMateria::register);
         net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent.getBus(context.getModBusGroup())
                 .addListener((net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent e) -> e.enqueueWork(ForgePrimaMateria::registerDispensers));

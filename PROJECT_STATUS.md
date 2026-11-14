@@ -21,7 +21,7 @@ Spend: none
 - [x] Scaffold unit tests and headless server self test (every id registered, every block placed) on all four builds (w:2)
 
 ## Logic and Data
-- [x] Config file (config/primamateria.properties) with every key and default (w:2)
+- [x] Config through the loader's own system (ModConfigSpec on NeoForge, ForgeConfigSpec on Forge): config/primamateria-common.toml with every key, range and comment; the 2026.11.1 .properties is imported once and moved to .properties.back (w:2)
 - [x] Data readers and reload listeners: mesh tiers, heat sources, compost values (server side), plus the recipe lookup built after every reload; client sync of the lookup not written (see known gaps) (w:3)
 - [x] Sieve: mesh slot, one block at a time, hold-to-shake, drops rolled when the block goes in, residue, hopper in, comparator, drops to the container below or hopping to the player; unit tests and server self test on four builds (pipes and other mods' item handlers not yet; real-client feel not yet checked) (w:5)
 - [x] Linked sieves (sieve.link, sieve.link_radius): shake and refill together, proven in the server self test (w:3)

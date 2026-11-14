@@ -341,7 +341,7 @@ Exact formats with examples are in `ARCHITECTURE.md`.
 
 ## 13. Config
 
-`config/primamateria.properties`, written with defaults on first start (the house format).
+`config/primamateria-common.toml`, made by the loader's own config system (NeoForge `ModConfigSpec`, Forge `ForgeConfigSpec`) with every key, range and comment on first start.
 
 | Key | Default | Meaning |
 |---|---|---|

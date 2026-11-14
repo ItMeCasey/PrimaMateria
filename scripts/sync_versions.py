@@ -63,6 +63,16 @@ def patch_structure_manager():
         p.write_text(s.replace("level.getStructureManager()", "level.getStructureTemplateManager()"), encoding="utf-8", newline=NL)
 
 
+def patch_config_type():
+    """NeoForge 26.3 renamed the config types: the unsynced common config is ModConfig.Type.LOCAL (the file name stays as given)."""
+    p = ROOT / "neoforge-26.3" / "src/main/java" / PKG / "neoforge/NeoForgeConfig.java"
+    if not p.exists():
+        return
+    s = p.read_text(encoding="utf-8")
+    assert "ModConfig.Type.COMMON" in s
+    p.write_text(s.replace("ModConfig.Type.COMMON", "ModConfig.Type.LOCAL"), encoding="utf-8", newline=NL)
+
+
 def patch_push_reaction():
     """26.3 renamed the push reaction DESTROY (a block that is broken when pushed, as liquids are) to POPPED."""
     p = DST / "main/java" / PKG / "fluid/ModFluids.java"
@@ -74,7 +84,7 @@ def patch_push_reaction():
 
 # Add patch functions here and list them in PATCHES. Each reads a file under DST, replaces text, asserts the old form is gone
 # and writes it back with LF line endings.
-PATCHES = [patch_drive_fuel, patch_structure_manager,
+PATCHES = [patch_drive_fuel, patch_structure_manager, patch_config_type,
            lambda: patch_block_codec("SieveBlock", "SieveBlock"), lambda: patch_block_codec("BarrelBlock", "BarrelBlock"),
            lambda: patch_block_codec("AutoHammerBlock", "AutoHammerBlock"), lambda: patch_block_codec("DriveBlock", "DriveBlock"),
            lambda: patch_block_codec("SievePreviewBlock", "SievePreviewBlock"),
@@ -110,6 +120,7 @@ def copy_loader_entries():
                      "main/java/com/itmecasey/primamateria/neoforge/MachineFluidHandler.java",
                      "main/java/com/itmecasey/primamateria/neoforge/LookupPayload.java",
                      "main/java/com/itmecasey/primamateria/neoforge/NeoForgeItemFluids.java",
+                     "main/java/com/itmecasey/primamateria/neoforge/NeoForgeConfig.java",
                      "dev/java/com/itmecasey/primamateria/neoforge/dev/NeoForgeDev.java"],
         "forge": ["main/java/com/itmecasey/primamateria/forge/ForgePrimaMateria.java",
                   "main/java/com/itmecasey/primamateria/forge/ForgeFluids.java",
@@ -117,6 +128,7 @@ def copy_loader_entries():
                   "main/java/com/itmecasey/primamateria/forge/MachineFluidHandler.java",
                   "main/java/com/itmecasey/primamateria/forge/LookupMessage.java",
                   "main/java/com/itmecasey/primamateria/forge/ForgeItemFluids.java",
+                  "main/java/com/itmecasey/primamateria/forge/ForgeConfig.java",
                   "dev/java/com/itmecasey/primamateria/forge/dev/ForgeDev.java"],
     }
     for loader, files in names.items():

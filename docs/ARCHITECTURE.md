@@ -13,7 +13,7 @@ PrimaMateria/
       Ids.java                     every id as a string (frozen)
       view/                        SieveView, BarrelView, CrucibleView, TrayView, DriveView, AutoHammerView (frozen records)
       event/                       GameEvents (frozen)
-      Settings.java                config/primamateria.properties (pure Java)
+      Settings.java                every setting: key, default, range, description (pure Java)
       sift/                        SiftMath, SiftLink, Finds, MeshTier (pure)
       barrel/                         BarrelState, CompostMath, GrowSlots (pure)
       crucible/                    CrucibleMath, Heat (pure)
@@ -181,7 +181,7 @@ Source: `C:\Users\casey\Desktop\Mod-Playbook\ore-matrix\PRIMA_COMPAT_LISTS.md` (
 
 ## 3. Config
 
-`config/primamateria.properties` through `Settings.java` in `common/`, the same pattern as Barely Crafting: defaults written on first start, comments in the file, unknown keys kept, bad values replaced with the default and logged once. Keys and defaults are in `DESIGN.md` section 13. Server values are sent to clients on join so BEI shows the real numbers. `client.*` keys are read on the client only.
+The loader's own config system, built from one list: `Settings.java` in `common/` holds every key with its default, range and description (`Settings.definitions()`). NeoForge builds a `ModConfigSpec` (`NeoForgeConfig`) and Forge a `ForgeConfigSpec` (`ForgeConfig`) from it; each registers `config/primamateria-common.toml` (the `client.*` keys sit in its `[client]` table) through the loader's config registration, and pushes every value on the load and reload events into `Settings.apply`, which the rest of the code and the tests read. NeoForge 26.3 calls the unsynced config type `LOCAL` instead of `COMMON` (a version patch in `sync_versions.py`, the file name stays). NeoForge has the loader's config screen (`ConfigurationScreen`, the mod list's Config button); Forge offers no generic screen in these builds. Nothing here reads or writes a config file by hand. The settings file of 2026.11.1, `config/primamateria.properties`, is imported once by `LegacyImport` when the toml does not exist: parse strictly (a corrupt file stays untouched), write the toml, re-read it and check every value, write `primamateria.properties.back` (a header line plus the exact original bytes, `.back2`, `.back3` rather than overwriting one), verify the backup, then remove the original; any failing step leaves the original where it is. Every setting is read on the server side except the `client.*` ones, so no setting needs the loader's config sync.
 
 ## 4. Scripting: ModJS and KubeJS (both optional)
 

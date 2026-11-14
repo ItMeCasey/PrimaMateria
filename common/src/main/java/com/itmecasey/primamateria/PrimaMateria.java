@@ -13,7 +13,7 @@ public final class PrimaMateria {
     }
 
     public static void init(Supplier<Path> configDir) {
-        Settings.loadFile(configDir.get().resolve(MODID + ".properties"));
+        // the settings come from the loader's config system (NeoForgeConfig, ForgeConfig); nothing is read here
         // The script bridge is optional and lives in its own package; it is found by name so this file never changes for it.
         callIfPresent("com.itmecasey.primamateria.script.ModJsBridge", "install");
     }

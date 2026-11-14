@@ -55,7 +55,7 @@ public final class PrimaMateriaApi {
         }
     }
 
-    /** Read-only access to {@code primamateria.properties}. */
+    /** Read-only access to the settings (the loader's config files). */
     public static final class Config {
         /** A setting as text; "" for an unknown key. */
         public String get(String key) {

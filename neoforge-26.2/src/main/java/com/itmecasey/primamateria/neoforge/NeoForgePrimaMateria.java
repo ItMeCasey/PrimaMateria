@@ -34,8 +34,14 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 /** NeoForge entry point. Registers the content; workstream A adds capabilities, networking and reload listeners here. */
 @Mod(PrimaMateria.MODID)
 public final class NeoForgePrimaMateria {
-    public NeoForgePrimaMateria(IEventBus modBus) {
+    public NeoForgePrimaMateria(IEventBus modBus, net.neoforged.fml.ModContainer container) {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
+        NeoForgeConfig.register(container::registerConfig, FMLPaths.CONFIGDIR.get());
+        modBus.addListener((net.neoforged.fml.event.config.ModConfigEvent.Loading e) -> NeoForgeConfig.onConfig(e.getConfig(), true));
+        modBus.addListener((net.neoforged.fml.event.config.ModConfigEvent.Reloading e) -> NeoForgeConfig.onConfig(e.getConfig(), false));
+        if (net.neoforged.fml.loading.FMLEnvironment.getDist().isClient()) {
+            NeoForgeClient.configScreen(container);
+        }
         com.itmecasey.primamateria.fluid.ItemFluids.install(new NeoForgeItemFluids());
         modBus.addListener(NeoForgePrimaMateria::register);
         modBus.addListener(NeoForgePrimaMateria::capabilities);

@@ -7,6 +7,7 @@
 - Players on a dedicated server get the recipe lookup when they join and after every reload, so recipe viewers (BEI, JEI, REI) show every recipe and drop table there too.
 - Every drive, hammer, crucible, casting tray and barrel sound is now triggered in game, and the pour stream particle shows while molten metal pours.
 - Five drawn crystal textures replace the amethyst placeholder; crystals show under the fluid surface.
+- Settings are now in the loader's own config system (NeoForge `ModConfigSpec`, Forge `ForgeConfigSpec`): `config/primamateria-common.toml` with every key, its range and a comment, and NeoForge's config screen. The settings file of 2026.11.1, `config/primamateria.properties`, is imported once when the toml does not exist (exact values; invalid or unknown keys skipped and logged) and then moved to `config/primamateria.properties.back` after the toml has been verified; a corrupt old file stays where it is.
 
 ## 2026.11.1
 
