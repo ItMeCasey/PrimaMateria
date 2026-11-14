@@ -1,0 +1,17 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:acacia_leaves",
+  "results": [
+    {
+      "item": "primamateria:plant_fiber"
+    },
+    {
+      "item": "primamateria:plant_fiber",
+      "chance": 0.35
+    },
+    {
+      "item": "minecraft:acacia_sapling",
+      "chance": 0.08
+    }
+  ]
+}

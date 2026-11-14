@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PHP",
+    "SIS",
+    "PPP"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "H": "primamateria:iron_hammer",
+    "S": "minecraft:stick",
+    "I": "minecraft:iron_ingot"
+  },
+  "result": {
+    "id": "primamateria:auto_hammer",
+    "count": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:mangrove_leaves",
+  "results": [
+    {
+      "item": "primamateria:plant_fiber"
+    },
+    {
+      "item": "primamateria:plant_fiber",
+      "chance": 0.35
+    },
+    {
+      "item": "minecraft:mangrove_propagule",
+      "chance": 0.08
+    }
+  ]
+}

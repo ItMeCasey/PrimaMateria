@@ -1,6 +1,7 @@
 package com.itmecasey.primamateria.recipe;
 
 import com.itmecasey.primamateria.ModContent;
+import com.itmecasey.primamateria.crush.CrushMath;
 import com.itmecasey.primamateria.sift.DropEntry;
 import com.itmecasey.primamateria.sift.ResidueEntry;
 import java.util.ArrayList;
@@ -25,7 +26,12 @@ public final class PrimaRecipes {
         }
     }
 
+    /** What the recipes say about crushing one block: the lowest hammer tier and the results. */
+    public record Crush(int hammerTier, List<CrushMath.Result> results) {
+    }
+
     private static final Map<String, Sifts> INDEX = new ConcurrentHashMap<>();
+    private static final Map<String, java.util.Optional<Crush>> CRUSH_INDEX = new ConcurrentHashMap<>();
 
     private PrimaRecipes() {
     }
@@ -33,16 +39,19 @@ public final class PrimaRecipes {
     public static void registerTypes(BiConsumer<String, RecipeType<?>> out) {
         out.accept("sifting", SiftingRecipe.TYPE);
         out.accept("sifting_residue", SiftingResidueRecipe.TYPE);
+        out.accept("crushing", CrushingRecipe.TYPE);
     }
 
     public static void registerSerializers(BiConsumer<String, RecipeSerializer<?>> out) {
         out.accept("sifting", SiftingRecipe.SERIALIZER);
         out.accept("sifting_residue", SiftingResidueRecipe.SERIALIZER);
+        out.accept("crushing", CrushingRecipe.SERIALIZER);
     }
 
     /** Forgets the lookup built from the old recipes (called after every datapack reload). */
     public static void clearIndex() {
         INDEX.clear();
+        CRUSH_INDEX.clear();
     }
 
     /** Every sifting entry that applies to a stack of this item. Results naming a missing item are left out. */
@@ -52,6 +61,42 @@ public final class PrimaRecipes {
         }
         String key = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
         return INDEX.computeIfAbsent(key, k -> build(recipes, stack));
+    }
+
+    /**
+     * The crushing recipe for a stack of this item, or null. When several recipes match, the one with the fewest input items wins
+     * (a recipe for one block beats a recipe for a tag); results naming a missing item are left out.
+     */
+    public static Crush crushFor(RecipeManager recipes, ItemStack stack) {
+        if (stack.isEmpty()) {
+            return null;
+        }
+        String key = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+        return CRUSH_INDEX.computeIfAbsent(key, k -> java.util.Optional.ofNullable(buildCrush(recipes, stack))).orElse(null);
+    }
+
+    private static Crush buildCrush(RecipeManager recipes, ItemStack stack) {
+        CrushingRecipe best = null;
+        long bestSize = Long.MAX_VALUE;
+        for (RecipeHolder<?> holder : recipes.getRecipes()) {
+            if (holder.value() instanceof CrushingRecipe r && r.input().test(stack)) {
+                long size = r.input().items().count();
+                if (size < bestSize) {
+                    best = r;
+                    bestSize = size;
+                }
+            }
+        }
+        if (best == null) {
+            return null;
+        }
+        List<CrushMath.Result> results = new ArrayList<>();
+        for (CrushingRecipe.Entry e : best.results()) {
+            if (itemExists(e.item())) {
+                results.add(e.toResult());
+            }
+        }
+        return results.isEmpty() ? null : new Crush(best.hammerTier(), List.copyOf(results));
     }
 
     private static Sifts build(RecipeManager recipes, ItemStack stack) {

@@ -30,7 +30,7 @@ def patch_block_codec(name, cls):
 
 # Add patch functions here and list them in PATCHES. Each reads a file under DST, replaces text, asserts the old form is gone
 # and writes it back with LF line endings.
-PATCHES = [lambda: patch_block_codec("SieveBlock", "SieveBlock")]
+PATCHES = [lambda: patch_block_codec("SieveBlock", "SieveBlock"), lambda: patch_block_codec("AutoHammerBlock", "AutoHammerBlock")]
 
 
 def copy_tree(name):

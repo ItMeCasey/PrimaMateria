@@ -1,0 +1,10 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:sand",
+  "hammer_tier": 2,
+  "results": [
+    {
+      "item": "primamateria:stone_meal"
+    }
+  ]
+}

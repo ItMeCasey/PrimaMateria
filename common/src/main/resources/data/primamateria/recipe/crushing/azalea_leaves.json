@@ -1,0 +1,17 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:azalea_leaves",
+  "results": [
+    {
+      "item": "primamateria:plant_fiber"
+    },
+    {
+      "item": "primamateria:plant_fiber",
+      "chance": 0.35
+    },
+    {
+      "item": "minecraft:azalea",
+      "chance": 0.08
+    }
+  ]
+}

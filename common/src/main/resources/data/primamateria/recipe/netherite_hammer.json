@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "primamateria:diamond_hammer",
+    "minecraft:netherite_ingot"
+  ],
+  "result": {
+    "id": "primamateria:netherite_hammer",
+    "count": 1
+  }
+}

@@ -6,12 +6,16 @@ import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.PrimaMateria;
 import com.itmecasey.primamateria.data.PrimaReload;
 import com.itmecasey.primamateria.recipe.PrimaRecipes;
+import com.itmecasey.primamateria.hammer.HammerLogic;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 /** NeoForge entry point. Registers the content; workstream A adds capabilities, networking and reload listeners here. */
@@ -21,6 +25,13 @@ public final class NeoForgePrimaMateria {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         modBus.addListener(NeoForgePrimaMateria::register);
         NeoForge.EVENT_BUS.addListener((AddServerReloadListenersEvent e) -> e.addListener(ModContent.id("data"), new PrimaReload()));
+        // A hammer crushes the block it breaks: HammerLogic does the work and the original break is canceled.
+        NeoForge.EVENT_BUS.addListener((BreakBlockEvent e) -> {
+            if (e.getPlayer() instanceof ServerPlayer player && e.getLevel() instanceof ServerLevel level
+                    && HammerLogic.onBreak(player, level, e.getPos(), e.getState())) {
+                e.setCanceled(true);
+            }
+        });
         Dev.call("com.itmecasey.primamateria.neoforge.dev.NeoForgeDev", "install", modBus);
     }
 

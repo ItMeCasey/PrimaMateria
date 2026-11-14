@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "primamateria:plant_fiber",
+    "primamateria:plant_fiber",
+    "primamateria:plant_fiber"
+  ],
+  "result": {
+    "id": "minecraft:string",
+    "count": 1
+  }
+}

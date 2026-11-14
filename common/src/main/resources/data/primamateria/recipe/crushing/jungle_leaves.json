@@ -1,0 +1,17 @@
+{
+  "type": "primamateria:crushing",
+  "input": "minecraft:jungle_leaves",
+  "results": [
+    {
+      "item": "primamateria:plant_fiber"
+    },
+    {
+      "item": "primamateria:plant_fiber",
+      "chance": 0.35
+    },
+    {
+      "item": "minecraft:jungle_sapling",
+      "chance": 0.08
+    }
+  ]
+}
