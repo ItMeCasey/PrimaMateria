@@ -201,6 +201,8 @@ public final class IntegrationTour {
         frame("melting_iron_dust", "primamateria:iron_dust", true);
         frame("casting_iron_ingot", "minecraft:iron_ingot", false);
         frame("crushing_plant_fiber", "primamateria:plant_fiber", false);
+        frame("steeping_salt_brine", "primamateria:salt_dust", true);
+        frame("melting_copper_dust", "primamateria:copper_dust", true);
         then(20, () -> {
         });
     }
