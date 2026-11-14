@@ -1,0 +1,77 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "mesh": "primamateria:block/mesh_cloth",
+    "particle": "primamateria:block/mesh_cloth"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        11,
+        4
+      ],
+      "to": [
+        12,
+        11.5,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4.5,
+            12,
+            5
+          ],
+          "texture": "#mesh"
+        },
+        "east": {
+          "uv": [
+            4,
+            4.5,
+            12,
+            5
+          ],
+          "texture": "#mesh"
+        },
+        "south": {
+          "uv": [
+            4,
+            4.5,
+            12,
+            5
+          ],
+          "texture": "#mesh"
+        },
+        "west": {
+          "uv": [
+            4,
+            4.5,
+            12,
+            5
+          ],
+          "texture": "#mesh"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#mesh"
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#mesh"
+        }
+      }
+    }
+  ]
+}

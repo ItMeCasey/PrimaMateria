@@ -21,3 +21,4 @@ dist/
 # Dev tour output
 docs/frames/tmp/
 __pycache__/
+branding/models/_local/

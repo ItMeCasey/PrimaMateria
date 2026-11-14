@@ -1,17 +1,30 @@
 package com.itmecasey.primamateria.forge;
 
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import com.itmecasey.primamateria.ModAnim;
+import com.itmecasey.primamateria.blockentity.SievePreviewBlockEntity;
+import com.itmecasey.primamateria.client.SieveRenderer;
+import com.itmecasey.primamateria.client.SiftParticles;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-/** Client-only setup; the event only fires on a client. Workstream C adds renderers, particles and color handlers here. */
+/** Client-only setup: the sieve renderer and the sifting particles. The events only fire on a client. */
 final class ForgeClient {
     private ForgeClient() {
     }
 
     static void install(FMLJavaModLoadingContext context) {
-        FMLClientSetupEvent.getBus(context.getModBusGroup()).addListener(ForgeClient::setup);
+        EntityRenderersEvent.RegisterRenderers.BUS.addListener(ForgeClient::renderers);
+        RegisterParticleProvidersEvent.BUS.addListener(ForgeClient::particles);
     }
 
-    private static void setup(FMLClientSetupEvent event) {
+    private static void renderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModAnim.SIEVE_PREVIEW, SieveRenderer<SievePreviewBlockEntity>::new);
+    }
+
+    private static void particles(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ModAnim.particle("fines"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.fines(level, x, y, z, sprites));
+        event.registerSpriteSet(ModAnim.particle("pour"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.fines(level, x, y, z, sprites));
+        event.registerSpriteSet(ModAnim.particle("sift_dust"), sprites -> (o, level, x, y, z, xa, ya, za, random) -> SiftParticles.dust(level, x, y, z, sprites));
     }
 }

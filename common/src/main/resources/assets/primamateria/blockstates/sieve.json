@@ -1,7 +1,125 @@
 {
-  "variants": {
-    "": {
-      "model": "primamateria:block/sieve"
+  "multipart": [
+    {
+      "apply": {
+        "model": "primamateria:block/sieve_frame"
+      }
+    },
+    {
+      "when": {
+        "moving": "false"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_tray"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "mesh": "1"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_mesh_1"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "mesh": "2"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_mesh_2"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "mesh": "3"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_mesh_3"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "mesh": "4"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_mesh_4"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "mesh": "5"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_mesh_5"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "mesh": "6"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_mesh_5"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "mesh": "7"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_mesh_5"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "mesh": "8"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_mesh_5"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "fill": "1"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_fill_1"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "fill": "2"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_fill_2"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "fill": "3"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_fill_3"
+      }
+    },
+    {
+      "when": {
+        "moving": "false",
+        "fill": "4"
+      },
+      "apply": {
+        "model": "primamateria:block/sieve_fill_4"
+      }
     }
-  }
+  ]
 }

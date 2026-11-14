@@ -10,7 +10,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
+import com.itmecasey.primamateria.dev.ShotTour;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 /** Development hooks for Forge: the server self test and the checks of Forge's own capability system. Only built with -PdevTools. */
 public final class ForgeDev {
@@ -21,6 +24,9 @@ public final class ForgeDev {
         if (SelfTest.requested()) {
             SelfTest.loaderChecks = ForgeDev::checks;
             ServerStartedEvent.BUS.addListener((ServerStartedEvent e) -> SelfTest.run(e.getServer()));
+        }
+        if (FMLEnvironment.dist.isClient() && System.getenv("PRIMAMATERIA_SHOTS") != null) {
+            TickEvent.ClientTickEvent.Post.BUS.addListener((TickEvent.ClientTickEvent.Post e) -> ShotTour.tick());
         }
     }
 

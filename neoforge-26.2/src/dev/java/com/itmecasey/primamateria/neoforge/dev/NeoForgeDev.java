@@ -9,6 +9,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import com.itmecasey.primamateria.dev.ShotTour;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.transfer.energy.EnergyHandler;
@@ -23,6 +28,9 @@ public final class NeoForgeDev {
         if (SelfTest.requested()) {
             SelfTest.loaderChecks = NeoForgeDev::checks;
             NeoForge.EVENT_BUS.addListener((ServerStartedEvent e) -> SelfTest.run(e.getServer()));
+        }
+        if (FMLEnvironment.getDist() == Dist.CLIENT && System.getenv("PRIMAMATERIA_SHOTS") != null) {
+            NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> ShotTour.tick());
         }
     }
 
