@@ -38,8 +38,8 @@ public final class InfoLines {
     public static List<Line> sieve(SieveView v, Function<String, String> name) {
         List<Line> out = new ArrayList<>();
         out.add(Line.text("mesh", v.meshId().isEmpty() ? "-" : name.apply(v.meshId())));
-        if (v.load() > 0) {
-            out.add(Line.text("load", v.load() + " " + name.apply(v.loadBlock())));
+        if (v.filled()) {
+            out.add(Line.text("load", name.apply(v.block())));
             out.add(Line.bar("progress", pct(v.progress()), v.progress()));
         }
         if (v.drive() != null && v.drive() != com.itmecasey.primamateria.view.DriveKind.NONE) {
@@ -92,7 +92,7 @@ public final class InfoLines {
             out.add(Line.text("contents", "-"));
             return out;
         }
-        out.add(Line.text("contents", name.apply(v.meltId())));
+        out.add(Line.text("contents", name.apply(v.fluidId())));
         out.add(Line.bar("stage", v.stage().name().toLowerCase(java.util.Locale.ROOT) + " " + pct(v.progress()), v.progress()));
         if (!v.result().isEmpty()) {
             out.add(Line.text("result", name.apply(v.result())));

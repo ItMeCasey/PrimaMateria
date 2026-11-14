@@ -43,7 +43,7 @@ public final class ScriptEvent {
     }
 
     static ScriptEvent of(GameEvents.Sifted e) {
-        return new ScriptEvent("sifted", e.where, e.input, "", "", "", e.meshId, e.load, 0, e.meshTier, false, e.drops, e::cancel);
+        return new ScriptEvent("sifted", e.where, e.input, "", "", "", e.meshId, 1, 0, e.meshTier, false, e.drops, e::cancel);
     }
 
     static ScriptEvent of(GameEvents.Crushed e) {
@@ -56,12 +56,12 @@ public final class ScriptEvent {
     }
 
     static ScriptEvent of(GameEvents.Melted e) {
-        return new ScriptEvent("melted", e.where(), e.input(), e.contentId(), "", "", "", 0, e.amount(), 0, e.isMelt(),
+        return new ScriptEvent("melted", e.where(), e.input(), e.fluid(), "", "", "", 0, e.amount(), 0, e.fluid().startsWith("primamateria:molten_"),
                 new ArrayList<>(), null);
     }
 
     static ScriptEvent of(GameEvents.Cast e) {
-        return new ScriptEvent("cast", e.where(), "", e.result(), "", "", e.meltId(), e.count(), 0, 0, false, new ArrayList<>(), null);
+        return new ScriptEvent("cast", e.where(), "", e.result(), "", "", e.fluid(), e.count(), 0, 0, false, new ArrayList<>(), null);
     }
 
     static ScriptEvent of(GameEvents.DriveWound e) {

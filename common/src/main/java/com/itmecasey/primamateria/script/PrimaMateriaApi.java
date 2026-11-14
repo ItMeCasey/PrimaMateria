@@ -95,7 +95,6 @@ public final class PrimaMateriaApi {
     public final Content casting = new Content("casting");
     public final Content meshes = new Content("meshes");
     public final Content heat = new Content("heat");
-    public final Content melts = new Content("melts");
     public final Content compost = new Content("compost");
     public final Config config = new Config();
 

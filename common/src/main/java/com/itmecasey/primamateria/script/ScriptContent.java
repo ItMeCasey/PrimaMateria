@@ -66,26 +66,21 @@ public final class ScriptContent {
         family("melting", Snapshot::melting, (id, m) -> {
             Object result = m.get("result");
             String target;
-            boolean melt;
             if (result instanceof Map<?, ?> r) {
                 Map<String, Object> rm = Fields.copy(r);
-                melt = rm.containsKey("melt");
-                target = Fields.str(rm, melt ? "melt" : "fluid");
+                target = Fields.str(rm, rm.containsKey("fluid") ? "fluid" : "melt");
             } else {
                 target = Fields.str(m, "result");
-                melt = !Fields.bool(m, "is_fluid", false);
             }
-            return new RecipeLookup.Melting(id, Fields.str(m, "input"), target, melt, Fields.integer(m, "amount", 20));
+            return new RecipeLookup.Melting(id, Fields.str(m, "input"), target, Fields.integer(m, "amount", 20));
         });
-        family("casting", Snapshot::casting, (id, m) -> new RecipeLookup.Casting(id, Fields.str(m, "melt"),
+        family("casting", Snapshot::casting, (id, m) -> new RecipeLookup.Casting(id, Fields.str(m, Fields.optional(m, "fluid").isEmpty() ? "melt" : "fluid"),
                 Fields.integer(m, "amount", 100), Fields.str(m, "result"), Fields.integer(m, "time", 60)));
         family("meshes", Snapshot::meshes, (id, m) -> new RecipeLookup.Mesh(id, Fields.str(m, "item"),
                 Fields.integer(m, "tier", 1), Fields.number(m, "speed", 1.0), Fields.optional(m, "texture"),
                 Fields.integer(m, "slot", 1)));
         family("heat", Snapshot::heat, (id, m) -> new RecipeLookup.Heat(id, Fields.idOrTag(m, "block"),
                 Fields.optional(m, "state"), Fields.integer(m, "heat", 1)));
-        family("melts", Snapshot::melts, (id, m) -> new RecipeLookup.Melt(Fields.optional(m, "id").isEmpty() ? id : Fields.str(m, "id"),
-                Fields.color(m, "color"), Fields.integer(m, "glow", 0), Fields.optional(m, "name")));
         family("compost", Snapshot::compost, (id, m) -> new RecipeLookup.Compost(id, Fields.idOrTag(m, "item"),
                 Fields.integer(m, "units", 100), Fields.number(m, "mature_boost", 0.0)));
     }
@@ -184,7 +179,7 @@ public final class ScriptContent {
         return new Snapshot(cast(lists.get("crushing")), cast(lists.get("sifting")), cast(lists.get("residue")),
                 cast(lists.get("composting")), cast(lists.get("soaking")), cast(lists.get("mixing")), cast(lists.get("steeping")),
                 cast(lists.get("growing")), cast(lists.get("melting")), cast(lists.get("casting")), cast(lists.get("meshes")),
-                cast(lists.get("heat")), cast(lists.get("melts")), cast(lists.get("compost")));
+                cast(lists.get("heat")), cast(lists.get("compost")));
     }
 
     @SuppressWarnings("unchecked")

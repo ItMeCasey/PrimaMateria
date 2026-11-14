@@ -63,7 +63,7 @@ public final class IntegrationCheck {
             return failures;
         }
         // Scripts run when the world loads; give them the first server tick.
-        GameEvents.Sifted event = new GameEvents.Sifted(new GameEvents.Where(server.overworld(), 0, 64, 0, null), "minecraft:gravel", 1,
+        GameEvents.Sifted event = new GameEvents.Sifted(new GameEvents.Where(server.overworld(), 0, 64, 0, null), "minecraft:gravel",
                 "primamateria:iron_mesh", 3, List.of());
         GameEvents.SIFTED.fire(event);
         boolean stick = event.drops.stream().anyMatch(d -> d.item().equals("minecraft:stick") && d.count() == 7);

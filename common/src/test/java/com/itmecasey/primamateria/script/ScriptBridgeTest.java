@@ -50,9 +50,9 @@ class ScriptBridgeTest {
     @Test
     void siftedListenerSeesTheLoadAndCanChangeTheDrops() {
         run(ScriptType.SERVER, "PrimaMateria.on('sifted', e => {"
-                + " if (e.input() == 'minecraft:gravel' && e.count() == 2 && e.tier() == 3 && e.meshId() == 'primamateria:iron_mesh') {"
+                + " if (e.input() == 'minecraft:gravel' && e.count() == 1 && e.tier() == 3 && e.meshId() == 'primamateria:iron_mesh') {"
                 + "   e.removeDrops('minecraft:flint'); e.addDrop('minecraft:diamond', 1); } });");
-        GameEvents.Sifted event = new GameEvents.Sifted(where(), "minecraft:gravel", 2, "primamateria:iron_mesh", 3,
+        GameEvents.Sifted event = new GameEvents.Sifted(where(), "minecraft:gravel", "primamateria:iron_mesh", 3,
                 List.of(new GameEvents.Drop("minecraft:flint", 2), new GameEvents.Drop("minecraft:sand", 1)));
         GameEvents.SIFTED.fire(event);
         assertEquals(List.of(new GameEvents.Drop("minecraft:sand", 1), new GameEvents.Drop("minecraft:diamond", 1)), event.drops);
@@ -62,7 +62,7 @@ class ScriptBridgeTest {
     void siftedCanBeCanceledButOtherEventsIgnoreCancel() {
         run(ScriptType.SERVER, "PrimaMateria.on('sifted', e => e.cancel());"
                 + "PrimaMateria.on('crushed', e => { e.cancel(); java.lang.System.setProperty('pm.test', e.hammerId() + ':' + e.tier()); });");
-        GameEvents.Sifted sifted = new GameEvents.Sifted(where(), "minecraft:sand", 1, "primamateria:cloth_mesh", 1, List.of());
+        GameEvents.Sifted sifted = new GameEvents.Sifted(where(), "minecraft:sand", "primamateria:cloth_mesh", 1, List.of());
         GameEvents.SIFTED.fire(sifted);
         assertTrue(sifted.canceled());
         GameEvents.CRUSHED.fire(new GameEvents.Crushed(where(), "minecraft:cobblestone", "primamateria:stone_hammer", 2, false, List.of()));
@@ -79,11 +79,11 @@ class ScriptBridgeTest {
                 + "PrimaMateria.on('crushed', e => note(e.flag() + '/' + e.x() + '/' + e.name()));"
                 + "PrimaMateria.on('sifted', e => note(e.level() + '/' + e.player()));");
         GameEvents.BARREL_FINISHED.fire(new GameEvents.BarrelFinished(where(), "soaking", "r", "minecraft:clay", 1));
-        GameEvents.MELTED.fire(new GameEvents.Melted(where(), "primamateria:iron_dust", "primamateria:molten_iron", true, 20));
+        GameEvents.MELTED.fire(new GameEvents.Melted(where(), "primamateria:iron_dust", "primamateria:molten_iron", 20));
         GameEvents.CAST.fire(new GameEvents.Cast(where(), "primamateria:molten_iron", "minecraft:iron_ingot", 1));
         GameEvents.DRIVE_WOUND.fire(new GameEvents.DriveWound(where(), 12));
         GameEvents.CRUSHED.fire(new GameEvents.Crushed(where(), "minecraft:stone", "primamateria:iron_hammer", 4, true, List.of()));
-        GameEvents.SIFTED.fire(new GameEvents.Sifted(where(), "minecraft:dirt", 1, "", 0, List.of()));
+        GameEvents.SIFTED.fire(new GameEvents.Sifted(where(), "minecraft:dirt", "", 0, List.of()));
         assertEquals("soaking/minecraft:clay/1;primamateria:iron_dust/primamateria:molten_iron/20/true;"
                 + "primamateria:molten_iron/minecraft:iron_ingot/1;turns12;true/1/crushed;overworld/null;", System.getProperty("pm.log"));
         System.clearProperty("pm.log");
@@ -98,7 +98,7 @@ class ScriptBridgeTest {
     void aScriptThatThrowsNeverBreaksTheGame() {
         run(ScriptType.SERVER, "PrimaMateria.on('sifted', e => { throw new java.lang.RuntimeException('boom'); });"
                 + "PrimaMateria.on('sifted', e => e.addDrop('minecraft:stick', 1));");
-        GameEvents.Sifted event = new GameEvents.Sifted(where(), "minecraft:dirt", 1, "", 0, List.of());
+        GameEvents.Sifted event = new GameEvents.Sifted(where(), "minecraft:dirt", "", 0, List.of());
         GameEvents.SIFTED.fire(event);
         assertEquals(1, event.drops.size(), "the second listener still ran");
     }
@@ -107,7 +107,7 @@ class ScriptBridgeTest {
     void resetRemovesOnlyScriptListeners() {
         GameEvents.SIFTED.listen(e -> System.setProperty("pm.test", "mod"));
         run(ScriptType.SERVER, "PrimaMateria.on('sifted', e => e.addDrop('minecraft:stick', 1)); PrimaMateria.reset();");
-        GameEvents.Sifted event = new GameEvents.Sifted(where(), "minecraft:dirt", 1, "", 0, List.of());
+        GameEvents.Sifted event = new GameEvents.Sifted(where(), "minecraft:dirt", "", 0, List.of());
         GameEvents.SIFTED.fire(event);
         assertTrue(event.drops.isEmpty());
         assertEquals("mod", System.getProperty("pm.test"), "a listener that is not a script's stays");
@@ -123,9 +123,9 @@ class ScriptBridgeTest {
 
     @Test
     void stateReadsGoThroughTheInstalledLookup() {
-        SieveView view = new SieveView("primamateria:iron_mesh", "", "minecraft:gravel", 2, 0.25F, 1, 0, DriveKind.NONE, false, 7, List.of());
+        SieveView view = new SieveView("primamateria:iron_mesh", "", "minecraft:gravel", 0.25F, 1, 0, DriveKind.NONE, false, 7, List.of());
         ViewAccess.install((level, x, y, z) -> x == 1 && y == 64 && z == -3 ? view : null);
-        assertEquals("minecraft:gravel", String.valueOf(run(ScriptType.SERVER, "'' + PrimaMateria.sieveAt('overworld', 1, 64, -3).loadBlock()")));
+        assertEquals("minecraft:gravel", String.valueOf(run(ScriptType.SERVER, "'' + PrimaMateria.sieveAt('overworld', 1, 64, -3).block()")));
         assertEquals(Boolean.TRUE, run(ScriptType.SERVER, "PrimaMateria.sieveAt('overworld', 5, 5, 5) == null"));
         assertEquals(Boolean.TRUE, run(ScriptType.SERVER, "PrimaMateria.barrelAt('overworld', 1, 64, -3) == null"));
         assertNull(PrimaMateriaApi.INSTANCE.barrelAt(LEVEL, 1, 64, -3), "a sieve is not a barrel");
@@ -140,7 +140,7 @@ class ScriptBridgeTest {
 
     @Test
     void configReadsAreReadOnlyAndSafe() {
-        assertEquals("4", String.valueOf(run(ScriptType.SERVER, "'' + PrimaMateria.config.get('sieve.max_load')")));
+        assertEquals("1", String.valueOf(run(ScriptType.SERVER, "'' + PrimaMateria.config.get('sieve.link_radius')")));
         assertEquals("", String.valueOf(run(ScriptType.SERVER, "'' + PrimaMateria.config.get('no.such.key')")));
         assertEquals(1.0, ((Number) run(ScriptType.SERVER, "PrimaMateria.config.number('sieve.drop_multiplier')")).doubleValue(), 1e-9);
         assertEquals(Boolean.TRUE, run(ScriptType.SERVER, "PrimaMateria.config.bool('client.particles')"));
@@ -168,8 +168,7 @@ class ScriptBridgeTest {
         assertEquals(4, gold.meshMin());
         assertEquals(6, out.meshes().size());
         assertEquals(2, out.crushing().size());
-        assertTrue(out.melting().get(2).isMelt());
-        assertEquals("primamateria:molten_gold", out.melting().get(2).result());
+        assertEquals("primamateria:molten_gold", out.melting().get(2).fluid());
         assertEquals("#minecraft:fire", out.heat().get(1).block());
         assertTrue(out.compost().isEmpty());
         // the snapshot given in is not touched

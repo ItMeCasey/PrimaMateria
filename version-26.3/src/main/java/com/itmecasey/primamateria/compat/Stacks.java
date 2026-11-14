@@ -108,11 +108,6 @@ public final class Stacks {
 
     /** The color of a melt from its data file, or a stable gray-orange when it has none. */
     public static int meltColor(String meltId) {
-        for (RecipeLookup.Melt m : RecipeLookup.get().melts()) {
-            if (m.id().equals(meltId)) {
-                return m.color();
-            }
-        }
         return Cards.fallbackColor(meltId);
     }
 }

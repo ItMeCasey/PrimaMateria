@@ -64,7 +64,7 @@ class ViewerTest {
             many.add(new RecipeLookup.Sifting("x" + i, "minecraft:sand", "minecraft:item_" + i, 1, 1, 0.1, 1, 0));
         }
         Snapshot big = new Snapshot(List.of(), many, List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(),
-                List.of(), List.of(), List.of(), List.of(), List.of());
+                List.of(), List.of(), List.of(), List.of());
         List<Cards.Card> cards = Cards.sifting(big);
         assertEquals(2, cards.size());
         assertEquals(Cards.MAX_GRID_OUTPUTS, cards.get(0).outputs().size());
@@ -177,11 +177,11 @@ class ViewerTest {
 
     @Test
     void inWorldLinesAreStateOnly() {
-        SieveView sieve = new SieveView("primamateria:iron_mesh", "", "minecraft:gravel", 3, 0.5F, 4, 0, DriveKind.WINDUP, false, 1, List.of());
+        SieveView sieve = new SieveView("primamateria:iron_mesh", "", "minecraft:gravel", 0.5F, 4, 0, DriveKind.WINDUP, false, 1, List.of());
         List<InfoLines.Line> lines = InfoLines.sieve(sieve, id -> id);
         assertEquals("mesh", lines.get(0).label());
         assertEquals("primamateria:iron_mesh", lines.get(0).value());
-        assertEquals("3 minecraft:gravel", lines.get(1).value());
+        assertEquals("minecraft:gravel", lines.get(1).value());
         assertEquals(0.5, lines.get(2).fraction(), 1e-9);
         assertEquals("50%", lines.get(2).value());
         assertEquals("windup", lines.get(3).value());

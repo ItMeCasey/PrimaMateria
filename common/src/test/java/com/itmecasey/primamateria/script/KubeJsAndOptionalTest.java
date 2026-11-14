@@ -73,14 +73,14 @@ class KubeJsAndOptionalTest {
             cx.evaluateString(scope, KubeJsBridge.SCRIPT, "primamateria.js", 1, null);
             cx.evaluateString(scope, "global.PrimaMateria.on('sifted', e => e.addDrop('minecraft:stick', 3));"
                     + "global.PrimaMateria.sifting.add({ input: 'minecraft:sand', result: 'minecraft:stick' });", "user.js", 1, null);
-            GameEvents.Sifted event = new GameEvents.Sifted(new GameEvents.Where("w", 0, 0, 0, null), "minecraft:sand", 1, "", 0, List.of());
+            GameEvents.Sifted event = new GameEvents.Sifted(new GameEvents.Where("w", 0, 0, 0, null), "minecraft:sand", "", 0, List.of());
             GameEvents.SIFTED.fire(event);
             assertEquals(1, event.drops.size());
             assertEquals(3, event.drops.get(0).count());
             assertTrue(ScriptContent.hasChanges());
             // loading the helper again (a script reload) clears what the old scripts registered
             cx.evaluateString(scope, KubeJsBridge.SCRIPT, "primamateria.js", 1, null);
-            GameEvents.Sifted again = new GameEvents.Sifted(new GameEvents.Where("w", 0, 0, 0, null), "minecraft:sand", 1, "", 0, List.of());
+            GameEvents.Sifted again = new GameEvents.Sifted(new GameEvents.Where("w", 0, 0, 0, null), "minecraft:sand", "", 0, List.of());
             GameEvents.SIFTED.fire(again);
             assertTrue(again.drops.isEmpty());
             assertFalse(ScriptContent.hasChanges());
@@ -132,7 +132,7 @@ class KubeJsAndOptionalTest {
         // the entry point PrimaMateria.init calls must also be quiet
         bridge.getMethod("install").invoke(null);
         // the game events still work with no listeners: a fired event just returns
-        assertEquals(0, new GameEvents.Sifted(new GameEvents.Where("w", 0, 0, 0, null), "a", 1, "", 0, List.of()).drops.size());
-        GameEvents.SIFTED.fire(new GameEvents.Sifted(new GameEvents.Where("w", 0, 0, 0, null), "a", 1, "", 0, List.of()));
+        assertEquals(0, new GameEvents.Sifted(new GameEvents.Where("w", 0, 0, 0, null), "a", "", 0, List.of()).drops.size());
+        GameEvents.SIFTED.fire(new GameEvents.Sifted(new GameEvents.Where("w", 0, 0, 0, null), "a", "", 0, List.of()));
     }
 }

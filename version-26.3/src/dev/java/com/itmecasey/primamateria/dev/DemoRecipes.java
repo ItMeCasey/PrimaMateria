@@ -44,12 +44,11 @@ public final class DemoRecipes {
                 List.of(new RecipeLookup.Steeping("steep", "minecraft:water", "primamateria:salt_dust", 4, "primamateria:brine", 600)),
                 List.of(new RecipeLookup.Growing("grow", "primamateria:brine", 250, "primamateria:diamond_seed", "minecraft:diamond", 1,
                         6000, "primamateria:block/crystal_diamond")),
-                List.of(new RecipeLookup.Melting("melt_iron", "primamateria:iron_dust", "primamateria:molten_iron", true, 20),
-                        new RecipeLookup.Melting("melt_stone", "minecraft:stone", "minecraft:lava", false, 250)),
+                List.of(new RecipeLookup.Melting("melt_iron", "primamateria:iron_dust", "primamateria:molten_iron", 20),
+                        new RecipeLookup.Melting("melt_stone", "minecraft:stone", "minecraft:lava", 250)),
                 List.of(new RecipeLookup.Casting("cast_iron", "primamateria:molten_iron", 100, "minecraft:iron_ingot", 60)),
                 meshes,
                 List.of(new RecipeLookup.Heat("h_campfire", "minecraft:campfire", "lit=true", 2)),
-                List.of(new RecipeLookup.Melt("primamateria:molten_iron", 0xD8D8D8, 8, "melt.primamateria.molten_iron")),
                 List.of(new RecipeLookup.Compost("cp_leaves", "#minecraft:leaves", 20, 0.0)));
     }
 }
