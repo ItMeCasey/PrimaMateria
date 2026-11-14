@@ -41,7 +41,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * in {@code auto_hammer.strokes_per_block} strokes. The results go into the container below (the drive). A hopper can offer blocks
  * from above and the sides; the slot always reads empty, a block is taken the moment it is offered.
  */
-public class AutoHammerBlockEntity extends BlockEntity implements WorldlyContainer, Drivable {
+public class AutoHammerBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer, Drivable {
     private final AutoHammerState state = new AutoHammerState();
     private ItemStack hammer = ItemStack.EMPTY;
 

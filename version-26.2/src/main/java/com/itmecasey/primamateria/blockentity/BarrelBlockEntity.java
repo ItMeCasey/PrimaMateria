@@ -32,7 +32,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * two-slot container for hoppers: slot 0 takes one item from above or the side (the slot always reads empty; the item is used the
  * moment it is offered), slot 1 shows the first finished result and can be taken from below.
  */
-public class BarrelBlockEntity extends BlockEntity implements WorldlyContainer {
+public class BarrelBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer {
     private final BarrelState state;
     private long lastTick = -1;
     private boolean dirty;

@@ -36,7 +36,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * its fluid into casting trays against its four sides. It is also a one-slot container so hoppers can drop solids in (the slot
  * always reads empty; an item is taken the moment it is offered).
  */
-public class CrucibleBlockEntity extends BlockEntity implements WorldlyContainer {
+public class CrucibleBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer {
     private final CrucibleState state = new CrucibleState();
     private int heat;
     private boolean dirty;

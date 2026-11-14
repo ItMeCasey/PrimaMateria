@@ -32,7 +32,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * One casting tray. A crucible against its side (or a bucket in a hand) pours into it, it cools, and then it holds the cast
  * item until a hand or a hopper takes it. It is a one-slot container that only gives items out.
  */
-public class CastingTrayBlockEntity extends BlockEntity implements WorldlyContainer {
+public class CastingTrayBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer {
     private final TrayState state = new TrayState();
 
     public CastingTrayBlockEntity(BlockPos pos, BlockState blockState) {

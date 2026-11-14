@@ -53,7 +53,29 @@ public final class PrimaReload extends SimplePreparableReloadListener<Map<String
             }
             all.put(folder.path(), parsed);
         }
+        all.put("recipe", readRecipes(resources));
         return all;
+    }
+
+    /**
+     * The source files of our recipe types, for the recipe lookup. They are read as JSON rather than taken from the loaded recipes
+     * because the loaded ones cannot be turned back into JSON while item tags are still unbound during a reload.
+     */
+    private static Map<Identifier, JsonObject> readRecipes(ResourceManager resources) {
+        FileToIdConverter files = FileToIdConverter.json("recipe");
+        Map<Identifier, JsonObject> out = new LinkedHashMap<>();
+        for (Map.Entry<Identifier, Resource> entry : files.listMatchingResources(resources).entrySet()) {
+            try (Reader reader = entry.getValue().openAsReader()) {
+                JsonElement element = JsonParser.parseReader(reader);
+                if (element.isJsonObject() && element.getAsJsonObject().has("type")
+                        && element.getAsJsonObject().get("type").getAsString().startsWith("primamateria:")) {
+                    out.put(files.fileToId(entry.getKey()), element.getAsJsonObject());
+                }
+            } catch (IOException | RuntimeException e) {
+                // a recipe file the game cannot read is reported by the game itself
+            }
+        }
+        return out;
     }
 
     @Override
@@ -66,5 +88,10 @@ public final class PrimaReload extends SimplePreparableReloadListener<Map<String
             }
         }
         PrimaRecipes.clearIndex();
+        try {
+            LookupBuilder.rebuild(all);
+        } catch (RuntimeException e) {
+            LOGGER.error("Could not build the recipe lookup: {}", e.toString());
+        }
     }
 }

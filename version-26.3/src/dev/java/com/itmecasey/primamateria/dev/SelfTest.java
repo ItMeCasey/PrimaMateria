@@ -83,7 +83,7 @@ public final class SelfTest {
             failures += IntegrationCheck.run(server);
             WorldSelfTest.run(server, server.overworld());
             AnimChecks.run(server.overworld(), SelfTest::verdict);
-            AnimChecks.run(server.overworld(), SelfTest::verdict);
+            LookupSelfTest.run(server, server.overworld());
         } catch (RuntimeException e) {
             LOGGER.error("SELFTEST error", e);
             verdict("selftest_ran_clean", false, e.toString());

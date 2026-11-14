@@ -153,6 +153,29 @@ public final class ScriptContent {
         }
     }
 
+    /**
+     * A snapshot from the game's own content: for each family, the entries as (id, fields as in the JSON). The family names are
+     * the ones scripts use. An entry that cannot be read is skipped with a log line, so one bad file never empties the lookup.
+     */
+    public static Snapshot fromData(Map<String, List<Map.Entry<String, Map<String, Object>>>> data) {
+        Map<String, List<Object>> lists = new LinkedHashMap<>();
+        for (Family<?> f : FAMILIES.values()) {
+            List<Object> list = new ArrayList<>();
+            for (Map.Entry<String, Map<String, Object>> e : data.getOrDefault(f.name(), List.of())) {
+                try {
+                    list.add(f.make().apply(e.getKey(), e.getValue()));
+                } catch (RuntimeException ex) {
+                    LOG.warning("Prima Materia: " + f.name() + " entry " + e.getKey() + " cannot be shown in recipe viewers: " + ex.getMessage());
+                }
+            }
+            lists.put(f.name(), list);
+        }
+        return new Snapshot(cast(lists.get("crushing")), cast(lists.get("sifting")), cast(lists.get("residue")),
+                cast(lists.get("composting")), cast(lists.get("soaking")), cast(lists.get("mixing")), cast(lists.get("steeping")),
+                cast(lists.get("growing")), cast(lists.get("melting")), cast(lists.get("casting")), cast(lists.get("meshes")),
+                cast(lists.get("heat")), cast(lists.get("compost")));
+    }
+
     /** The snapshot with every script change applied, in script order. Returns the same snapshot when there are none. */
     public static Snapshot apply(Snapshot base) {
         if (OPS.isEmpty()) {

@@ -37,7 +37,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * container so hoppers can drop a block in from above and the side (the slot always reads empty; a block is taken the moment it
  * is offered). Drops leave through whatever container is below, or hop onto the ground.
  */
-public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, Drivable, SieveViewSource {
+public class SieveBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer, Drivable, SieveViewSource {
     private final SiftState state = new SiftState();
     /** The picture the renderer reads: rebuilt whenever the state changes or arrives from the server, never per frame. */
     private SieveView cachedView = SieveView.EMPTY;

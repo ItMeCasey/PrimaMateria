@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
  * slots 0 to 8 are the output buffer the machine above delivers into (hoppers and pipes empty it from the bottom and the sides),
  * and on the furnace drive slot 9 is the fuel slot (fed by hand or by a hopper from the sides).
  */
-public class DriveBlockEntity extends BlockEntity implements WorldlyContainer {
+public class DriveBlockEntity extends BlockEntity implements com.itmecasey.primamateria.view.ViewProvider, WorldlyContainer {
     public static final int BUFFER = DriveView.BUFFER_SLOTS;
     public static final int FUEL_SLOT = BUFFER;
     /** Fewest ticks between two turns of the crank by hand: a held use repeats every 4 ticks. */
