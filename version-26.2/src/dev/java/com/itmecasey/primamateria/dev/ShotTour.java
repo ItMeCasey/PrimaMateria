@@ -192,7 +192,6 @@ public final class ShotTour {
             player().getAbilities().flying = false;
             Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
             Settings.set("client.animations", "full");
-            Minecraft.getInstance().options.hideGui = true;
         });
         then(4, () -> {
             server("fill -8 " + (y - 1) + " -8 24 " + (y - 1) + " 24 minecraft:smooth_stone");

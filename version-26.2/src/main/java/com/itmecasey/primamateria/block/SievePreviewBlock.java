@@ -1,6 +1,5 @@
 package com.itmecasey.primamateria.block;
 
-import com.itmecasey.primamateria.ModAnim;
 import com.itmecasey.primamateria.ModShapes;
 import com.itmecasey.primamateria.StateProps;
 import com.itmecasey.primamateria.blockentity.SievePreviewBlockEntity;
@@ -47,12 +46,5 @@ public class SievePreviewBlock extends Block implements EntityBlock {
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return ModShapes.SIEVE;
-    }
-
-    static {
-        // keeps the type referenced so a missing registration fails at class load
-        if (ModAnim.PARTICLES == null) {
-            throw new IllegalStateException();
-        }
     }
 }
