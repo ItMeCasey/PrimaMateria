@@ -3,6 +3,7 @@ package com.itmecasey.primamateria.blockentity;
 import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.StateProps;
 import com.itmecasey.primamateria.data.Meshes;
+import com.itmecasey.primamateria.machine.Drivable;
 import com.itmecasey.primamateria.sieve.SieveLogic;
 import com.itmecasey.primamateria.sift.SiftMath;
 import com.itmecasey.primamateria.sift.SiftState;
@@ -34,7 +35,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * container so hoppers can drop a block in from above and the side (the slot always reads empty; a block is taken the moment it
  * is offered). Drops leave through whatever container is below, or hop onto the ground.
  */
-public class SieveBlockEntity extends BlockEntity implements WorldlyContainer {
+public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, Drivable {
     private final SiftState state = new SiftState();
 
     public SieveBlockEntity(BlockPos pos, BlockState blockState) {
@@ -146,6 +147,18 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer {
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    // ---- drives ----
+
+    @Override
+    public boolean hasWork(ServerLevel serverLevel) {
+        return state.filled();
+    }
+
+    @Override
+    public boolean drive(ServerLevel serverLevel, int minTicks) {
+        return SieveLogic.shakeByDrive(serverLevel, this, minTicks);
     }
 
     // ---- hoppers ----

@@ -15,6 +15,30 @@ public final class Meshes {
 
     private static volatile Map<String, Mesh> byItem = Map.of();
 
+    /** The data folder {@code primamateria/mesh}. */
+    public static final DataFolders.Folder FOLDER = new DataFolders.Folder() {
+        @Override
+        public String path() {
+            return "primamateria/mesh";
+        }
+
+        @Override
+        public void apply(Map<net.minecraft.resources.Identifier, com.google.gson.JsonObject> files) {
+            Map<String, Mesh> meshes = new java.util.HashMap<>();
+            for (Map.Entry<net.minecraft.resources.Identifier, com.google.gson.JsonObject> e : files.entrySet()) {
+                String[] error = new String[1];
+                Mesh mesh = parse(e.getValue(), error);
+                if (mesh == null) {
+                    org.slf4j.LoggerFactory.getLogger("PrimaMateria").warn("Mesh file {} skipped: {}", e.getKey(), error[0]);
+                } else {
+                    meshes.put(mesh.item(), mesh);
+                }
+            }
+            set(meshes);
+            org.slf4j.LoggerFactory.getLogger("PrimaMateria").info("Loaded {} mesh tiers", meshes.size());
+        }
+    };
+
     private Meshes() {
     }
 

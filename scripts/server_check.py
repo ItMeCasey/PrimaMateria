@@ -16,8 +16,11 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+# Ports 8734 to 8737 are the main set; a session working in its own worktree sets PRIMA_PORT_BASE to one of its reserved sets
+# (8738, 8742, 8746, 8750, 8754, each four ports in the same layer order) so parallel runs never collide.
+PORT_BASE = int(os.environ.get("PRIMA_PORT_BASE", "8734"))
 PORTS = {
-    "neoforge-26.2": 8734, "forge-26.2": 8735, "neoforge-26.3": 8736, "forge-26.3": 8737,
+    "neoforge-26.2": PORT_BASE, "forge-26.2": PORT_BASE + 1, "neoforge-26.3": PORT_BASE + 2, "forge-26.3": PORT_BASE + 3,
 }
 TIMEOUT = 900
 SLOT = "/c/Users/casey/.claude/tools/gradle-slot.sh"

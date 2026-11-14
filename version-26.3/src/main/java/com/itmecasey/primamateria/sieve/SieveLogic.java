@@ -9,6 +9,7 @@ import com.itmecasey.primamateria.sift.Drop;
 import com.itmecasey.primamateria.sift.DropRoller;
 import com.itmecasey.primamateria.sift.SiftMath;
 import com.itmecasey.primamateria.sift.SiftState;
+import com.itmecasey.primamateria.util.Transfer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -46,17 +47,11 @@ public final class SieveLogic {
     // ---- helpers ----
 
     public static String itemId(ItemStack stack) {
-        return BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+        return Transfer.itemId(stack);
     }
 
-    /** A stack of the item with this id, or empty when the item does not exist (a removed mod). */
     public static ItemStack stackOf(String id, int count) {
-        Identifier parsed = Identifier.tryParse(id);
-        if (parsed == null || !BuiltInRegistries.ITEM.containsKey(parsed) || count < 1) {
-            return ItemStack.EMPTY;
-        }
-        Item item = BuiltInRegistries.ITEM.getValue(parsed);
-        return new ItemStack(item, count);
+        return Transfer.stackOf(id, count);
     }
 
     public static boolean siftable(ServerLevel level, ItemStack stack) {
@@ -251,76 +246,19 @@ public final class SieveLogic {
      * residue falls straight down.
      */
     private static void deliver(ServerLevel level, BlockPos pos, @Nullable Player player, List<Drop> drops, List<Drop> residue) {
-        Container below = HopperBlockEntity.getContainerAt(level, pos.below());
-        for (Drop d : drops) {
-            for (ItemStack stack : split(d)) {
-                ItemStack left = below == null ? stack : HopperBlockEntity.addItem(null, below, stack, Direction.UP);
-                if (!left.isEmpty()) {
-                    spawn(level, pos, left, player);
-                }
-            }
-        }
-        for (Drop d : residue) {
-            for (ItemStack stack : split(d)) {
-                ItemStack left = below == null ? stack : HopperBlockEntity.addItem(null, below, stack, Direction.UP);
-                if (!left.isEmpty()) {
-                    spawn(level, pos, left, null);
-                }
-            }
-        }
-    }
-
-    private static List<ItemStack> split(Drop drop) {
-        List<ItemStack> out = new ArrayList<>();
-        ItemStack all = stackOf(drop.item(), drop.count());
-        if (all.isEmpty()) {
-            LOGGER.warn("Sieve drop {} does not exist, skipped", drop.item());
-            return out;
-        }
-        int left = drop.count();
-        int max = Math.max(1, all.getMaxStackSize());
-        while (left > 0) {
-            int n = Math.min(max, left);
-            out.add(new ItemStack(all.getItem(), n));
-            left -= n;
-        }
-        return out;
-    }
-
-    /** An item entity on the tray: it hops toward the player when there is one, and just falls otherwise. */
-    private static void spawn(ServerLevel level, BlockPos pos, ItemStack stack, @Nullable Player player) {
-        double x = pos.getX() + 0.5;
-        double y = pos.getY() + 1.05;
-        double z = pos.getZ() + 0.5;
-        Vec3 velocity = Vec3.ZERO;
-        if (player != null) {
-            Vec3 to = new Vec3(player.getX() - x, 0, player.getZ() - z);
-            if (to.lengthSqr() > 1.0E-4) {
-                to = to.normalize().scale(0.18);
-            }
-            velocity = new Vec3(to.x, 0.2, to.z);
-        } else {
-            y = pos.getY() - 0.1;
-        }
-        ItemEntity entity = new ItemEntity(level, x, y, z, stack, velocity.x, velocity.y, velocity.z);
-        entity.setDefaultPickUpDelay();
-        level.addFreshEntity(entity);
+        Container below = Transfer.below(level, pos);
+        Transfer.deliver(level, pos, below, player, drops);
+        Transfer.deliver(level, pos, below, null, residue);
     }
 
     // ---- small effects ----
 
     private static void giveBack(@Nullable Player player, ItemStack stack) {
-        if (!stack.isEmpty() && player != null) {
-            if (!player.getInventory().add(stack) && !stack.isEmpty()) {
-                net.minecraft.world.Containers.dropItemStack(player.level(), player.getX(), player.getY(), player.getZ(), stack);
-            }
-        }
+        Transfer.giveBack(player, stack);
     }
 
     private static void consume(Player player, ItemStack stack) {
-        if (!player.getAbilities().instabuild) {
-            stack.shrink(1);
-        }
+        Transfer.consume(player, stack);
     }
 
     private static void playPlace(ServerLevel level, BlockPos pos, ItemStack stack) {
