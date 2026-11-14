@@ -1,7 +1,7 @@
 # Project Status
 <!-- status-format: 1 -->
 Updated: 2026-11-14
-Summary: Prima Materia 2026.11.1 is feature complete on Forge and NeoForge 26.2 and 26.3 (sieve, hammers, barrels, crucible, drives, void island, animation renderer, recipe viewer and scripting support): all four builds pass 141 unit tests and the headless server self test; not pushed, never run in a real game client by hand, and molten metals and brine are internal fluids rather than real placeable ones.
+Summary: Prima Materia 2026.11.1 is released (GitHub, CurseForge project 1803927, wiki): sieve, hammers, barrels, crucible, drives, void island, renderers and viewer and scripting support on Forge and NeoForge 26.2 and 26.3; open for 2026.11.2: real placeable fluids, dedicated-server recipe sync, drive sound triggers, crystal textures, Casey's texture review and a hands-on play-through.
 Spend: none
 
 ## Design
@@ -27,9 +27,9 @@ Spend: none
 - [x] Linked sieves (sieve.link, sieve.link_radius): shake and refill together, proven in the server self test (w:3)
 - [x] Hammers (6 tiers) and crushing recipes with bonus yield, break hook on both loaders; unit tests and server self test on four builds (w:3)
 - [x] Barrels (wooden and clay): dew and rain, composting, soaking, mixing, steeping, growing, buckets, hoppers; unit tests and server self test on four builds (w:5)
-- [~] Brine: an internal fluid made by steeping and moved by the brine bucket; not a placeable world fluid (cut, see After 2026.11.1) (w:2)
+- [x] Brine as an internal fluid (made by steeping, moved by the brine bucket); the real placeable fluid is in the next release list (w:2)
 - [x] Crucible: heat sources as data, melting into lava or molten metal, buckets, hoppers; server self test on four builds (w:4)
-- [~] Molten copper, iron and gold: internal fluids with real bucket items; not placeable world fluids (cut, see After 2026.11.1) (w:3)
+- [x] Molten copper, iron and gold as internal fluids with real bucket items; the real placeable fluids are in the next release list (w:3)
 - [x] Casting tray: pour from the crucible, cool, ingot out by hand or hopper; server self test on four builds (w:3)
 - [x] Windup drive and furnace drive with output buffers; server self test on four builds (w:4)
 - [x] Powered drive (FE capability on NeoForge and on Forge, checked in the loader dev hooks) (w:3)
@@ -49,7 +49,7 @@ Spend: none
 - [~] Block textures, 16x16: meshes, stone meal, scoria and pale sand drawn (first pass, waiting for review); brine, molten metals and crystals not drawn (w:3)
 - [~] Item textures (26), 16x16: first pass drawn, waiting for Casey's review next to vanilla (w:3)
 - [x] Particle textures (w:1)
-- [~] Selection shapes and display transforms for the six models made; casting tray and two drives still full blocks (w:2)
+- [x] Selection shapes for every model block (boxes that follow the models) (w:2)
 
 ## Animation Renderer
 - [x] Animation loader and sampler in common/ (keyframes, four easing modes, blending) with unit tests (w:4)
@@ -59,15 +59,15 @@ Spend: none
 - [x] Sieve renderer: bones, domed layer, finds, blending, shake sync; real-client frames on neoforge-26.2 and forge-26.2 (docs/testing/sieve_animation.md) (w:5)
 - [~] Fines and dust particles done; pour stream not used yet (w:2)
 - [~] Sounds synthesized (9 events x 3) and wired for the sieve; drive sounds have no trigger yet (w:3)
-- [ ] Barrel, crucible, casting tray and drive renderers and animations (w:4)
+- [x] Renderers for the barrels, crucible, casting tray, three drives and the auto hammer (fluid and compost level and color, melt and pour, cooling, drive animations, hammer stamps); client frames on NeoForge 26.2, Forge 26.2 and NeoForge 26.3 (w:4)
 - [x] Distance levels, particle and sound caps, resting sieves at zero cost (w:3)
 - [x] Animation settings: full, reduced, off (block state fallback) (w:2)
 
 ## Integrations
 - [x] Shared card layout and RecipeLookup wiring for all viewers (viewer/Cards, unit tested) (w:2)
-- [~] BEI: six categories plus drops page; compiled on all four builds, frames on NeoForge 26.2 and 26.3 with demo recipes (w:3)
-- [~] JEI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 and 26.3 with demo recipes (w:3)
-- [~] REI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 and 26.3 with demo recipes (w:3)
+- [x] BEI: six categories plus the drops page; compiled on all four builds, frames on NeoForge 26.2 and 26.3 (w:3)
+- [x] JEI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 and 26.3 (w:3)
+- [x] REI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 and 26.3 (w:3)
 - [x] EMI plugin written (src/pending/emi, no EMI build for 26.2 or 26.3: not compiled or tested) (w:2)
 - [x] Drop table information pages per siftable block (drops category in BEI, JEI, REI; seen in JEI and BEI frames) (w:2)
 - [~] SMWTI lines written and compiled on all four builds; every block entity now offers its view; no client check (w:2)
@@ -97,17 +97,22 @@ Spend: none
 - [x] Icon (svg and png sizes) (w:2)
 - [x] Banners and social image (w:2)
 - [x] CurseForge description (mod only: features, settings, compatibility, FAQ) (w:2)
-- [~] Wiki pages written in the site folder (sieve, hammers, barrels, crucible, drives, start, progression, config, drop tables, recipes, scripting, compatibility, known gaps); not deployed (Project Manager) (w:3)
+- [x] Wiki pages (sieve, hammers, barrels, crucible, drives, start, progression, config, drop tables, recipes, scripting, compatibility, known gaps), deployed (w:3)
 - [x] README and CHANGELOG for 2026.11.1 (w:1)
 
-## After 2026.11.1
-- [ ] Real placeable fluids: brine and molten copper, iron and gold (fluid type, source, flowing fluid, block, bucket, client fluid model on both loaders and both versions) and fluid handlers on the barrels, the crucible and the casting tray, so other mods' tanks and pipes can move them (cut from the first release, w:5)
-- [ ] Triggers for the drive sounds (crank and tick have files, nothing plays them) (w:2)
+## Next release 2026.11.2
+- [ ] Real placeable fluids: brine and molten copper, iron and gold (fluid type, source, flowing fluid, block, bucket, client fluid model on both loaders and both versions) and fluid handlers on the barrels, the crucible and the casting tray, so other mods' tanks and pipes can move them (cut from 2026.11.1, w:5)
 - [ ] Client sync of the recipe lookup so recipe viewers also work for players joining a dedicated server (the lookup is built on the server and shared in single player and LAN) (w:3)
+- [ ] Triggers for the drive sounds (crank and tick have files, nothing plays them) (w:2)
+- [ ] Draw the five crystal textures (the barrel uses the vanilla amethyst cluster for all five) and use the pour stream particle in the renderer (w:2)
+- [ ] Casey reviews the 16x16 textures next to vanilla and asks for redraws (w:1)
+- [ ] Hands-on play-through of a fresh Void Island in a real client, with a balance pass on the drop tables (w:4)
+- [ ] Client checks of SMWTI and Jade lines and of ModJS in a real client (w:3)
+- [ ] EMI plugin and KubeJS bridge compiled and checked when a build exists for 26.2 or 26.3 (w:1)
 
 ## Release and CI
 - [x] build.yml, release.yml, changed-builds-only plan_matrix.py, issue templates (written by the Project Manager) (w:3)
-- [ ] GitHub repository, push, CI run (Project Manager) (w:2)
-- [ ] CurseForge project and project id, secrets (Project Manager) (w:2)
-- [ ] Release 2026.11.1 on GitHub and CurseForge (Project Manager) (w:2)
+- [x] GitHub repository (github.com/ItMeCasey/PrimaMateria), push, CI run green on a17e7cb (w:2)
+- [x] CurseForge project 1803927 and secrets (w:2)
+- [x] Release 2026.11.1 on GitHub (tag v2026.11.1) and CurseForge (two combined jars, 26.2 and 26.3) (w:2)
 - [ ] Add Prima Materia to the Command Center (Project Manager) (w:1)
