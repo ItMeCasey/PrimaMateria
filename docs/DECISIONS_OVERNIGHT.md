@@ -11,7 +11,7 @@ Casey was asleep and asked for Prima Materia to be completed and released as 202
 | 3 | Hand shake rate is one shake per 4 ticks | A held use button repeats at that rate in the game | `SiftMath.HAND_MIN_TICKS` |
 | 4 | Pacing targets (iron about 45 minutes, a Nether portal about 2 hours, diamonds about 3 hours) are kept as designed | No play data yet | Edit the drop tables (data files) and the config |
 | 5 | Sieve sounds are our own, played by the client renderer from the sieve state; the server plays none for the sieve (no doubled sounds). Drive sounds (crank, tick) have files but no trigger yet. | The animation branch ships them | `client/SieveFx` |
-| 6 | The current 16x16 textures and the stand-in or Blockbench models are treated as approved | Casey said the PM could decide | Redraw any file; nothing in code depends on a texture |
+| 6 | The 16x16 textures and the stand-in or Blockbench models shipped in 2026.11.1 as a first pass. They are NOT approved: Casey reviews them (docs/frames/texture_review.png) and asks for redraws. | Casey's rule: DONE means played to his standard | Redraw any file; nothing in code depends on a texture |
 | 7 | Adding a sifting material is only a recipe file: no id, texture or tier is written per material anywhere in code | Casey's requirement | Self test `pack_added_material_sifts_and_drops_with_no_code_change` proves it |
 | 8 | Recipe results are kept as item ids (text), so a recipe for another mod's item loads without that mod and is skipped when the item is missing | Optional compat files | `SiftingRecipe` |
 | 9 | Recipe types are real recipe types with codecs (not a private JSON folder) | So datapacks, KubeJS and ModJS work on them like any recipe | `PrimaRecipes` |
