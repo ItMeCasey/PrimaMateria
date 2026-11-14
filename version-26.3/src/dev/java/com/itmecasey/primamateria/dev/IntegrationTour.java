@@ -25,11 +25,16 @@ import org.slf4j.LoggerFactory;
  * {@code jei} or {@code rei} (and {@code PRIMAMATERIA_DEMO} for the demo recipes), it opens a fresh superflat world, opens that
  * viewer's recipe screen for a few Prima Materia items through the viewer's own code and saves a screenshot of each into
  * {@code run/screenshots} as {@code primamateria_<viewer>_<name>.png}, then quits. It never touches the real mouse or keyboard.
+ *
+ * <p>With {@code PRIMAMATERIA_TOUR_SERVER} it joins a running dedicated server instead (no demo recipes, no integrated server),
+ * so everything a viewer shows came from the server's recipe lookup payload.
  */
 public final class IntegrationTour {
     private static final Logger LOGGER = LoggerFactory.getLogger("PrimaMateria");
     private static final String VIEWER = System.getenv("PRIMAMATERIA_TOUR");
     private static final String WORLD = "primamateria_integration";
+    /** With {@code PRIMAMATERIA_TOUR_SERVER=host:port} the tour joins that dedicated server instead of making a world. */
+    private static final String SERVER = System.getenv("PRIMAMATERIA_TOUR_SERVER");
 
     private enum Stage { WAITING_FOR_MENU, LOADING_WORLD, TOURING, DONE }
 
@@ -71,6 +76,10 @@ public final class IntegrationTour {
         }
     }
 
+    private static Minecraft minecraft() {
+        return Minecraft.getInstance();
+    }
+
     private static void quit(Minecraft minecraft) {
         minecraft.options.pauseOnLostFocus = pauseOnLostFocus;
         LOGGER.info("PRIMAMATERIA-TOUR DONE");
@@ -84,6 +93,17 @@ public final class IntegrationTour {
         }
         pauseOnLostFocus = minecraft.options.pauseOnLostFocus;
         minecraft.options.pauseOnLostFocus = false;
+        if (SERVER != null && !SERVER.isBlank()) {
+            stage = Stage.LOADING_WORLD;
+            idle = 0;
+            LOGGER.info("PRIMAMATERIA-TOUR lookup before joining: {} sifting recipes", com.itmecasey.primamateria.data.RecipeLookup.get().sifting().size());
+            LOGGER.info("PRIMAMATERIA-TOUR joining {} for {}", SERVER, VIEWER);
+            net.minecraft.client.gui.screens.ConnectScreen.startConnecting(new TitleScreen(), minecraft,
+                    net.minecraft.client.multiplayer.resolver.ServerAddress.parseString(SERVER),
+                    new net.minecraft.client.multiplayer.ServerData("sync", SERVER, net.minecraft.client.multiplayer.ServerData.Type.OTHER),
+                    false, null);
+            return;
+        }
         LevelStorageSource source = minecraft.getLevelSource();
         if (source.levelExists(WORLD)) {
             try (LevelStorageSource.LevelStorageAccess access = source.createAccess(WORLD)) {
@@ -104,10 +124,15 @@ public final class IntegrationTour {
 
     private static void waitForWorld(Minecraft minecraft) {
         if (minecraft.level == null || minecraft.player == null || minecraft.gui.screen() != null
-                || minecraft.getSingleplayerServer() == null || ++idle < 120) {
+                || (SERVER == null && minecraft.getSingleplayerServer() == null) || ++idle < 120) {
             return;
         }
         LOGGER.info("PRIMAMATERIA-TOUR in the world");
+        if (SERVER != null) {
+            var lookup = com.itmecasey.primamateria.data.RecipeLookup.get();
+            LOGGER.info("PRIMAMATERIA-TOUR lookup after joining: {} sifting, {} crushing, {} melting recipes, singleplayer server: {}",
+                    lookup.sifting().size(), lookup.crushing().size(), lookup.melting().size(), minecraft().getSingleplayerServer() != null);
+        }
         plan();
         stage = Stage.TOURING;
     }

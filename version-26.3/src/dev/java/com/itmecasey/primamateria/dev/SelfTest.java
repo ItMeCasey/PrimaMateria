@@ -85,6 +85,7 @@ public final class SelfTest {
             AnimChecks.run(server.overworld(), SelfTest::verdict);
             LookupSelfTest.run(server, server.overworld());
             FluidSelfTest.run(server, server.overworld());
+            LookupSyncSelfTest.run(server);
         } catch (RuntimeException e) {
             LOGGER.error("SELFTEST error", e);
             verdict("selftest_ran_clean", false, e.toString());
