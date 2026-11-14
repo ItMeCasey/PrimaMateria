@@ -1,8 +1,16 @@
 # Changelog
 
-## 2026.11.1 (not released)
+## 2026.11.2 (not released)
 
-First release. In development.
+- Brine and molten copper, iron and gold are real fluids on Forge and NeoForge (26.2 and 26.3): placeable, with still and flowing textures, a bucket and a liquid block each. Molten metals burn and spread fire like lava and never make new sources; brine behaves like water.
+- Barrels, the crucible and the casting tray expose the loader's fluid handler, so pipes and tanks from other mods move their fluids. Buckets from any mod work with them. Dispensers place the buckets.
+- Players on a dedicated server get the recipe lookup when they join and after every reload, so recipe viewers (BEI, JEI, REI) show every recipe and drop table there too.
+- Every drive, hammer, crucible, casting tray and barrel sound is now triggered in game, and the pour stream particle shows while molten metal pours.
+- Five drawn crystal textures replace the amethyst placeholder; crystals show under the fluid surface.
+
+## 2026.11.1
+
+First release.
 
 ### Interfaces
 
