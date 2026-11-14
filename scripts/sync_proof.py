@@ -38,6 +38,11 @@ def proof(layer, viewer):
     (server_run / "eula.txt").write_text("eula=true\n")
     (server_run / "server.properties").write_text(
         f"server-port={port}\nonline-mode=false\nlevel-type=minecraft\\:flat\nspawn-protection=0\nmotd=PrimaMateria sync proof\nmax-tick-time=-1\n")
+    # some builds start with the whitelist on whatever server.properties says: list the dev player (offline uuid) in it
+    import hashlib
+    import uuid
+    offline = uuid.UUID(bytes=hashlib.md5(b"OfflinePlayer:Dev").digest(), version=3)
+    (server_run / "whitelist.json").write_text('[{"uuid": "%s", "name": "Dev"}]' % offline)
     it.write_options(client_run)
     shots = client_run / "screenshots"
     if shots.exists():
