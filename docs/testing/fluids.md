@@ -45,12 +45,21 @@ tray offer the loader's fluid handler.
 - **Results.** All four builds: `gradlew build` passes with 156 unit tests each (15 new) and the release jars contain no dev classes;
   `PRIMA_PORT_BASE=8738 python scripts/server_check.py <layer>` gives SERVER PASS on neoforge-26.2 (435 checks), forge-26.2 (429),
   neoforge-26.3 (435) and forge-26.3 (438).
-- **Frames** (`PRIMA_TOUR=fluids python scripts/client_tour.py <layer>`, the isolated launcher, the `FluidTour` in `dev/`): TOUR PASS on
-  neoforge-26.2 and forge-26.3, 10 frames each plus the bucket icon strip: `docs/frames/fluids_<layer>_<fluid>_still.png` (a source pool
-  behind glass, the fluid's bucket in hand), `_flowing.png` (a source on a block spilling down its sides and across the floor),
-  `brine_inside.png` and `molten_gold_inside.png` (the camera inside a tank of the fluid), and `bucket_icons.png` (the four bucket icons
-  from the hotbar of a real frame, enlarged). Looked at: the four fluids are teal, orange-red, pale orange and yellow, animated, full bright
-  for the metals, translucent for brine; the flowing faces slide down the block; the underwater and in-lava fog show.
+- **Frames** (`PRIMA_TOUR=fluids python scripts/client_tour.py <layer>`, isolated launcher, `FluidTour` in `dev/`): TOUR PASS on
+  neoforge-26.2 and forge-26.3, 12 frames each plus a bucket icon strip, saved as `docs/frames/fluid_<layer>_*.png`. Every frame was read.
+  - `brine_still`, `molten_copper_still`, `molten_iron_still`, `molten_gold_still`: a source pool behind glass (glass on the near side),
+    the fluid's bucket in hand and all four bucket icons in the hotbar; teal translucent brine, orange-red copper, pale orange iron, yellow
+    gold, animated, full bright, other pools visible behind.
+  - `<fluid>_flowing`: a source on a stone block spilling down its sides and across the floor (the flowing texture, lit).
+  - `brine_inside`, `molten_gold_inside`: the camera inside an open-top tank (water fog and bubbles; lava fog).
+  - `crucibles`: three crucibles holding molten copper, iron and gold at different levels; `trays`: a tray filling with molten iron
+    and one with molten gold part way through cooling.
+  - `bucket_icons`: the hotbar strip of a real frame, enlarged 3x.
+- **Bugs found and fixed while doing this:** Forge refused to start because `BucketItem(Fluid)` looks the fluid up in the registry
+  before it is registered (each loader now builds its own bucket, Forge with a supplier); 26.3 renamed `PushReaction.DESTROY` to `POPPED`
+  (new sync patch); the first flowing textures were twice as coarse as the still ones (the flowing face shows a half-size window of its
+  32x32 frame; redrawn finer); the first test layout put sources next to the edge of the cleared area, where water-like fluids flow toward
+  the drop, and the crucible camera was too far away to see the fluid.
 
 ## Known differences
 

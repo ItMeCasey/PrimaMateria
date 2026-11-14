@@ -68,6 +68,38 @@ final class FluidTour {
                 ShotTour.shoot("fluids_" + id + "_inside", 30);
             }
         }
+        // the crucible holding each molten metal, and casting trays pouring and cooling
+        String[] metals = {"molten_copper", "molten_iron", "molten_gold"};
+        ShotTour.then(2, () -> {
+            for (int i = 0; i < 3; i++) {
+                ShotTour.server("setblock " + (-4 + 2 * i) + " " + y + " 30 primamateria:crucible");
+            }
+            ShotTour.server("setblock 3 " + y + " 30 primamateria:casting_tray", "setblock 5 " + y + " 30 primamateria:casting_tray");
+        });
+        ShotTour.then(10, () -> ShotTour.onServer(server -> {
+            net.minecraft.server.level.ServerLevel level = server.overworld();
+            for (int i = 0; i < 3; i++) {
+                if (level.getBlockEntity(new net.minecraft.core.BlockPos(-4 + 2 * i, y, 30)) instanceof com.itmecasey.primamateria.blockentity.CrucibleBlockEntity c) {
+                    c.state().fill("primamateria:" + metals[i], 3000 - 700 * i);
+                    c.changed();
+                }
+            }
+            if (level.getBlockEntity(new net.minecraft.core.BlockPos(3, y, 30)) instanceof com.itmecasey.primamateria.blockentity.CastingTrayBlockEntity tr) {
+                tr.state().fill("primamateria:molten_iron", "minecraft:iron_ingot", 1, 100000);
+                tr.changed();
+            }
+            if (level.getBlockEntity(new net.minecraft.core.BlockPos(5, y, 30)) instanceof com.itmecasey.primamateria.blockentity.CastingTrayBlockEntity tr) {
+                tr.state().fill("primamateria:molten_gold", "minecraft:gold_ingot", 1, 100000);
+                for (int n = 0; n < 40; n++) {
+                    tr.state().tick();
+                }
+                tr.changed();
+            }
+        }));
+        ShotTour.then(2, () -> ShotTour.moveTo(new Vec3(-2.0, y + 3.0, 28.6), new Vec3(-2.0, y + 0.7, 30.5)));
+        ShotTour.shoot("fluids_crucibles", 30);
+        ShotTour.then(2, () -> ShotTour.moveTo(new Vec3(4.0, y + 2.6, 28.4), new Vec3(4.0, y + 0.3, 30.5)));
+        ShotTour.shoot("fluids_trays", 30);
         ShotTour.then(20, () -> ShotTour.quit(Minecraft.getInstance()));
     }
 }

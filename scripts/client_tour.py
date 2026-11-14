@@ -81,7 +81,7 @@ def tour(layer):
     names = sorted(p.name for p in shots.glob("*.png")) if shots.exists() else []
     for n in names:
         if mode == "fluids":
-            shutil.copy2(shots / n, frames / n.replace("primamateria_fluids_", f"fluids_{layer}_", 1))
+            shutil.copy2(shots / n, frames / n.replace("primamateria_fluids_", f"fluid_{layer}_", 1))
         else:
             shutil.copy2(shots / n, frames / n.replace("primamateria_", f"primamateria_{layer}{'-' + theme if theme else ''}_", 1))
     errors = [l for l in text.splitlines() if re.search(r"PRIMAMATERIA-SHOTS failed|ModLoadingException|Crash report saved|primamateria.*(Exception|Error)", l, re.I)]
