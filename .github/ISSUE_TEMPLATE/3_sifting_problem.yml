@@ -1,0 +1,49 @@
+name: Sieve, hammer, barrel or crucible problem
+description: A sieve, hammer, barrel, crucible or drive does something different from what the wiki says, or a drop table looks wrong.
+title: "[Processing] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Prima Materia never deletes items on purpose. If material or finds went missing or doubled, say exactly what you put in, which mesh or tool you used and what came out.
+  - type: dropdown
+    id: area
+    attributes:
+      label: What went wrong
+      options:
+        - Sieve gives nothing or the wrong finds
+        - Sieve animation or progress looks wrong
+        - Hammer breaks the wrong block or gives the wrong result
+        - Barrel does not finish or gives the wrong result
+        - Crucible or casting tray
+        - Auto Hammer or Powered Drive
+        - Recipe viewer category
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: shown
+    attributes:
+      label: What happened
+      description: The material, the mesh tier or tool, the block you used and what you got, or a screenshot.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: datapack
+    attributes:
+      label: Datapacks or scripts that change recipes or drop tables
+      description: KubeJS or ModJS scripts, or datapacks. Leave empty if none.
+  - type: input
+    id: version
+    attributes:
+      label: Prima Materia version
+      placeholder: "2026.11.1"
+    validations:
+      required: true

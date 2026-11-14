@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: How Prima Materia works and what it covers
+    url: https://itmecasey.com/wiki/primamateria/
+    about: How sieves, hammers, barrels and crucibles work, the mesh tiers, the data formats and the config file. Read this first.
+  - name: Troubleshooting
+    url: https://itmecasey.com/wiki/primamateria/?p=troubleshooting
+    about: Material that goes missing, a sieve that gives nothing and the settings that switch things off.
