@@ -14,19 +14,13 @@ Things Prima Materia cannot do yet, and why. Checked on CurseForge with the `cur
 
 Our own BEI, SMWTI and ModJS have builds for all four targets.
 
-## Integration gaps that depend on other workstreams
+## Integration notes
 
-| Gap | Depends on | Plan |
+| Note | Depends on | Plan |
 |---|---|---|
-| SMWTI and Jade lines need the block entities to implement `view.ViewProvider` and to sync their view record to clients (Jade reads the client side). Until then the lines show for no block. The line text itself is unit tested (`InfoLines`). | Workstream A | Requests in `ARCHITECTURE.md`, "Requests from workstream D". |
-| Script content calls (`PrimaMateria.sifting.add` and the others) change a snapshot; they change gameplay only when workstream A applies `ScriptContent.apply` after each reload and reads the result. | Workstream A | Same request. |
-| Script events fire only when A fires the `GameEvents` channels. | Workstream A | Frozen interface, already in `ARCHITECTURE.md`. |
-| Recipe viewers show recipes from `RecipeLookup`, which A fills. Until A does, dev runs use `DemoRecipes` (environment variable `PRIMAMATERIA_DEMO`). | Workstream A | Same. |
 | A BEI card shows an empty slot box for each unused output slot of its category (a sifting card with two drops shows ten boxes). BEI draws every slot of a category. | BEI | Acceptable for the first release; split categories by output count if it bothers anyone. |
 | BEI shows fluids as their bucket and melts as a tinted square, since its slots hold items. JEI and REI show real fluid ingredients. | BEI | None needed. |
 
 ## Other
 
-| Gap | Since | Plan |
-|---|---|---|
-| **Molten metals and brine are not real fluids.** In 2026.11.1 they are internal fluids (an id and an amount) held by the barrels, the crucible and the casting tray and moved by bucket. They cannot be placed in the world, and other mods' pipes and tanks cannot move them (no fluid handler on our machines). Casey asked for real, storable fluids; this is not delivered in the first release. | 2026-11-13 (cut, see `DECISIONS_OVERNIGHT.md`) | First step of the next release: register four fluids with a fluid type, source, flowing fluid, block, bucket and client fluid model on both loaders, then expose the barrels, the crucible and the casting tray as fluid handlers |
+No gap is open here as of 2026.11.2. Molten metals and brine are real fluids with fluid handlers on the barrels, the crucible and the casting tray, and players of a dedicated server receive the recipe lookup. The items that still need Casey's decision are listed in `COMPLETION_REPORT.md`.
