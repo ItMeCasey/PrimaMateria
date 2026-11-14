@@ -81,6 +81,8 @@ final class CrucibleSelfTest {
         int[] expected = {1, 2, 3, 3, 4, 5};
         Block[] sources = {Blocks.TORCH, Blocks.CAMPFIRE, Blocks.MAGMA_BLOCK, Blocks.FIRE, Blocks.LAVA, Blocks.SOUL_FIRE};
         for (int i = 0; i < sources.length; i++) {
+            // fire is removed by the game when nothing supports it; soul fire needs soul sand
+            put(level, spot.offset(i, -2, 8), sources[i] == Blocks.SOUL_FIRE ? Blocks.SOUL_SAND.defaultBlockState() : Blocks.STONE.defaultBlockState());
             put(level, spot.offset(i, -1, 8), sources[i].defaultBlockState());
             int heat = HeatSources.heatAt(level, spot.offset(i, -1, 8));
             SelfTest.verdict("heat_of_" + sources[i].getDescriptionId().replace("block.minecraft.", ""), heat == expected[i], "heat " + heat);
@@ -182,27 +184,27 @@ final class CrucibleSelfTest {
         CastingTrayBlockEntity north = tray(level, pourPos.north());
         pourBe.tick(level);
         SelfTest.verdict("crucible_pours_into_trays_while_it_has_enough", pourBe.state().amount() == 50 && !east.state().canAccept()
-                && !west.state().canAccept() && north.state().canAccept(), pourBe.state().amount() + " mB left");
+                && !north.state().canAccept() && west.state().canAccept(), pourBe.state().amount() + " mB left, 2 trays poured");
         SelfTest.verdict("view_shows_the_pour", pourBe.view().pourSides() != 0 && east.view().stage() == TrayView.Stage.FILLING
                 && east.view().fluidId().equals("primamateria:molten_iron"), "pour bits " + pourBe.view().pourSides());
         cool(level, east, 69);
         SelfTest.verdict("tray_is_still_cooling", east.state().stage() == TrayView.Stage.COOLING && casts.isEmpty(), "stage " + east.state().stage());
         cool(level, east, 1);
-        cool(level, west, 70);
-        SelfTest.verdict("tray_cools_to_an_ingot", east.state().done() && west.state().done() && east.getItem(0).is(Items.IRON_INGOT)
+        cool(level, north, 70);
+        SelfTest.verdict("tray_cools_to_an_ingot", east.state().done() && north.state().done() && east.getItem(0).is(Items.IRON_INGOT)
                 && east.getItem(0).getCount() == 1, "stage " + east.state().stage());
         SelfTest.verdict("cast_event_fired", casts.size() == 2 && casts.get(0).result().equals("minecraft:iron_ingot")
                 && casts.get(0).fluid().equals("primamateria:molten_iron") && casts.get(0).count() == 1, casts.size() + " events");
         SelfTest.verdict("a_full_tray_takes_no_more", !east.state().canAccept(), "done tray is not poured into");
         SelfTest.verdict("hopper_can_take_the_cast_out", east.canTakeItemThroughFace(0, ItemStack.EMPTY, Direction.DOWN)
                 && east.removeItem(0, 1).is(Items.IRON_INGOT) && east.state().canAccept(), "tray empty again");
-        SelfTest.verdict("tray_does_not_accept_items", !west.canPlaceItem(0, new ItemStack(Items.IRON_INGOT)), "no input");
+        SelfTest.verdict("tray_does_not_accept_items", !north.canPlaceItem(0, new ItemStack(Items.IRON_INGOT)), "no input");
         try {
-            CrucibleLogic.useTray(level, pourPos.west(), player, InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            CrucibleLogic.useTray(level, pourPos.north(), player, InteractionHand.MAIN_HAND, ItemStack.EMPTY);
         } catch (NullPointerException e) {
             // the test player has no network connection, so handing the ingot to its inventory cannot sync; the tray is already empty
         }
-        SelfTest.verdict("empty_hand_takes_the_cast", west.state().canAccept(), "tray empty again");
+        SelfTest.verdict("empty_hand_takes_the_cast", north.state().canAccept(), "tray empty again");
 
         pourBe.tick(level);
         SelfTest.verdict("not_enough_fluid_no_pour", pourBe.state().amount() == 50 && east.state().canAccept() && west.state().canAccept(),
