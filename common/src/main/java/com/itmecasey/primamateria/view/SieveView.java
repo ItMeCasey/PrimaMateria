@@ -24,9 +24,25 @@ public record SieveView(String meshId, String meshTexture, String block, float p
     /** Spots on the mesh a find can lie on (a 3 by 2 grid). */
     public static final int FIND_SPOTS = 6;
 
+    /** The animation code's old shape: a load of 0 to 4 blocks and its block. A load above 0 means a block is in. */
+    public SieveView(String meshId, String meshTexture, String block, int load, float progress, int shakeCount, long lastShakeTick,
+                     DriveKind drive, boolean blocked, long seed, List<Find> finds) {
+        this(meshId, meshTexture, load > 0 ? block : "", progress, shakeCount, lastShakeTick, drive, blocked, seed, finds);
+    }
+
     /** True when a block is in the sieve. */
     public boolean filled() {
         return !block.isEmpty();
+    }
+
+    /** The layer height in quarters of the tray at the start of a block: 4 when a block is in, 0 when empty. */
+    public int load() {
+        return filled() ? 4 : 0;
+    }
+
+    /** The block being sifted (same as {@link #block()}). */
+    public String loadBlock() {
+        return block;
     }
 
     /**

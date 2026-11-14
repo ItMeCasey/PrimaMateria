@@ -2,7 +2,9 @@ package com.itmecasey.primamateria.blockentity;
 
 import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.StateProps;
+import com.itmecasey.primamateria.anim.SieveViewSource;
 import com.itmecasey.primamateria.data.Meshes;
+import com.itmecasey.primamateria.block.DriveBlock;
 import com.itmecasey.primamateria.machine.Drivable;
 import com.itmecasey.primamateria.sieve.SieveLogic;
 import com.itmecasey.primamateria.sift.SiftMath;
@@ -35,8 +37,11 @@ import net.minecraft.world.level.storage.ValueOutput;
  * container so hoppers can drop a block in from above and the side (the slot always reads empty; a block is taken the moment it
  * is offered). Drops leave through whatever container is below, or hop onto the ground.
  */
-public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, Drivable {
+public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, Drivable, SieveViewSource {
     private final SiftState state = new SiftState();
+    /** The picture the renderer reads: rebuilt whenever the state changes or arrives from the server, never per frame. */
+    private SieveView cachedView = SieveView.EMPTY;
+    private Object renderCache;
 
     public SieveBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModContent.SIEVE_BE, pos, blockState);
@@ -50,7 +55,34 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, D
     public SieveView view() {
         Meshes.Mesh mesh = Meshes.get(state.meshId());
         return new SieveView(state.meshId(), mesh == null ? "" : mesh.texture(), state.block(), state.progress(), state.shakes(),
-                state.lastShakeTick(), DriveKind.HAND, false, state.seed(), SiftMath.finds(state.drops(), state.seed()));
+                state.lastShakeTick(), driveKind(), false, state.seed(), SiftMath.finds(state.drops(), state.seed()));
+    }
+
+    /** What is shaking this sieve: a drive under it, or a hand. */
+    private DriveKind driveKind() {
+        if (level != null && level.getBlockState(worldPosition.below()).getBlock() instanceof DriveBlock drive) {
+            return drive.kind();
+        }
+        return DriveKind.HAND;
+    }
+
+    private void refreshView() {
+        cachedView = view();
+    }
+
+    @Override
+    public SieveView sieveView() {
+        return cachedView;
+    }
+
+    @Override
+    public Object renderCache() {
+        return renderCache;
+    }
+
+    @Override
+    public void renderCache(Object cache) {
+        this.renderCache = cache;
     }
 
     /** The resting model slot of the fitted mesh (0 when there is none). */
@@ -66,6 +98,7 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, D
 
     /** Saves, copies the mesh slot and layer height to the block state, and sends the new data to nearby players. */
     public void changed() {
+        refreshView();
         setChanged();
         if (level != null && !level.isClientSide()) {
             BlockState old = getBlockState();
@@ -137,6 +170,7 @@ public class SieveBlockEntity extends BlockEntity implements WorldlyContainer, D
         state.restore(input.getStringOr("Mesh", ""), input.getIntOr("MeshTier", 0), input.getDoubleOr("MeshSpeed", 1.0),
                 input.getStringOr("Block", ""), input.getIntOr("Shakes", 0), input.getIntOr("Needed", 1), input.getLongOr("Seed", 0L),
                 input.getStringOr("Drops", ""), input.getStringOr("Residue", ""), input.getLongOr("LastShake", Long.MIN_VALUE / 2));
+        refreshView();
     }
 
     @Override

@@ -20,6 +20,8 @@ final class ForgeClient {
 
     private static void renderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModAnim.SIEVE_PREVIEW, SieveRenderer<SievePreviewBlockEntity>::new);
+        event.registerBlockEntityRenderer(com.itmecasey.primamateria.ModContent.SIEVE_BE,
+                SieveRenderer<com.itmecasey.primamateria.blockentity.SieveBlockEntity>::new);
     }
 
     private static void particles(RegisterParticleProvidersEvent event) {
