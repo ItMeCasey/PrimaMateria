@@ -14,6 +14,7 @@ Prima Materia is a skyblock resource mod for Forge and NeoForge on Minecraft 26.
 - **Drives.** Windup, furnace and powered (FE) drives go under a sieve. The Auto Hammer sits on a drive and crushes blocks fed to it. Hoppers feed and empty the machines.
 - **Nether and End materials.** Crush netherrack and end stone, sift them, soak scoria in brine for soul sand, and reach netherite.
 - **Void Island world type** with a start island. The island is a structure file a datapack can replace.
+- **Ore compat.** Sifting, crushing, melting and casting for the materials other mods add, by item tag: tin, lead, silver, nickel, uranium, titanium, steel, bronze and many more, plus gems. Every metal has its own molten fluid and bucket. Nothing happens for a mod that is not installed.
 - **Everything is data.** Recipes, drop tables, mesh tiers, heat sources, melts and compost values are datapack JSON. Add, change or remove any of them with a datapack, KubeJS or ModJS.
 - **Settings file** for sieve speed, drop multiplier, drive speeds, barrel timings and crucible rates.
 

@@ -1,7 +1,7 @@
 # Project Status
 <!-- status-format: 1 -->
 Updated: 2026-11-14
-Summary: Prima Materia 2026.11.2 is code complete and not released: real placeable fluids with fluid handlers, recipe sync to dedicated-server clients, all sounds and the pour particle triggered, drawn crystal textures, structure-file start island; Casey plays it next.
+Summary: Prima Materia 2026.11.2 is code complete and not released: real placeable fluids (brine and a molten fluid for every metal, vanilla and compat), ore compat for 95 materials of other mods by item tag, recipe sync to dedicated-server clients, all sounds and the pour particle triggered, drawn crystal textures, structure-file start island; Casey plays it next.
 Spend: none
 
 ## Design
@@ -91,6 +91,8 @@ Spend: none
 - [x] Headless server self test on all four builds (327 to 379 checks each, one module at a time) (w:4)
 - [~] Real-client frames: the animation and integration sessions took frames on NeoForge 26.2 and Forge 26.2 (docs/testing, docs/frames); the machines were not played by hand (w:4)
 - [ ] 200-sieve performance scene measured in full, reduced and off (w:2)
+- [x] Ore compat: sifting, crushing, melting and casting for the materials of the 26.2 and 26.3 lists by item tag, tag results, optional tag entries, inert without the other mods (docs/ORE_COMPAT.md, scripts/make_compat.py) (w:4)
+- [x] A molten fluid, bucket and look for every metal, vanilla and compat (42 metals) (w:3)
 - [ ] Casey plays a fresh Void Island; balance pass on the data files (w:3)
 
 ## Branding and Docs
