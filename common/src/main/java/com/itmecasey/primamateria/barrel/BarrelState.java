@@ -359,27 +359,17 @@ public final class BarrelState {
                 steep = null;
             }
         }
-        for (int i = crystals.size() - 1; i >= 0; i--) {
-            Crystal c = crystals.get(i);
+        java.util.Iterator<Crystal> it = crystals.iterator();
+        while (it.hasNext()) {
+            Crystal c = it.next();
             c.left -= dt;
             if (c.left <= 0) {
                 pending.add(new Drop(c.result, c.count));
                 done.add(new Finished("growing", c.id, c.result, c.count));
-                crystals.remove(i);
+                it.remove();
             }
         }
-        // finished crystals were removed back to front: list them in planting order
-        java.util.Collections.reverse(done.subList(firstGrowing(done), done.size()));
         return done;
-    }
-
-    private static int firstGrowing(List<Finished> done) {
-        for (int i = 0; i < done.size(); i++) {
-            if (done.get(i).family().equals("growing")) {
-                return i;
-            }
-        }
-        return done.size();
     }
 
     /**

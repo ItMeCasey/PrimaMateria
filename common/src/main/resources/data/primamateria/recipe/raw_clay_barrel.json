@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "C C",
+    "C C",
+    "CBC"
+  ],
+  "key": {
+    "C": "minecraft:clay_ball",
+    "B": "minecraft:clay"
+  },
+  "result": {
+    "id": "primamateria:raw_clay_barrel",
+    "count": 1
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "primamateria:soaking",
+  "fluid": "minecraft:water",
+  "amount": 250,
+  "input": "primamateria:stone_meal",
+  "result": "minecraft:clay",
+  "time": 100
+}

@@ -1,0 +1,8 @@
+{
+  "type": "primamateria:mixing",
+  "base_fluid": "minecraft:water",
+  "added_fluid": "minecraft:lava",
+  "amount": 1000,
+  "result": "minecraft:stone",
+  "needs_heatproof": true
+}

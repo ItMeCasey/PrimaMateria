@@ -33,16 +33,27 @@ public final class PrimaRecipes {
     public static void registerTypes(BiConsumer<String, RecipeType<?>> out) {
         out.accept("sifting", SiftingRecipe.TYPE);
         out.accept("sifting_residue", SiftingResidueRecipe.TYPE);
+        out.accept("soaking", SoakingRecipe.TYPE);
+        out.accept("mixing", MixingRecipe.TYPE);
+        out.accept("steeping", SteepingRecipe.TYPE);
+        out.accept("growing", GrowingRecipe.TYPE);
+        out.accept("composting", CompostingRecipe.TYPE);
     }
 
     public static void registerSerializers(BiConsumer<String, RecipeSerializer<?>> out) {
         out.accept("sifting", SiftingRecipe.SERIALIZER);
         out.accept("sifting_residue", SiftingResidueRecipe.SERIALIZER);
+        out.accept("soaking", SoakingRecipe.SERIALIZER);
+        out.accept("mixing", MixingRecipe.SERIALIZER);
+        out.accept("steeping", SteepingRecipe.SERIALIZER);
+        out.accept("growing", GrowingRecipe.SERIALIZER);
+        out.accept("composting", CompostingRecipe.SERIALIZER);
     }
 
     /** Forgets the lookup built from the old recipes (called after every datapack reload). */
     public static void clearIndex() {
         INDEX.clear();
+        BarrelRecipes.clear();
     }
 
     /** Every sifting entry that applies to a stack of this item. Results naming a missing item are left out. */
