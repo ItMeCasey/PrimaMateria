@@ -16,6 +16,9 @@ final class ForgeClient {
     static void install(FMLJavaModLoadingContext context) {
         EntityRenderersEvent.RegisterRenderers.BUS.addListener(ForgeClient::renderers);
         RegisterParticleProvidersEvent.BUS.addListener(ForgeClient::particles);
+        // the recipe lookup a dedicated server sent is dropped when the player leaves it
+        net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut.BUS.addListener(
+                (net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut e) -> com.itmecasey.primamateria.data.LookupSync.onDisconnect());
         net.minecraftforge.client.event.RegisterColorHandlersEvent.Block.BUS.addListener(ForgeClient::tints);
     }
 

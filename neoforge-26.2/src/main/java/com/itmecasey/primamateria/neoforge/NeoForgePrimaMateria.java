@@ -19,6 +19,10 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import com.itmecasey.primamateria.data.LookupSync;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -33,7 +37,14 @@ public final class NeoForgePrimaMateria {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         modBus.addListener(NeoForgePrimaMateria::register);
         modBus.addListener(NeoForgePrimaMateria::capabilities);
+        modBus.addListener(NeoForgePrimaMateria::payloads);
         NeoForge.EVENT_BUS.addListener((AddServerReloadListenersEvent e) -> e.addListener(ModContent.id("data"), new PrimaReload()));
+        // players of a dedicated server get the recipe lookup when they join and after every reload, before tags and recipes
+        NeoForge.EVENT_BUS.addListener((OnDatapackSyncEvent e) -> {
+            for (ServerPlayer player : e.getRelevantPlayers().toList()) {
+                LookupSync.send(player, frame -> PacketDistributor.sendToPlayer(player, new LookupPayload(frame)));
+            }
+        });
         NeoForge.EVENT_BUS.addListener((ServerStartedEvent e) -> StartIslandPlacer.onServerStarted(e.getServer()));
         // A hammer crushes the block it breaks: HammerLogic does the work and the original break is canceled.
         NeoForge.EVENT_BUS.addListener((BreakBlockEvent e) -> {
@@ -43,6 +54,10 @@ public final class NeoForgePrimaMateria {
             }
         });
         Dev.call("com.itmecasey.primamateria.neoforge.dev.NeoForgeDev", "install", modBus);
+    }
+
+    private static void payloads(RegisterPayloadHandlersEvent event) {
+        event.registrar("1").optional().playToClient(LookupPayload.TYPE, LookupPayload.CODEC, LookupPayload::handle);
     }
 
     private static void capabilities(RegisterCapabilitiesEvent event) {

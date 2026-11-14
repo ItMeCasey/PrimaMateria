@@ -39,6 +39,12 @@ public final class NeoForgeClient {
         event.registerBlockEntityRenderer(ModAnim.MACHINE_PREVIEW, com.itmecasey.primamateria.client.MachineRenderer<com.itmecasey.primamateria.blockentity.MachinePreviewBlockEntity>::new);
     }
 
+    /** The recipe lookup a dedicated server sent is dropped when the player leaves it. */
+    @SubscribeEvent
+    public static void loggedOut(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut event) {
+        com.itmecasey.primamateria.data.LookupSync.onDisconnect();
+    }
+
     @SubscribeEvent
     public static void tints(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.BlockTintSources event) {
         event.register(java.util.List.of(new com.itmecasey.primamateria.client.FillTint()), com.itmecasey.primamateria.ModContent.block(com.itmecasey.primamateria.Ids.SIEVE));

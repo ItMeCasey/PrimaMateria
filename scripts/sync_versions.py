@@ -87,8 +87,10 @@ def copy_loader_entries():
     registration added for 26.2 can never be missing in 26.3. The client classes and the integration plugins are not touched."""
     names = {
         "neoforge": ["main/java/com/itmecasey/primamateria/neoforge/NeoForgePrimaMateria.java",
+                     "main/java/com/itmecasey/primamateria/neoforge/LookupPayload.java",
                      "dev/java/com/itmecasey/primamateria/neoforge/dev/NeoForgeDev.java"],
         "forge": ["main/java/com/itmecasey/primamateria/forge/ForgePrimaMateria.java",
+                  "main/java/com/itmecasey/primamateria/forge/LookupMessage.java",
                   "dev/java/com/itmecasey/primamateria/forge/dev/ForgeDev.java"],
     }
     for loader, files in names.items():

@@ -12,7 +12,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.network.ChannelBuilder;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.SimpleChannel;
+import com.itmecasey.primamateria.data.LookupSync;
 import net.minecraftforge.event.level.BlockEvent;
 import com.itmecasey.primamateria.blockentity.DriveBlockEntity;
 import com.itmecasey.primamateria.view.DriveKind;
@@ -36,6 +41,8 @@ import org.jetbrains.annotations.Nullable;
 /** Forge entry point. Registers the content; workstream A adds capabilities, networking and reload listeners here. */
 @Mod(PrimaMateria.MODID)
 public final class ForgePrimaMateria {
+    static SimpleChannel channel;
+
     public ForgePrimaMateria(FMLJavaModLoadingContext context) {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         RegisterEvent.getBus(context.getModBusGroup()).addListener(ForgePrimaMateria::register);
@@ -43,6 +50,20 @@ public final class ForgePrimaMateria {
             ForgeClient.install(context);
         }
         AttachCapabilitiesEvent.BlockEntities.BUS.addListener(ForgePrimaMateria::attach);
+        channel = ChannelBuilder.named(ModContent.id("lookup"))
+                .networkProtocolVersion(1)
+                .optional()
+                .simpleChannel();
+        channel.messageBuilder(LookupMessage.class)
+                .codec(LookupMessage.CODEC)
+                .consumerMainThread(LookupMessage::handle)
+                .add();
+        // players of a dedicated server get the recipe lookup when they join and after every reload, before tags and recipes
+        OnDatapackSyncEvent.BUS.addListener((OnDatapackSyncEvent e) -> {
+            for (ServerPlayer player : e.getPlayers()) {
+                LookupSync.send(player, frame -> channel.send(new LookupMessage(frame), PacketDistributor.PLAYER.with(player)));
+            }
+        });
         AddReloadListenerEvent.BUS.addListener((AddReloadListenerEvent e) -> e.addListener(new PrimaReload()));
         ServerStartedEvent.BUS.addListener((ServerStartedEvent e) -> StartIslandPlacer.onServerStarted(e.getServer()));
         // A hammer crushes the block it breaks: HammerLogic does the work and the original break is canceled (true cancels).
