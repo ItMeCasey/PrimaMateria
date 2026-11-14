@@ -20,9 +20,9 @@ public final class ModShapes {
     /** Three feet, the belly and the flared rim. */
     public static final VoxelShape CRUCIBLE = Shapes.or(
             Block.box(3, 0, 3, 13, 2, 13), Block.box(2, 2, 2, 14, 14, 14), Block.box(0.5, 14, 0.5, 15.5, 15.5, 15.5));
-    public static final VoxelShape CASTING_TRAY = Shapes.block();
-    public static final VoxelShape WINDUP_DRIVE = Shapes.block();
-    public static final VoxelShape FURNACE_DRIVE = Shapes.block();
+    public static final VoxelShape CASTING_TRAY = Block.box(1, 0, 1, 15, 6, 15);
+    public static final VoxelShape WINDUP_DRIVE = Shapes.or(Block.box(0, 0, 0, 16, 3, 16), Block.box(1.5, 3, 1.5, 14.5, 12, 14.5), Block.box(4, 12, 5, 12, 14.5, 11), Block.box(14.5, 4, 6.5, 16, 10.5, 9.5));
+    public static final VoxelShape FURNACE_DRIVE = Shapes.or(Block.box(0, 0, 0, 16, 3, 16), Block.box(1.5, 3, 1.5, 14.5, 12, 14.5), Block.box(3, 12, 4, 9, 14.5, 10), Block.box(10.5, 12, 10.5, 14.5, 16, 14.5));
     /** Base, case, the cams on top and the coil at the back (the front faces north). */
     public static final VoxelShape POWERED_DRIVE = Shapes.or(
             Block.box(0, 0, 0, 16, 3, 16), Block.box(1.5, 3, 1.5, 14.5, 12, 14.5), Block.box(4, 12, 5, 12, 14.5, 11),

@@ -23,6 +23,9 @@ public final class SieveModels {
     private static int generation;
     private static final Map<String, Identifier> BLOCK_TEXTURES = new HashMap<>();
     private static final Map<String, Identifier> TEXTURE_IDS = new HashMap<>();
+    private static final Map<Identifier, Integer> AVERAGES = new HashMap<>();
+    /** Neutral sprite for blocks with no usable texture. */
+    static final Identifier FALLBACK = Identifier.fromNamespaceAndPath("primamateria", "textures/block/stone_meal.png");
 
     private SieveModels() {
     }
@@ -32,6 +35,7 @@ public final class SieveModels {
         failed = false;
         generation++;
         BLOCK_TEXTURES.clear();
+        AVERAGES.clear();
         TEXTURE_IDS.clear();
     }
 
@@ -71,11 +75,44 @@ public final class SieveModels {
             String path = parsed.getPath();
             for (String candidate : new String[] {path + "_top", path, path + "_side", path.replace("_block", "")}) {
                 Identifier file = Identifier.fromNamespaceAndPath(parsed.getNamespace(), "textures/block/" + candidate + ".png");
-                if (Minecraft.getInstance().getResourceManager().getResource(file).isPresent()) {
+                var res = Minecraft.getInstance().getResourceManager().getResource(file);
+                boolean animated = Minecraft.getInstance().getResourceManager()
+                        .getResource(Identifier.fromNamespaceAndPath(parsed.getNamespace(), file.getPath() + ".mcmeta")).isPresent();
+                if (res.isPresent() && !animated) {
                     return file;
                 }
             }
-            return Identifier.fromNamespaceAndPath("minecraft", "textures/block/dirt.png");
+            LOGGER.info("No usable top texture for {}, the sieve layer uses a neutral sprite", k);
+            return FALLBACK;
+        });
+    }
+
+    /** Average color (rgb) of the opaque pixels of the first square frame of a texture; a gray when it cannot be read. */
+    static synchronized int averageColor(Identifier file) {
+        return AVERAGES.computeIfAbsent(file, f -> {
+            try (java.io.InputStream in = Minecraft.getInstance().getResourceManager().getResourceOrThrow(f).open()) {
+                java.awt.image.BufferedImage img = javax.imageio.ImageIO.read(in);
+                int size = Math.min(img.getWidth(), img.getHeight());
+                long r = 0;
+                long g = 0;
+                long b = 0;
+                long n = 0;
+                for (int y = 0; y < size; y++) {
+                    for (int x = 0; x < size; x++) {
+                        int p = img.getRGB(x, y);
+                        if (((p >>> 24) & 255) > 128) {
+                            r += (p >> 16) & 255;
+                            g += (p >> 8) & 255;
+                            b += p & 255;
+                            n++;
+                        }
+                    }
+                }
+                return n == 0 ? 0x8A8A8A : (int) (r / n) << 16 | (int) (g / n) << 8 | (int) (b / n);
+            } catch (Exception e) {
+                LOGGER.info("Could not read {} for its color, using gray", f);
+                return 0x8A8A8A;
+            }
         });
     }
 }

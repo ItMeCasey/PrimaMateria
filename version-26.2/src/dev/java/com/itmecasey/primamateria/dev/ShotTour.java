@@ -164,11 +164,15 @@ public final class ShotTour {
     }
 
     private static void sift(BlockPos pos, int tier, DriveKind kind, int load, int shakes) {
+        sift(pos, tier, kind, load, shakes, "minecraft:gravel");
+    }
+
+    private static void sift(BlockPos pos, int tier, DriveKind kind, int load, int shakes, String block) {
         SievePreviewBlockEntity s = be(pos);
         if (s == null) {
             throw new IllegalStateException("no sieve at " + pos);
         }
-        s.startSift(meshId(tier), meshTexture(tier), "minecraft:gravel", load, kind, shakes, pos.asLong(), FINDS);
+        s.startSift(meshId(tier), meshTexture(tier), block, load, kind, shakes, pos.asLong(), FINDS);
     }
 
     private static void fixed(BlockPos pos, int tier, String block, int load, float progress, int shakes) {
@@ -231,6 +235,27 @@ public final class ShotTour {
         then(2, () -> fixed(s0, 2, "minecraft:sand", 4, 0.0F, 0));
         shoot("sieve_full_load_sand", 12);
         then(2, () -> server("setblock 0 " + y + " 0 minecraft:air"));
+        // 4b. other materials: none of them is in our tables; the layer and fines come from the block's own texture
+        String[] others = {"minecraft:red_sand", "minecraft:soul_sand", "minecraft:grass_block", "minecraft:magma_block", "test:no_such_block"};
+        then(4, () -> {
+            for (int i = 0; i < 5; i++) {
+                place(new BlockPos(-8 + i * 2, y, -4), 2, true);
+            }
+        });
+        then(10, () -> {
+            for (int i = 0; i < 5; i++) {
+                sift(new BlockPos(-8 + i * 2, y, -4), 1, DriveKind.HAND, 3, 100000, others[i]);
+            }
+        });
+        then(2, () -> moveTo(new Vec3(-3.5, y + 2.6, -7.4), new Vec3(-3.5, y + 0.7, -3.5)));
+        shoot("sieve_materials_a", 40);
+        shoot("sieve_materials_b", 7);
+        then(2, () -> {
+            for (int i = 0; i < 5; i++) {
+                place(new BlockPos(-8 + i * 2, y, -4), 0, false);
+                server("setblock " + (-8 + i * 2) + " " + y + " -4 minecraft:air");
+            }
+        });
         // 5. twenty sieves in view, all moving; frame time per animation level
         then(4, () -> {
             for (int i = 0; i < 20; i++) {

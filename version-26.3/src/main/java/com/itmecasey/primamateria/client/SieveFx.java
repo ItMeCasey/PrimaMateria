@@ -61,6 +61,7 @@ final class SieveFx {
             c.tint = 0x79C05A;
         }
         c.layerTexture = SieveModels.layerTexture(blockId);
+        c.mapColor = SieveModels.averageColor(c.layerTexture);
     }
 
     static void handle(Level level, BlockPos pos, SieveCache c, int mode, double distSq) {
