@@ -1,26 +1,44 @@
 ![Prima Materia](https://raw.githubusercontent.com/ItMeCasey/PrimaMateria/main/branding/banners/banner.png)
 
-**Prima Materia** is a skyblock resource mod. You start on a small island in the void with one tree, and every resource in the game comes from breaking matter down and sorting it: crush it with a hammer, shake it through a sieve, soak it in a barrel and melt it in a crucible.
+**Crush it, sieve it, soak it, melt it. A skyblock resource mod where every material comes from breaking matter down and sorting it.**
+
+Prima Materia is a skyblock resource mod for Forge and NeoForge on Minecraft 26.2 and 26.3. You start on a small island in the void with one tree. Hammer leaves into fiber, shake gravel through a sieve, soak stone meal in a barrel, grow crystals in brine, melt dust in a crucible and cast it into ingots. Drives shake the sieves for you. Every recipe and every drop table is a datapack file, so packs can change all of it. Wiki: https://itmecasey.com/wiki/primamateria/
 
 ## Features
 
-- **The sieve** is the star: five mesh tiers (cloth, copper, iron, diamond, netherite), an animated mesh that shakes while material thins out, finds that fall through, and a sound for every step. Sieves hold a stack of material and show their progress on the block itself.
-- **Hammers** that break blocks down, from gravel and sand to finer dust, in tiers from wood to netherite.
-- **Barrels** for composting, mixing fluids and slow transformations.
-- **A crucible** that melts stone and dust into molten metal, and casting trays that turn it into ingots.
-- **The Nether and the End** are part of the chain, with soul sand sifting for mob drops.
-- **The Auto Hammer and the Powered Drive** run the same work without you standing there.
-- **No screens and no text to read.** Every block is used in the world and reads its state from its model.
-- **Everything is data.** Every recipe and every sifting table is a datapack file, so packs can add, change and remove any of it.
+- **The Sieve.** Holds one mesh and one block at a time, and sieves next to each other work together. Shake it by hand or let a drive do it, and watch the fines fall through and the finds appear on the mesh. Five mesh tiers (cloth, copper, iron, diamond, netherite) decide what you can find.
+- **Hammers.** Six tiers, wooden to netherite. Crush leaves, cobblestone, gravel and stone into fiber, gravel, sand and stone meal. Higher tiers give bonus results.
+- **The Barrel.** Wooden and clay. Collects dew and rain, composts plants into dirt, soaks stone meal into clay, steeps salt into brine and grows quartz, amethyst, lapis, diamond and emerald crystals from seeds. The clay barrel also holds lava.
+- **The Crucible and the Casting Tray.** Fire a crucible, melt stone into lava and dust into molten copper, iron and gold, pour it into a casting tray and take the ingot.
+- **Drives.** Windup, furnace and powered (FE) drives go under a sieve. The Auto Hammer sits on a drive and crushes blocks fed to it. Hoppers feed and empty the machines.
+- **Nether and End materials.** Crush netherrack and end stone, sift them, soak scoria in brine for soul sand, and reach netherite.
+- **Void Island world type** with a start island.
+- **Everything is data.** Recipes, drop tables, mesh tiers, heat sources, melts and compost values are datapack JSON. Add, change or remove any of them with a datapack, KubeJS or ModJS.
+- **Settings file** for sieve speed, drop multiplier, drive speeds, barrel timings and crucible rates.
 
 ## Compatibility
 
-- Recipe viewers: BEI, JEI and REI show every recipe family and the sifting tables where builds exist for the Minecraft version.
-- Scripting: an optional ModJS global, `PrimaMateria`, and datapack JSON for KubeJS and datapacks.
-- Works with SMWTI and Jade for the state of blocks in the world.
-- Minecraft 26.2 and 26.3 on Forge and NeoForge, one jar per Minecraft version.
+| Mod | NeoForge 26.2 | Forge 26.2 | NeoForge 26.3 | Forge 26.3 |
+|---|---|---|---|---|
+| BEI (Barely Enough Items) | yes | yes | yes | yes |
+| JEI | yes | when JEI ports | yes | when JEI ports |
+| REI | yes | when REI ports | yes | when REI ports |
+| EMI | when EMI ports | when EMI ports | when EMI ports | when EMI ports |
+| Show Me What This Is | yes | yes | yes | yes |
+| Jade | yes | when Jade ports | yes | when Jade ports |
+| ModJS | yes | yes | yes | yes |
+| KubeJS | datapack JSON and recipes; event helper when KubeJS ports | same | same | same |
 
-## Links
+- **Recipe viewers:** sifting, crushing, composting, barrel, melting and casting each have their own category with the catalyst, the mesh tier or hammer tier it needs, and the chance and count of every drop. Every siftable block has a drop table page with one column per mesh tier. Click any slot to look it up.
+- **In-world info:** Show Me What This Is and Jade show the state of the sieve, barrel, crucible, casting tray, drives and Auto Hammer.
+- **Scripting:** ModJS gets a `PrimaMateria` global with events (sifted, crushed, barrel finished, melted, cast, drive wound), read access to machine state and calls to add, change or remove recipes and data. KubeJS edits every recipe type and data file directly.
 
-- Source: https://github.com/ItMeCasey/PrimaMateria (MIT)
-- Wiki: https://itmecasey.com/wiki/primamateria/
+## FAQ
+
+**Does it need any other mod?** No. Every integration above is optional.
+
+**Where do the numbers live?** In datapack files and in `config/primamateria.properties`. Packs can change every chance, count, time and tier.
+
+**Which versions?** Minecraft 26.2 and 26.3, Forge and NeoForge, one jar each. No Fabric, no older versions.
+
+**Can I use it in a modpack?** Yes. Source and license: https://github.com/ItMeCasey/PrimaMateria (MIT)

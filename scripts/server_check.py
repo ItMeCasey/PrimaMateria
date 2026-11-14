@@ -73,9 +73,18 @@ def check(layer):
         f"server-port={PORTS[layer]}\nonline-mode=false\nlevel-type=minecraft\\:flat\nspawn-protection=0\n"
         "motd=PrimaMateria server check\nmax-tick-time=-1\n")
     log = []
-    env = dict(os.environ, PRIMAMATERIA_SELFTEST="1")
+    env = dict(os.environ, PRIMAMATERIA_SELFTEST="1", PRIMAMATERIA_DEMO="1")
+    # PM_GRADLE_ARGS adds Gradle arguments, for example "-Pviewers=modjs" to run with the ModJS jar (integration check): the ModJS test
+    # script is then copied into the run folder, and removed again when the check is done.
+    extra = os.environ.get("PM_GRADLE_ARGS", "").split()
+    fixture = run / "modjs" / "server_scripts" / "primamateria_check.js"
+    if any("modjs" in a for a in extra):
+        fixture.parent.mkdir(parents=True, exist_ok=True)
+        fixture.write_text((ROOT / "scripts" / "fixtures" / "modjs_primamateria_check.js").read_text(encoding="utf-8"), encoding="utf-8")
+    elif fixture.exists():
+        fixture.unlink()
     # Every Gradle command on this PC goes through the slot wrapper (a global lock with a few slots).
-    proc = subprocess.Popen([BASH, SLOT, "./gradlew", "runServer", "--no-daemon", "-q", "-PdevTools"], cwd=folder, env=env,
+    proc = subprocess.Popen([BASH, SLOT, "./gradlew", "runServer", "--no-daemon", "-q", "-PdevTools", *extra], cwd=folder, env=env,
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, errors="replace")
 
     def pump():
