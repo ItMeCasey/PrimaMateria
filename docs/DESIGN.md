@@ -181,14 +181,14 @@ Barrel recipe families:
 | Steeping | `primamateria:steeping` | An item dissolved in a fluid over time changes the fluid. | 1000 mB water + 4 salt dust = 1000 mB brine, 30 s. |
 | Growing | `primamateria:growing` | A seed placed in a barrel of the right fluid grows slowly into a result and uses fluid. Up to 4 seeds grow at once, each on its own timer, each shown as a crystal that gets bigger. | In brine, 250 mB each: quartz seed = 2 quartz, 90 s. Amethyst seed = 2 amethyst shards, 120 s. Lapis seed = 3 lapis lazuli, 120 s. Diamond seed = 1 diamond, 300 s. Emerald seed = 1 emerald, 300 s. |
 
-**Brine** (`primamateria:brine`) is a real fluid with a bucket (`primamateria:brine_bucket`), so pipes and tanks of other mods can move it. The mod adds four fluids: brine and the three molten metals (section 9).
+**Brine** (`primamateria:brine`) is held by barrels and moves by bucket (`primamateria:brine_bucket`). Brine and the three molten metals are internal fluids in the first release (section 16).
 
 ## 9. Crucible and casting
 
 - **Heat.** A crucible needs a heat source in the block below it. Heat sources are data (`data/<namespace>/primamateria/heat/<id>.json`: block or block tag, optional block state, heat value). First release: torch 1, campfire 2, magma block 3, fire 3, lava 4, soul campfire 4, soul fire 5.
 - **Melting.** Put solids in by hand or hopper (buffer of 4 items). The crucible melts 2 mB per tick per point of heat. It holds one kind of content at a time, 4000 mB.
-- **Contents.** The crucible holds one real fluid at a time, 4000 mB: lava, or a molten metal. Molten copper, iron and gold (`primamateria:molten_copper`, `molten_iron`, `molten_gold`) are real fluids with buckets, so tanks and pipes of other mods store and move them, and a clay barrel holds them. Their look is vanilla lava tinted to the metal. A pack adds a metal by using any registered fluid (its own or another mod's) in a melting and a casting recipe.
-- **Fluids** leave by bucket or through the fluid handler (pipes), and come in the same way.
+- **Contents.** The crucible holds one fluid at a time, 4000 mB: lava, or a molten metal (`primamateria:molten_copper`, `molten_iron`, `molten_gold`). In the first release these are held internally by the crucible, the barrels and the casting tray, and move between them by bucket (the molten metal buckets are real items); there is no placeable molten metal in the world yet, and other mods' pipes and tanks cannot move them (see section 16). A pack adds a metal with a melting and a casting recipe that name a fluid id.
+- **Buckets** fill and empty the crucible as usual (a lava bucket or a molten metal bucket goes in, an empty bucket takes 1000 mB out; a water bucket does not go in).
 - **Casting.** A casting tray placed against the side of a crucible is fed by it: while the tray is empty and the crucible holds at least 100 mB of a fluid with a casting recipe, the crucible pours 100 mB (a visible stream), the tray glows and cools for 3 seconds, then holds the ingot, taken by hand or by a hopper below. One crucible feeds up to 4 trays. A tray also takes its fluid from a bucket or a pipe.
 
 | Family | Recipe type | First-release recipes |
@@ -382,10 +382,24 @@ Prima Materia is a clean-room design. Nobody working on it opens the code, asset
 5. **No leaf tool, no insects, no cursed water, no mob dolls.** Plant fiber comes from the hammer. There is no special leaf-harvesting tool and no mob-making item; mob drops are sifted from soul sand.
 6. **Our own barrel.** An open tub with a soak slot, dew collection and five recipe families of our own, with a wooden and a fired version.
 7. **Crystals are grown.** Quartz, amethyst, lapis and diamonds come from seeds growing in brine on a timer, four at a time, visible in the barrel. The end of the progression is not a dice roll.
-8. **Molten metals are real fluids.** Tanks, pipes and buckets handle them, and casting works with any fluid a recipe names.
+8. **Molten metals are fluids, not items.** They are melted from dust, carried in buckets and poured into casting trays, and casting works with any fluid id a recipe names.
 9. **Casting is its own block.** Metal comes out as sifted dust, is melted, poured into a tray and cooled. There is no crafting of ore pieces into ore blocks.
 10. **Mechanical drives.** Automation is a spring you wind and a firebox, placed under the sieve. No energy system is needed; the powered drive is there for packs that have one.
 11. **No screens and no text.** Every block is read from its model and used by hand.
 12. **Vanilla look and a keyframed sieve.** Blocks built from Minecraft's own textures, 16x16 items in the Minecraft style, Blockbench models and animation system (see `ART.md` and `SIFTING.md`).
 
 It is also different from our own Barely Prospecting, which is hand-only panning with trays, a basin and a lure. Prima Materia is about sieves, barrels, casting and automation, and shares no items or ids with it.
+
+## 16. Decisions for the first release
+
+These were open questions. Casey was asleep and asked for the mod to be completed, so each was decided with the recommended default on 2026-11-13. Casey can change any of them after the release; each is a config value, a data file or one class.
+
+| Question | Decision |
+|---|---|
+| Void Nether and End, starter chest | The Overworld of a Void Island world is void; the Nether and End are normal. One shared island at spawn with one oak tree. No chest and no starter items. |
+| Sieve load | One block at a time, no storage. Sieves within `sieve.link_radius` (default 1) work together (`sieve.link`). |
+| Molten metals and brine | Decided with Casey: real fluids that other mods' tanks and pipes can store. **Not done in the first release.** They are internal fluids (an id and an amount) held by the barrels, the crucible and the casting tray and moved by bucket. Registering four placeable fluids with a fluid type, a block, a bucket and client fluid models on both loaders, and exposing the barrels and the crucible as fluid handlers, is the first item of the next release. |
+| Pacing | Iron at about 45 minutes, a Nether portal at about 2 hours, diamonds at about 3 hours. These are targets from arithmetic, not from play; the drop tables are data and tunable. |
+| Sounds | Vanilla block sounds are used for shaking, placing and finishing in the first release (the sound of the block being sifted). Our own recorded or synthesized sounds, if they ship, come from the animation workstream. |
+| Textures and models | The 16x16 textures and the stand-in or Blockbench models in the repository are approved as they are. Redraws are welcome after the release. |
+| Hand shake rate | One shake per 4 ticks, the rate at which the game repeats a held use. |
