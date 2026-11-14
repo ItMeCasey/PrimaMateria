@@ -101,7 +101,7 @@ final class AnimChecks {
 
     /** Every blockstate and model we ship parses, every model it names exists, every element is inside the block. */
     private static void models(Verdict v) {
-        String[] names = {"sieve", "wooden_barrel", "clay_barrel", "crucible", "auto_hammer", "powered_drive"};
+        String[] names = {"sieve", "wooden_barrel", "clay_barrel", "crucible", "auto_hammer", "powered_drive", "casting_tray", "windup_drive", "furnace_drive"};
         for (String name : names) {
             try {
                 JsonObject state = json("blockstates/" + name + ".json");

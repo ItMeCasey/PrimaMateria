@@ -11,7 +11,7 @@ final class ModAnimShapes {
 
     static boolean sieveWithinBlock() {
         for (VoxelShape shape : new VoxelShape[] {ModShapes.SIEVE, ModShapes.WOODEN_BARREL, ModShapes.CLAY_BARREL, ModShapes.CRUCIBLE,
-                ModShapes.AUTO_HAMMER, ModShapes.POWERED_DRIVE}) {
+                ModShapes.AUTO_HAMMER, ModShapes.POWERED_DRIVE, ModShapes.CASTING_TRAY, ModShapes.WINDUP_DRIVE, ModShapes.FURNACE_DRIVE}) {
             if (shape.isEmpty()) {
                 return false;
             }

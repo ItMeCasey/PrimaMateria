@@ -276,6 +276,43 @@ def strip_segments():
     return [box(f"charge_{i + 1}", 3.5 + i * 2, 6, 0.5, 5 + i * 2, 8, 1, "amethyst") for i in range(5)]
 
 
+def casting_tray_model():
+    c = [box("foot_nw", 1, 0, 1, 3, 1, 3, "brick"), box("foot_ne", 13, 0, 1, 15, 1, 3, "brick"),
+         box("foot_sw", 1, 0, 13, 3, 1, 15, "brick"), box("foot_se", 13, 0, 13, 15, 1, 15, "brick"),
+         box("floor", 1, 1, 1, 15, 2, 15, "clay"),
+         box("wall_n_a", 1, 2, 1, 6, 5, 2.5, "clay"), box("wall_n_b", 10, 2, 1, 15, 5, 2.5, "clay"),
+         box("wall_s", 1, 2, 13.5, 15, 5, 15, "clay"), box("wall_w", 1, 2, 2.5, 2.5, 5, 13.5, "clay"),
+         box("wall_e", 13.5, 2, 2.5, 15, 5, 13.5, "clay"),
+         box("lip_n_a", 1, 5, 1, 6, 6, 2.5, "brick"), box("lip_n_b", 10, 5, 1, 15, 6, 2.5, "brick"),
+         box("lip_s", 1, 5, 13.5, 15, 6, 15, "brick"), box("lip_w", 1, 5, 2.5, 2.5, 6, 13.5, "brick"), box("lip_e", 13.5, 5, 2.5, 15, 6, 13.5, "brick"),
+         box("ingot_a", 4, 2, 5, 12, 2.5, 11, "dark"), box("fed_notch", 6, 2, 0.5, 10, 3, 1, "iron")]
+    return Group("body", (8, 0, 8), c, [Group("inner", (8, 2.5, 8))], static=True)
+
+
+def windup_drive_model():
+    c = [box("base", 0, 0, 0, 16, 3, 16, "stone"), box("case", 1.5, 3, 1.5, 14.5, 11, 14.5, "wood"),
+         box("band_a", 1, 4, 1, 15, 5, 15, "brass"), box("band_b", 1, 9, 1, 15, 10, 15, "brass"),
+         box("top", 2.5, 11, 2.5, 13.5, 12, 13.5, "wood"),
+         box("plate", 4, 5.5, 0.5, 12, 9.5, 1.5, "brass"), box("dial", 6.5, 6.5, 0, 9.5, 8.5, 0.5, "dark"),
+         box("key_shaft", 14.5, 6.5, 7, 16, 8, 9, "iron"), box("key_a", 15, 4, 6.5, 16, 10.5, 7.5, "brass"), box("key_b", 15, 4, 8.5, 16, 10.5, 9.5, "brass"),
+         box("cam_a", 4, 12, 5, 6, 14, 11, "brass"), box("cam_b", 10, 12, 5, 12, 14, 11, "brass"),
+         box("cam_post_a", 4.5, 12, 7.5, 5.5, 14.5, 8.5, "iron"), box("cam_post_b", 10.5, 12, 7.5, 11.5, 14.5, 8.5, "iron"),
+         box("rivet_a", 4.5, 6, 0, 5, 6.5, 0.5, "brass"), box("rivet_b", 11, 6, 0, 11.5, 6.5, 0.5, "brass")]
+    return Group("body", (8, 0, 8), c, static=True)
+
+
+def furnace_drive_model():
+    c = [box("base", 0, 0, 0, 16, 3, 16, "stone"), box("firebox", 1.5, 3, 1.5, 14.5, 11, 14.5, "iron"),
+         box("band_a", 1, 4, 1, 15, 5, 15, "brass"), box("band_b", 1, 9, 1, 15, 10, 15, "brass"),
+         box("door_frame", 4, 4.5, 0.5, 12, 9.5, 1.5, "dark"), box("grate_a", 5, 5, 0, 6, 9, 0.5, "iron"), box("grate_b", 7.5, 5, 0, 8.5, 9, 0.5, "iron"),
+         box("grate_c", 10, 5, 0, 11, 9, 0.5, "iron"), box("hinge_a", 3.5, 5, 0, 4, 6, 0.5, "brass"), box("hinge_b", 3.5, 8, 0, 4, 9, 0.5, "brass"),
+         box("top", 2.5, 11, 2.5, 13.5, 12, 13.5, "iron"),
+         box("chimney", 11, 12, 11, 14, 16, 14, "brick"), box("chimney_rim", 10.5, 15, 10.5, 14.5, 16, 14.5, "iron"),
+         box("cam_a", 3, 12, 4, 5, 14, 10, "brass"), box("cam_b", 7, 12, 4, 9, 14, 10, "brass"),
+         box("cam_post_a", 3.5, 12, 6.5, 4.5, 14.5, 7.5, "iron"), box("cam_post_b", 7.5, 12, 6.5, 8.5, 14.5, 7.5, "iron")]
+    return Group("body", (8, 0, 8), c, static=True)
+
+
 # ---------------------------------------------------------------- output
 
 def walk(group, parent=None):
@@ -416,6 +453,9 @@ def main():
         "crucible": (crucible_model(), (), None),
         "auto_hammer": (auto_hammer_model(), (), None),
         "powered_drive": (powered_drive_model(), strip_segments(), None),
+        "casting_tray": (casting_tray_model(), (), None),
+        "windup_drive": (windup_drive_model(), (), None),
+        "furnace_drive": (furnace_drive_model(), (), None),
     }
     for name, (root, extra, anims) in models.items():
         doc = bbmodel(name, root, extra, anims, embed)
