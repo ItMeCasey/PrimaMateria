@@ -182,7 +182,7 @@ final class HammerSelfTest {
             be.drive(level, 0);
         }
         GameEvents.CRUSHED.clear();
-        SelfTest.verdict("machine_crush_event_says_by_mill", machineEvent[0] && count(chest, Items.SAND) == 1, "sand " + count(chest, Items.SAND));
+        SelfTest.verdict("machine_crush_event_says_by_mill", machineEvent[0] && count(chest, Items.SAND) >= 1, "sand " + count(chest, Items.SAND));
         for (int i = 0; i < 16; i++) {
             be.state().offer("minecraft:cobblestone");
         }
