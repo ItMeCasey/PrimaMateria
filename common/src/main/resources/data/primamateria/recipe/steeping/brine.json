@@ -1,0 +1,9 @@
+{
+  "type": "primamateria:steeping",
+  "fluid": "minecraft:water",
+  "amount": 1000,
+  "input": "primamateria:salt_dust",
+  "count": 4,
+  "result_fluid": "primamateria:brine",
+  "time": 600
+}

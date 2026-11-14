@@ -1,0 +1,10 @@
+{
+  "type": "primamateria:growing",
+  "fluid": "primamateria:brine",
+  "amount": 250,
+  "seed": "primamateria:emerald_seed",
+  "result": "minecraft:emerald",
+  "count": 1,
+  "time": 6000,
+  "crystal": "primamateria:block/crystal_emerald"
+}

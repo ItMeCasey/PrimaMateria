@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": "primamateria:raw_clay_barrel",
+  "result": {
+    "id": "primamateria:clay_barrel"
+  }
+}

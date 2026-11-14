@@ -1,0 +1,8 @@
+{
+  "type": "primamateria:soaking",
+  "fluid": "primamateria:brine",
+  "amount": 250,
+  "input": "primamateria:scoria",
+  "result": "minecraft:soul_sand",
+  "time": 100
+}

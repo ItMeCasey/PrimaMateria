@@ -1,0 +1,8 @@
+{
+  "type": "primamateria:mixing",
+  "base_fluid": "minecraft:lava",
+  "added_fluid": "minecraft:water",
+  "amount": 1000,
+  "result": "minecraft:obsidian",
+  "needs_heatproof": true
+}

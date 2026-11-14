@@ -1,6 +1,8 @@
 package com.itmecasey.primamateria;
 
+import com.itmecasey.primamateria.block.BarrelBlock;
 import com.itmecasey.primamateria.block.SieveBlock;
+import com.itmecasey.primamateria.blockentity.BarrelBlockEntity;
 import com.itmecasey.primamateria.blockentity.SieveBlockEntity;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,6 +58,10 @@ public final class ModContent {
     /** The sieve's block entity type. Declared after the block map is filled. */
     public static final BlockEntityType<SieveBlockEntity> SIEVE_BE = new BlockEntityType<>(SieveBlockEntity::new, Set.of(block(Ids.SIEVE)));
 
+    /** The block entity type of both barrels. */
+    public static final BlockEntityType<BarrelBlockEntity> BARREL_BE = new BlockEntityType<>(BarrelBlockEntity::new,
+            Set.of(block(Ids.WOODEN_BARREL), block(Ids.CLAY_BARREL)));
+
     private ModContent() {
     }
 
@@ -78,6 +84,9 @@ public final class ModContent {
     private static Block makeBlock(String name, BlockBehaviour.Properties props) {
         if (name.equals(Ids.SIEVE)) {
             return new SieveBlock(props);
+        }
+        if (name.equals(Ids.WOODEN_BARREL) || name.equals(Ids.CLAY_BARREL)) {
+            return new BarrelBlock(props, name.equals(Ids.CLAY_BARREL));
         }
         return new Block(props);
     }
@@ -129,6 +138,7 @@ public final class ModContent {
 
     public static void registerBlockEntities(BiConsumer<String, BlockEntityType<?>> out) {
         out.accept(Ids.SIEVE, SIEVE_BE);
+        out.accept("barrel", BARREL_BE);
     }
 
     public static void registerSounds(BiConsumer<String, SoundEvent> out) {
