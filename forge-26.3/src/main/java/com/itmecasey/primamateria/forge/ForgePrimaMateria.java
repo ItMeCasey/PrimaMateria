@@ -4,7 +4,10 @@ import com.itmecasey.primamateria.Dev;
 import com.itmecasey.primamateria.Ids;
 import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.PrimaMateria;
+import com.itmecasey.primamateria.data.PrimaReload;
+import com.itmecasey.primamateria.recipe.PrimaRecipes;
 import net.minecraft.core.registries.Registries;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -17,12 +20,16 @@ public final class ForgePrimaMateria {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         RegisterEvent.getBus(context.getModBusGroup()).addListener(ForgePrimaMateria::register);
         ForgeClient.install(context);
+        AddReloadListenerEvent.BUS.addListener((AddReloadListenerEvent e) -> e.addListener(new PrimaReload()));
         Dev.call("com.itmecasey.primamateria.forge.dev.ForgeDev", "install", context);
     }
 
     private static void register(RegisterEvent event) {
         event.register(Registries.BLOCK, helper -> ModContent.registerBlocks((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.ITEM, helper -> ModContent.registerItems((name, v) -> helper.register(ModContent.id(name), v)));
+        event.register(Registries.BLOCK_ENTITY_TYPE, helper -> ModContent.registerBlockEntities((name, v) -> helper.register(ModContent.id(name), v)));
+        event.register(Registries.RECIPE_TYPE, helper -> PrimaRecipes.registerTypes((name, v) -> helper.register(ModContent.id(name), v)));
+        event.register(Registries.RECIPE_SERIALIZER, helper -> PrimaRecipes.registerSerializers((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.SOUND_EVENT, helper -> ModContent.registerSounds((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.CREATIVE_MODE_TAB, helper -> helper.register(ModContent.id(Ids.CREATIVE_TAB), ModContent.creativeTab()));
     }
