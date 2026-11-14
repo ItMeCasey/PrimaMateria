@@ -29,10 +29,36 @@ def patch_block_codec(name, cls):
     p.write_text(s, encoding="utf-8", newline=NL)
 
 
+def patch_drive_fuel():
+    """26.3 has no fuel table on the level: an item's burn time is a cooking fuel component resolved with a loot context."""
+    p = DST / "main/java" / PKG / "blockentity/DriveBlockEntity.java"
+    s = p.read_text(encoding="utf-8")
+    begin = "        // FUEL-VERSION-BEGIN" + NL
+    end = "        // FUEL-VERSION-END" + NL
+    i = s.index(begin)
+    j = s.index(end) + len(end)
+    body = (
+        "        if (!(level instanceof net.minecraft.server.level.ServerLevel serverLevel)) {" + NL
+        + "            return 0;" + NL
+        + "        }" + NL
+        + "        net.minecraft.world.level.storage.loot.LootContext context = new net.minecraft.world.level.storage.loot.LootContext.Builder("
+        + NL + "                new net.minecraft.world.level.storage.loot.LootParams.Builder(serverLevel)"
+        + NL + "                        .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.EMPTY))"
+        + NL + "                .create(java.util.Optional.empty());" + NL
+        + "        return net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt.getFromItem(stack,"
+        + NL + "                net.minecraft.core.component.DataComponents.COOKING_FUEL,"
+        + NL + "                net.minecraft.world.item.component.CookingFuel::burnTime, context, 0);" + NL
+    )
+    s = s[:i] + body + s[j:]
+    assert "fuelValues" not in s
+    p.write_text(s, encoding="utf-8", newline=NL)
+
+
 # Add patch functions here and list them in PATCHES. Each reads a file under DST, replaces text, asserts the old form is gone
 # and writes it back with LF line endings.
-PATCHES = [lambda: patch_block_codec("SieveBlock", "SieveBlock"), lambda: patch_block_codec("BarrelBlock", "BarrelBlock"),
-           lambda: patch_block_codec("AutoHammerBlock", "AutoHammerBlock")]
+PATCHES = [patch_drive_fuel,
+           lambda: patch_block_codec("SieveBlock", "SieveBlock"), lambda: patch_block_codec("BarrelBlock", "BarrelBlock"),
+           lambda: patch_block_codec("AutoHammerBlock", "AutoHammerBlock"), lambda: patch_block_codec("DriveBlock", "DriveBlock")]
 
 
 def copy_tree(name):
