@@ -1,16 +1,20 @@
 # Prima Materia: art direction
 
-**The textures look like Minecraft textures.** (Casey, 2026-11-13.) Prima Materia is a Minecraft mod, so its blocks and items must look as if Mojang drew them: the same materials, the same colors, the same way of shading, only at 32x. Placed next to oak planks, stone, terracotta, a cauldron or an anvil, nothing of ours should look like it came from another game or another art style.
+**The textures look like Minecraft textures.** (Casey, 2026-11-13.) Prima Materia is a Minecraft mod, so its blocks and items must look as if Mojang drew them: the same materials, the same colors, the same way of shading, at the same 16x16 size, and wherever possible the very same textures. Placed next to oak planks, stone, terracotta, a cauldron or an anvil, nothing of ours should look like it came from another game or another art style.
 
 The theme inside that rule: an alchemist's workshop built by a careful carpenter. Wood, fired clay and stone, held together with metal bands, with amethyst as the one accent for the late game.
 
 Everything is drawn by us. No texture, model or sound is taken or traced from another mod. Vanilla textures are the style reference and the color source; they are not copied into our files.
 
-## 1. Resolution
+## 1. Resolution and where textures come from
 
-- Block and item textures are **32x32** (2 texture pixels per model unit). Vanilla is 16x, so ours carry twice the detail in the same style, the way a faithful 32x resource pack does.
-- Models are made in Blockbench (`java_block` format, per-face UV, no box UV) with the texture size set to 32 for a 16-unit UV space. Elements snap to half units (1 texture pixel).
-- The construction reference is the Barely Crafting station (`BarelyCrafting/branding/models/station.bbmodel`): 18 elements, a stone foot with studs, a column, a slab with a rim and metal corner posts, and three small shared material textures (stone, wood, metal). Prima Materia keeps that construction language (foot, body, rim, corner hardware, studs).
+Decided by Casey on 2026-11-13: **vanilla textures for the blocks, 16x16 for everything we draw.**
+
+- **Blocks use Minecraft's own textures, by reference.** The sieve, barrels, crucible, casting tray, drives and auto hammer are models whose faces point at `minecraft:block/oak_planks`, `stripped_oak_log`, `barrel_side`, `terracotta`, `smooth_stone`, `iron_block`, `gold_block`, `blast_furnace_front` and so on. Nothing is copied into the mod. The blocks are Minecraft's pixels exactly, and they follow whatever resource pack the player uses.
+- **We draw only what Minecraft has no texture for,** at 16x16: the 26 items, the 5 mesh textures, the 3 crushed blocks (stone meal, scoria, pale sand), the brine fluid and the particles. Each starts from its nearest vanilla relative: hammers from the shovel, pickaxe and mace; dust and salt from sugar and raw ore; seeds from the diamond, emerald and amethyst shard; unfired clay from the clay ball and flower pot; crushed blocks from gravel, sand, netherrack and end stone.
+- Models are made in Blockbench (`java_block` format, per-face UV, no box UV) at the vanilla texture size of 16. Elements snap to whole or half units.
+- The construction reference is the Barely Crafting station (`BarelyCrafting/branding/models/station.bbmodel`): a foot, a body, a rim, corner hardware. Prima Materia keeps that language and stays as plain as the vanilla cauldron, composter, grindstone and lectern.
+- `scripts/make_placeholders.py` writes simple stand-in models from vanilla textures so the game is playable now; `scripts/make_textures.py` draws our 16x16 textures and can print a review sheet with the vanilla textures beside ours.
 
 ## 2. Palette
 
@@ -18,20 +22,20 @@ Everything is drawn by us. No texture, model or sound is taken or traced from an
 
 | Our material | Sample the ramp from | Used for |
 |---|---|---|
-| Wood | `oak_planks`, `oak_log` (bark for dark parts), `stripped_oak_log` | Sieve frame and tray, wooden barrel, hammer handles, stamp mill |
+| Wood | `oak_planks`, `oak_log` (bark for dark parts), `stripped_oak_log` | Sieve frame and tray, wooden barrel, hammer handles, auto hammer |
 | Dark wood | `spruce_planks`, `barrel_side` | Inner faces, end grain, shadowed rails |
 | Stone | `stone`, `smooth_stone`, `cobblestone` | Drive bases, stone hammer, trough |
 | Fired clay | `terracotta`, `bricks`, `flower_pot` | Crucible, casting tray, clay barrel |
 | Raw clay | `clay` | Unfired pieces |
 | Band metal ("brass" in these docs) | `gold_block` and `bell_side`, slightly darkened | Corner brackets, rivets, bands, dials. The signature trim |
-| Copper | `copper_block`, `cut_copper` | Copper mesh, hammer, grains |
-| Iron | `iron_block`, `anvil`, `cauldron_side`, `iron_bars` | Iron mesh, hammer, firebox, hoops, grains |
-| Gold | `gold_block`, `raw_gold` | Gold grains |
+| Copper | `copper_block`, `cut_copper` | Copper mesh, hammer, dust |
+| Iron | `iron_block`, `anvil`, `cauldron_side`, `iron_bars` | Iron mesh, hammer, firebox, hoops, dust |
+| Gold | `gold_block`, `raw_gold` | Gold dust |
 | Diamond | `diamond_block`, `diamond` item | Diamond mesh, hammer, seed |
 | Netherite | `netherite_block` | Netherite mesh and hammer |
 | Fiber and cloth | `hay_block_side`, `white_wool` tinted, `string` item | Cloth mesh, plant fiber |
-| Amethyst | `amethyst_block`, `amethyst_cluster` | Crystal seeds, crystals, the flux drive strip. The accent |
-| Brine | `water_still` shifted toward teal | Brine, mineral salt tint |
+| Amethyst | `amethyst_block`, `amethyst_cluster` | Crystal seeds, crystals, the powered drive strip. The accent |
+| Brine | `water_still` shifted toward teal | Brine, salt dust tint |
 | Ember | `lava_still`, `magma` | Melts, firebox glow, cooling ingots |
 | Crushed blocks | `gravel`, `sand`, `netherrack`, `end_stone` | Stone meal, scoria, pale sand: each is a finer-grained version of its source block |
 
@@ -60,7 +64,7 @@ These are the habits of the current vanilla textures, written down so every text
 1. **Light comes from the top left.** Top and left edges of a shape take tone 4 or 5, bottom and right edges take tone 2 or 1.
 2. **Few tones per material.** Five or fewer, like vanilla. No gradients, no dithering fills, no airbrush, no noise filter, no photo texture.
 3. **Hue shifts with value.** Shadows lean cooler and slightly more saturated, highlights lean warmer, as vanilla ramps do. Never darken by adding black.
-4. **Clusters, not specks.** Detail is drawn in clusters of at least 2 by 2 pixels (one vanilla pixel). Single pixels are only for rivet glints.
+4. **Clusters, not specks.** Detail is drawn the way vanilla does at 16x: every pixel is placed on purpose.
 5. **Vanilla's own motifs.** Planks have vanilla plank seams and nail dots. Metal bands look like the bands of the vanilla barrel and the rim of the cauldron. Clay looks like terracotta and the flower pot. Stone looks like smooth stone. When vanilla already draws a thing, draw it the vanilla way.
 6. **One-pixel bevel on separate parts.** A tone 4 line on the top and left edge and a tone 2 line on the bottom and right, so parts read as separate pieces.
 7. **Contact shadow.** Where one part sits on another, the lower part gets a 1 px tone 1 line under the joint.
@@ -72,21 +76,22 @@ These are the habits of the current vanilla textures, written down so every text
 Every texture must pass all four before it is committed:
 
 1. **Side by side.** Rendered in the game between the vanilla blocks of the same material (wood next to oak planks, clay next to terracotta, iron next to an anvil and a cauldron), it reads as the same material.
-2. **Downscale.** Scaled to 16x16 with nearest neighbor, it looks like a texture that could ship in vanilla.
-3. **Vanilla-sized features.** Wood grain bands are 4 px wide (2 px at vanilla scale), planks are 8 px high, stones are 6 to 10 px across. Nothing is thinner than 2 px except rivets and glints.
+2. **Same size.** It is 16x16, with the same amount of detail per pixel as the vanilla texture beside it: no filters, no gradients, no anti-aliasing.
+3. **Vanilla shapes.** Items sit in the slot the way vanilla items do: tools run from the lower left to the upper right, heaps and gems are centered, everything has a dark outline of its own hue.
 4. **Same values and saturation.** Base tones match the brightness and saturation of the vanilla texture they were sampled from, so our blocks are neither brighter nor grayer than the room they are in.
 
 Also:
 
 - **The loaded material is the real block.** The layer in a sieve, the compost in a barrel and the solids in a crucible use the textures of the actual blocks and items.
-- **Silhouette.** Each block has a distinct outline from ten blocks away: the sieve is a table with a hanging tray, the barrel is a wide banded tub, the crucible is a pot on three feet, the tray is flat with a lip, the drives are squat boxes with a key, a firebox door or a charge strip, the stamp mill is a frame with two stamps.
+- **Silhouette.** Each block has a distinct outline from ten blocks away: the sieve is a table with a hanging tray, the barrel is a wide banded tub, the crucible is a pot on three feet, the tray is flat with a lip, the drives are squat boxes with a key, a firebox door or a charge strip, the auto hammer is a frame with two stamps.
 - **Full blocks stay simple.** Stone meal, scoria and pale sand are calm textures that tile without a visible grid, each clearly the finer cousin of gravel, netherrack and end stone.
 - **Items look like vanilla items.** Dark outline on the lower right, lighter on the upper left, the same viewing angle as vanilla tools and materials. Hammers are held like vanilla tools.
 
-The textures in the repository today are flat scaffold placeholders from `scripts/make_placeholders.py`. They are stand-ins, not the art, and are replaced one by one.
+The first pass of every item, mesh and crushed block texture is in the repository, drawn by `scripts/make_textures.py`. Casey reviews them next to vanilla; each one he rejects is redrawn by hand in Blockbench.
 
 ## 5. Model style
 
+- Every face of a model block uses a vanilla texture (section 1).
 - A little more modeled than a vanilla block, in the station's language and never busier than the vanilla grindstone, lectern or brewing stand: a base or feet, a body, a rim, corner hardware, studs or rivets. Target 20 to 40 elements per block.
 - Layered materials, the way the vanilla barrel, cauldron, lectern and grindstone combine them: wood with metal bands and brackets; clay with an iron hoop; stone with metal plates.
 - Rivets are 0.5 by 0.5 by 0.5 unit cubes in brass, placed at bracket corners. Corner brackets are 2 by 2 units, 0.5 thick, standing proud of the wood.
@@ -110,72 +115,51 @@ All made in Blockbench. "Anim" lists the animations inside the file (see `SIFTIN
 | `furnace_drive.bbmodel` | `furnace_drive` | 32 | Stone base, iron firebox with a hinged grate door, brass banding, stub chimney at the back, two cams on top | door, glow, cams |
 | `crystal.bbmodel` | (drawn inside barrels) | 6 per crystal, 5 kinds by texture | A cluster of 3 prisms on a small base, scaled 0.2 to 1.0 as it grows | none (scaled by the renderer) |
 
-| `stamp_mill.bbmodel` | `stamp_mill` | 30 | Wooden frame with two brass-shod stamps over a stone trough, a clamp holding the fitted hammer head, cam followers at the base | stamp, idle |
-| `flux_drive.bbmodel` | `flux_drive` | 30 | Stone base, iron case with brass banding, a violet charge strip on the front, a coil at the back, two cams on top | strip, cams |
+| `auto_hammer.bbmodel` | `auto_hammer` | 30 | Wooden frame with two brass-shod stamps over a stone trough, a clamp holding the fitted hammer head, cam followers at the base | stamp, idle |
+| `powered_drive.bbmodel` | `powered_drive` | 30 | Stone base, iron case with brass banding, a violet charge strip on the front, a coil at the back, two cams on top | strip, cams |
 
 Plain cubes: `stone_meal`, `scoria`, `pale_sand` (one texture on all sides).
 
 ## 7. Textures to make
 
-All block and item textures are 32x32 PNG unless a size is given. Shared material sheets are used by several models, as the station does with its stone, wood and metal textures.
+All 16x16 PNG. Model blocks need none: they use vanilla textures by reference (section 1).
 
-### Shared material sheets (`textures/block/`)
+### Block textures (`textures/block/`)
 
-| File | Size | Content |
+| File | Content | Vanilla relative |
 |---|---|---|
-| `mat_wood.png` | 32x32 | Planks in the oak ramp with vanilla plank seams, grain along X |
-| `mat_wood_end.png` | 32x32 | End grain and inner faces (dark wood) |
-| `mat_stone.png` | 32x32 | Smooth stone in the vanilla stone ramp |
-| `mat_clay.png` | 32x32 | Fired clay in the terracotta ramp |
-| `mat_brass.png` | 32x32 | Band metal with bracket, band and rivet tiles |
-| `mat_iron.png` | 32x32 | Iron sheet, grate bars, hoop |
+| `mesh_cloth.png`, `mesh_copper.png`, `mesh_iron.png`, `mesh_diamond.png`, `mesh_netherite.png` | The weave on a transparent ground: cloth a wide woven grid, copper and iron a finer woven grid of the same hole size, diamond a diagonal grid, netherite a dark diagonal grid with gold crossings | `iron_bars`, `cobweb`, `string` |
+| `stone_meal.png` | Pale gray, sand-fine | `gravel`, `sand` |
+| `scoria.png` | Netherrack broken small | `netherrack`, `gravel` |
+| `pale_sand.png` | End stone as sand | `end_stone`, `sand` |
+| `brine_still.png`, `brine_flow.png` | Animated strips like water, teal | `water_still`, `water_flow` |
+| `melt.png` | Animated gray molten surface, tinted by the melt's color; emissive | `lava_still` |
+| `compost.png` | Used for a barrel's compost, tinted from green to brown as it matures | `composter_compost` |
+| `crystal_quartz.png`, `crystal_amethyst.png`, `crystal_lapis.png`, `crystal_diamond.png`, `crystal_emerald.png` | Small crystal clusters for the growing model | `amethyst_cluster`, `small_amethyst_bud` |
 
-### Block detail textures (`textures/block/`)
-
-| File | Size | Content |
-|---|---|---|
-| `sieve_tray.png` | 32x32 | Tray boards and lip with corner rivets |
-| `mesh_cloth.png`, `mesh_copper.png`, `mesh_iron.png`, `mesh_diamond.png`, `mesh_netherite.png` | 32x32 each, with transparency | Weave: cloth is a wide woven grid (4 px holes), copper a square grid (3 px), iron a tight grid (2 px), diamond a diagonal grid with a pale blue glint at every other crossing (2 px), netherite a dark fine diagonal grid with gold crossings (1 px) |
-| `sift_material.png` | 32x32 | Neutral grainy texture, used tinted when animations are off |
-| `barrel_inside.png` | 32x32 | Wet dark wood |
-| `compost_fresh.png`, `compost_ripe.png` | 32x32 each | Green-brown plant matter; dark crumbly earth |
-| `brine_still.png`, `brine_flow.png` | 32x512 and 64x1024 animated strips | Brine fluid, teal with slow white flecks |
-| `melt.png` | 32x512 animated strip, gray | Molten surface, tinted by the melt's color; emissive |
-| `crucible_inside.png` | 32x32 | Glazed, soot-dark clay |
-| `casting_tray_top.png` | 32x32 | Hollow, notch and lip |
-| `drive_dial.png` | 32x32 | Brass dial face with five tick marks and no numbers |
-| `drive_firebox.png`, `drive_firebox_lit.png` | 32x32 each | Grate door, dark and glowing (lit is emissive) |
-| `crystal_quartz.png`, `crystal_amethyst.png`, `crystal_lapis.png`, `crystal_diamond.png`, `crystal_emerald.png` | 32x32 each | Prism faces in each stone's ramp |
-| `stone_meal.png` | 32x32 | Pale gray flour-fine stone, tiling |
-| `scoria.png` | 32x32 | Dark red-brown cinder gravel, tiling |
-| `pale_sand.png` | 32x32 | Pale yellow-white sand with faint violet flecks, tiling |
-| `drive_flux_strip.png` | 32x32 | Five-step charge strip, violet, emissive |
+Where a vanilla texture already does the job it is used directly and no file is made: the compost can be `minecraft:block/composter_compost`, the amethyst crystal can be `minecraft:block/amethyst_cluster`.
 
 ### Item textures (`textures/item/`)
 
-| File | Content |
-|---|---|
-| `wooden_hammer.png`, `stone_hammer.png`, `copper_hammer.png`, `iron_hammer.png`, `diamond_hammer.png`, `netherite_hammer.png` | A short-handled mallet with a large square head, brass collar where the head meets the handle; same outline for all six, head in each material |
-| `cloth_mesh.png`, `copper_mesh.png`, `iron_mesh.png`, `diamond_mesh.png`, `netherite_mesh.png` | A square wooden hoop seen at a slight angle with the weave inside |
-| `plant_fiber.png` | A twisted hank of green-tan fiber |
-| `rock_chip.png` | Three angular chips |
-| `copper_grains.png`, `iron_grains.png`, `gold_grains.png` | A small heap of rounded grains; same outline, three ramps |
-| `mineral_salt.png` | A heap of pale teal-white cubes |
-| `quartz_seed.png`, `amethyst_seed.png`, `lapis_seed.png`, `diamond_seed.png`, `emerald_seed.png` | One small faceted seed crystal with a tone 5 glint; same outline, five ramps |
-| `raw_crucible.png`, `raw_casting_tray.png`, `raw_clay_barrel.png` | The fired shapes in raw clay gray, flat 2D |
-| `brine_bucket.png` | Bucket with teal fill |
+| File | Content | Vanilla relative |
+|---|---|---|
+| `wooden_hammer.png`, `stone_hammer.png`, `copper_hammer.png`, `iron_hammer.png`, `diamond_hammer.png`, `netherite_hammer.png` | A mallet held like a vanilla tool: stick handle from the lower left, a block head at the upper right. One outline, six head materials | Shovel, pickaxe, mace |
+| `cloth_mesh.png`, `copper_mesh.png`, `iron_mesh.png`, `diamond_mesh.png`, `netherite_mesh.png` | A square oak hoop with the weave inside | Item frame, painting, string |
+| `plant_fiber.png` | A tied hank of green fiber | Wheat, kelp |
+| `rock_chip.png` | Three angular chips | Flint |
+| `copper_dust.png`, `iron_dust.png`, `gold_dust.png` | A small heap of dust in each raw ore's colors | Sugar, gunpowder, raw ores |
+| `salt_dust.png` | A pale heap | Sugar |
+| `quartz_seed.png`, `amethyst_seed.png`, `lapis_seed.png`, `diamond_seed.png`, `emerald_seed.png` | One small faceted crystal | Diamond, emerald, amethyst shard |
+| `raw_crucible.png`, `raw_casting_tray.png`, `raw_clay_barrel.png` | The shapes in clay gray | Clay ball, flower pot, brick |
+| `brine_bucket.png` | Bucket with teal fill | Water bucket |
 
 ### Particles (`textures/particle/`)
 
-| File | Size | Content |
-|---|---|---|
-| `fines_0.png` to `fines_2.png` | 8x8 each | 1 px, 2 px and L-shaped specks, white, tinted at runtime |
-| `sift_dust_0.png` to `sift_dust_3.png` | 16x16 each | A soft puff in four fading frames, white, tinted |
-| `pour.png` | 8x32 | Molten stream segment, tinted, emissive |
+`fines_0` to `fines_2` (8x8 specks), `sift_dust_0` to `sift_dust_3` (8x8 puff frames), `pour` (4x16 stream). White, tinted at runtime.
 
 ### Counts
 
-10 Blockbench models, 6 shared sheets, 27 block detail textures, 26 item textures, 8 particle textures. Block items (sieve, barrels, crucible, tray, drives, stone meal) use their block models in the inventory and need no item texture.
+10 Blockbench models that use vanilla textures; about 17 block textures of ours; 26 item textures; 8 particle textures.
 
 ## 8. Icon
 
@@ -183,7 +167,7 @@ House style (see `branding/icon` in Barely Crafting): 32x32 pixel art drawn on a
 
 **Concept: the sieve tray caught mid-shake.** A wooden tray with brass corners, seen from the front and slightly above, tilted 10 degrees. A low mound of gray stone meal sits in it. Three thin streams of specks fall from the mesh toward the bottom of the icon, and among them one violet crystal seed falls with a single white glint. The tray uses the wood ramp, the corners the band metal, the streams stone tones 4 and 5, the seed amethyst tones 3 to 5. It is drawn like a vanilla item sprite. Nothing else: no text, no border art.
 
-It reads at 32 px as "tray, falling grains, one purple gem", which is the mod in one picture: plain matter goes in, something precious falls out.
+It reads at 32 px as "tray, falling dust, one purple gem", which is the mod in one picture: plain matter goes in, something precious falls out.
 
 Banners and the social image follow the sibling mods (`branding/source/banners.html` rendered by `render_banners.py`, Silkscreen font, same navy and gold frame), with the violet accent replacing gold in the title underline.
 
