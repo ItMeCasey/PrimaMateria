@@ -23,6 +23,9 @@ public final class ModJsBridge {
     /** Called once at startup: state lookup, KubeJS helper, ModJS global. Never throws. */
     public static void install() {
         callOptional("com.itmecasey.primamateria.compat.GameAccess", "install");
+        if (com.itmecasey.primamateria.Dev.ENABLED) {
+            callOptional("com.itmecasey.primamateria.dev.DemoRecipes", "install");
+        }
         try {
             KubeJsBridge.install();
         } catch (RuntimeException | LinkageError e) {
