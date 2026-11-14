@@ -63,9 +63,9 @@ Spend: none
 
 ## Integrations
 - [x] Shared card layout and RecipeLookup wiring for all viewers (viewer/Cards, unit tested) (w:2)
-- [~] BEI: six categories plus drops page; compiled on all four builds, frames on NeoForge 26.2 with demo recipes (w:3)
-- [~] JEI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 with demo recipes (w:3)
-- [~] REI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 with demo recipes (w:3)
+- [~] BEI: six categories plus drops page; compiled on all four builds, frames on NeoForge 26.2 and 26.3 with demo recipes (w:3)
+- [~] JEI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 and 26.3 with demo recipes (w:3)
+- [~] REI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 and 26.3 with demo recipes (w:3)
 - [x] EMI plugin written (src/pending/emi, no EMI build for 26.2 or 26.3: not compiled or tested) (w:2)
 - [x] Drop table information pages per siftable block (drops category in BEI, JEI, REI; seen in JEI and BEI frames) (w:2)
 - [~] SMWTI lines written and compiled on all four builds; need ViewProvider block entities from workstream A, no client check (w:2)
@@ -76,7 +76,7 @@ Spend: none
 - [x] Run with no optional mod installed passes the self test (all four layers) (w:1)
 - [x] docs/scripting.md (ModJS, KubeJS, datapacks) and the wiki pages (w:1)
 - [x] docs/known-gaps.md with the viewer and scripting builds per version (w:1)
-- [~] Real-client check per supported integration: BEI, JEI, REI frames on NeoForge 26.2 done; SMWTI, Jade, ModJS in a client and the 26.3 builds not done (w:4)
+- [~] Real-client check per supported integration: BEI, JEI, REI frames on NeoForge 26.2 and 26.3 done; SMWTI, Jade, ModJS in a client not done (w:4)
 - [ ] Follow-up when a build appears (recheck with curseforge-lookup before every release): JEI, REI and Jade on Forge 26.2 and 26.3 (w:1)
 - [ ] Follow-up when a build appears: EMI client check on any 26.2 or 26.3 build (w:1)
 - [ ] Follow-up when a build appears: KubeJS bridge written against the KubeJS API and client-checked on any 26.2 or 26.3 build (w:1)
