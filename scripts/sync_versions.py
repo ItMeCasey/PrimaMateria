@@ -54,6 +54,15 @@ def patch_drive_fuel():
     p.write_text(s, encoding="utf-8", newline=NL)
 
 
+def patch_structure_manager():
+    """26.3 renamed the level's structure template manager accessor."""
+    for rel in ("main/java" + "/" + PKG + "/world/StartIslandPlacer.java", "dev/java" + "/" + PKG + "/dev/WorldSelfTest.java"):
+        p = DST / rel
+        s = p.read_text(encoding="utf-8")
+        assert "level.getStructureManager()" in s, rel
+        p.write_text(s.replace("level.getStructureManager()", "level.getStructureTemplateManager()"), encoding="utf-8", newline=NL)
+
+
 def patch_push_reaction():
     """26.3 renamed the push reaction DESTROY (a block that is broken when pushed, as liquids are) to POPPED."""
     p = DST / "main/java" / PKG / "fluid/ModFluids.java"
@@ -65,7 +74,7 @@ def patch_push_reaction():
 
 # Add patch functions here and list them in PATCHES. Each reads a file under DST, replaces text, asserts the old form is gone
 # and writes it back with LF line endings.
-PATCHES = [patch_drive_fuel,
+PATCHES = [patch_drive_fuel, patch_structure_manager,
            lambda: patch_block_codec("SieveBlock", "SieveBlock"), lambda: patch_block_codec("BarrelBlock", "BarrelBlock"),
            lambda: patch_block_codec("AutoHammerBlock", "AutoHammerBlock"), lambda: patch_block_codec("DriveBlock", "DriveBlock"),
            lambda: patch_block_codec("SievePreviewBlock", "SievePreviewBlock"),

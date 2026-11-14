@@ -58,6 +58,20 @@ final class WorldSelfTest {
                 && level.getBlockState(c).isAir(), "preset_only, other world");
         boolean placed = StartIslandPlacer.apply(level, StartMode.ALWAYS, false, fresh, c, false);
         SelfTest.verdict("always_places_the_island", placed && fresh.placed(), "placed " + placed);
+        {
+            String where = "none";
+            for (int dx = -12; dx <= 12 && where.equals("none"); dx++) {
+                for (int dy = -12; dy <= 12 && where.equals("none"); dy++) {
+                    for (int dz = -12; dz <= 12; dz++) {
+                        if (level.getBlockState(c.offset(dx, dy, dz)).is(Blocks.GRASS_BLOCK)) {
+                            where = dx + "," + dy + "," + dz;
+                            break;
+                        }
+                    }
+                }
+            }
+            SelfTest.verdict("island_first_grass_probe", true, "first grass at offset " + where);
+        }
         SelfTest.verdict("island_layers", level.getBlockState(c).is(Blocks.GRASS_BLOCK) && level.getBlockState(c.offset(3, 0, -3)).is(Blocks.GRASS_BLOCK)
                 && level.getBlockState(c.below()).is(Blocks.DIRT) && level.getBlockState(c.below(2)).is(Blocks.DIRT)
                 && level.getBlockState(c.below(3)).isAir() && level.getBlockState(c.offset(4, 0, 0)).isAir()
@@ -72,6 +86,8 @@ final class WorldSelfTest {
             }
         }
         SelfTest.verdict("every_planned_block_is_there", solid == IslandPlan.parts().size(), solid + " of " + IslandPlan.parts().size());
+        SelfTest.verdict("island_structure_file_loads", level.getStructureTemplateManager().get(com.itmecasey.primamateria.ModContent.id(StartIslandPlacer.STRUCTURE)).isPresent(),
+                "data/primamateria/structure/start_island.nbt");
         SelfTest.verdict("not_placed_twice", !StartIslandPlacer.apply(level, StartMode.ALWAYS, true, fresh, c.offset(20, 0, 0), true)
                 && level.getBlockState(c.offset(20, 0, 0)).isAir(), "flag set");
         SelfTest.verdict("spawn_unchanged_when_not_asked", level.getRespawnData().equals(spawnBefore), "spawn kept");

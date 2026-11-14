@@ -71,8 +71,32 @@ public final class StartIslandPlacer {
         return true;
     }
 
-    /** Builds the island and its tree around {@code center} (the middle of the grass layer). */
+    /** The structure file of the island. A datapack replaces it by shipping a file at the same path. */
+    public static final String STRUCTURE = "start_island";
+
+    /**
+     * Builds the island and its tree around {@code center} (the middle of the grass layer). The structure file
+     * {@code data/primamateria/structure/start_island.nbt} is used when the game can load it, with its lowest corner at
+     * {@code center + (-3, -2, -3)}; otherwise the code plan builds the same island.
+     */
     public static void place(ServerLevel level, BlockPos center) {
+        try {
+            var template = level.getStructureManager().get(com.itmecasey.primamateria.ModContent.id(STRUCTURE));
+            if (template.isPresent()) {
+                BlockPos origin = center.offset(-IslandPlan.RADIUS, -2, -IslandPlan.RADIUS);
+                var settings = new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings();
+                if (template.get().placeInWorld(level, origin, origin, settings, level.getRandom(), Block.UPDATE_ALL)) {
+                    return;
+                }
+            }
+        } catch (RuntimeException e) {
+            LOGGER.warn("The start island structure file could not be used, building the island from code: {}", e.toString());
+        }
+        placeFromCode(level, center);
+    }
+
+    /** The code plan: the same island as the structure file. */
+    public static void placeFromCode(ServerLevel level, BlockPos center) {
         for (IslandPlan.Part p : IslandPlan.parts()) {
             level.setBlock(center.offset(p.dx(), p.dy(), p.dz()), stateOf(p.kind()), Block.UPDATE_ALL);
         }
