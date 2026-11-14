@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "CC",
+    "CC"
+  ],
+  "key": {
+    "C": "primamateria:rock_chip"
+  },
+  "result": {
+    "id": "minecraft:cobblestone",
+    "count": 1
+  }
+}
