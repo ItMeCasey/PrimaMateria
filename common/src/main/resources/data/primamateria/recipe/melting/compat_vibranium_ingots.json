@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/vibranium",
+  "result": "primamateria:molten_vibranium",
+  "amount": 100
+}

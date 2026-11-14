@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:gravel",
+  "result": "#c:raw_materials/titanium",
+  "chance": 0.06,
+  "mesh_min": 3
+}

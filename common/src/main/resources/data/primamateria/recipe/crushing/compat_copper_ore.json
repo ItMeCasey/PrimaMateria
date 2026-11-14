@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/copper",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:raw_materials/copper",
+      "count": 2
+    }
+  ]
+}

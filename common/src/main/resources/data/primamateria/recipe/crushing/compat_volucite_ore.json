@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/volucite",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:raw_materials/volucite",
+      "count": 2
+    }
+  ]
+}

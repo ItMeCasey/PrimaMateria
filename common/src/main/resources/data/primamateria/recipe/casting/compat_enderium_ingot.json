@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_enderium",
+  "amount": 100,
+  "result": "#c:ingots/enderium",
+  "time": 60
+}

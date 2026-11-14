@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/electrum",
+  "result": "primamateria:molten_electrum",
+  "amount": 100
+}

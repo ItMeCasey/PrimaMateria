@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_copper",
+  "amount": 100,
+  "result": "#c:ingots/copper",
+  "time": 60
+}

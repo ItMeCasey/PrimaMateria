@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/allthemodium",
+  "result": "primamateria:molten_allthemodium",
+  "amount": 100
+}

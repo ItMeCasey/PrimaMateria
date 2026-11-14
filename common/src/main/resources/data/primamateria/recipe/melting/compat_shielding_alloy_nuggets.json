@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/shielding_alloy",
+  "result": "primamateria:molten_shielding_alloy",
+  "amount": 11
+}

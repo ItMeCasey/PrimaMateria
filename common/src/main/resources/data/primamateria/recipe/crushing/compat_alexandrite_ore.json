@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/alexandrite",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:gems/alexandrite",
+      "count": 2
+    }
+  ]
+}

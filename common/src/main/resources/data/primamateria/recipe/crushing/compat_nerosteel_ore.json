@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/nerosteel",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:raw_materials/nerosteel",
+      "count": 2
+    }
+  ]
+}

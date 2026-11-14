@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/titanium",
+  "result": "primamateria:molten_titanium",
+  "amount": 100
+}

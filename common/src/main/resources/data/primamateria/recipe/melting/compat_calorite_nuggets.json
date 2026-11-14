@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/calorite",
+  "result": "primamateria:molten_calorite",
+  "amount": 11
+}

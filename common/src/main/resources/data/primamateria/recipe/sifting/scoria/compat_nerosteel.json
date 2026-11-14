@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:scoria",
+  "result": "#c:raw_materials/nerosteel",
+  "chance": 0.05,
+  "mesh_min": 3
+}

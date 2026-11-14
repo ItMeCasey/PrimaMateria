@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "aerialhell:ruby",
+      "required": false
+    },
+    {
+      "id": "exotelcraft:ruby",
+      "required": false
+    },
+    {
+      "id": "mythicupgrades:ruby",
+      "required": false
+    }
+  ]
+}

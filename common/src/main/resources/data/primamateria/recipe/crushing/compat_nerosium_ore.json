@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/nerosium",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:raw_materials/nerosium",
+      "count": 2
+    }
+  ]
+}

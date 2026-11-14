@@ -51,9 +51,10 @@ public final class Ids {
     public static final String RAW_CLAY_BARREL = "raw_clay_barrel";
     public static final String BRINE_BUCKET = "brine_bucket";
 
-    public static final List<String> MATERIALS = List.of(PLANT_FIBER, ROCK_CHIP, COPPER_DUST, IRON_DUST, GOLD_DUST,
+    public static final List<String> MATERIALS = concat(List.of(PLANT_FIBER, ROCK_CHIP, COPPER_DUST, IRON_DUST, GOLD_DUST,
             SALT_DUST, "quartz_seed", "amethyst_seed", "lapis_seed", "diamond_seed", "emerald_seed", RAW_CRUCIBLE,
-            RAW_CASTING_TRAY, RAW_CLAY_BARREL, BRINE_BUCKET, "molten_copper_bucket", "molten_iron_bucket", "molten_gold_bucket");
+            RAW_CASTING_TRAY, RAW_CLAY_BARREL, BRINE_BUCKET),
+            com.itmecasey.primamateria.fluid.Metals.ALL.stream().map(m -> m.fluid() + "_bucket").toList());
 
     /** Every item that is not a block item: hammers, meshes, materials. */
     public static final List<String> ITEMS = concat(HAMMERS, MESHES, MATERIALS);
@@ -80,7 +81,9 @@ public final class Ids {
     // ---- fluids ----
     /** The four fluids the mod adds (workstream A registers each with a flowing form {@code flowing_<id>} and a bucket item). */
     public static final String BRINE = "brine";
-    public static final List<String> FLUIDS = List.of(BRINE, "molten_copper", "molten_iron", "molten_gold");
+    /** Brine and the molten fluid of every metal in {@link com.itmecasey.primamateria.fluid.Metals}. */
+    public static final List<String> FLUIDS = concat(List.of(BRINE),
+            com.itmecasey.primamateria.fluid.Metals.ALL.stream().map(m -> m.fluid()).toList());
 
     // ---- sounds (registered by ModContent; workstream C supplies the files) ----
     public static final List<String> SOUNDS = List.of("sieve.load", "sieve.shake.coarse", "sieve.shake.fine", "sieve.shake.soil",

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/aerogold",
+  "result": "primamateria:molten_aerogold",
+  "amount": 100
+}

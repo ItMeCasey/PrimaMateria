@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/vibranium",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:raw_materials/vibranium",
+      "count": 2
+    }
+  ]
+}

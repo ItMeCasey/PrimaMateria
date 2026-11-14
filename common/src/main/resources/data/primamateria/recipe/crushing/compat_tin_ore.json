@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/tin",
+  "hammer_tier": 2,
+  "results": [
+    {
+      "item": "#c:raw_materials/tin",
+      "count": 2
+    }
+  ]
+}

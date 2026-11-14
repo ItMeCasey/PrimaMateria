@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:pale_sand",
+  "result": "#c:raw_materials/vulpus",
+  "chance": 0.04,
+  "mesh_min": 4
+}

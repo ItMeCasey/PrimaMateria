@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/amber",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:gems/amber",
+      "count": 2
+    }
+  ]
+}

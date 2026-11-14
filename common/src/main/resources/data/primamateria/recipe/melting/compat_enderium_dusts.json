@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/enderium",
+  "result": "primamateria:molten_enderium",
+  "amount": 100
+}

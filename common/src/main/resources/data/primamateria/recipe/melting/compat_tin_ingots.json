@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/tin",
+  "result": "primamateria:molten_tin",
+  "amount": 100
+}

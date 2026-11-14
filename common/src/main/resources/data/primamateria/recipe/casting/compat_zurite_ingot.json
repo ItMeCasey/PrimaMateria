@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_zurite",
+  "amount": 100,
+  "result": "#c:ingots/zurite",
+  "time": 60
+}

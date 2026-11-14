@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/copper",
+  "result": "primamateria:molten_copper",
+  "amount": 100
+}

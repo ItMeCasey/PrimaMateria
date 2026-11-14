@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/redstone_alloy",
+  "result": "primamateria:molten_redstone_alloy",
+  "amount": 11
+}

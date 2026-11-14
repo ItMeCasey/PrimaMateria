@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/ostrum",
+  "result": "primamateria:molten_ostrum",
+  "amount": 100
+}

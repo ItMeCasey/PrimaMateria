@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/crystallized_alloy",
+  "result": "primamateria:molten_crystallized_alloy",
+  "amount": 100
+}

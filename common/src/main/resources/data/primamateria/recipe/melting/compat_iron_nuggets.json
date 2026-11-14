@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/iron",
+  "result": "primamateria:molten_iron",
+  "amount": 11
+}

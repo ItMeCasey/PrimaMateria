@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/netherite_alloy",
+  "result": "primamateria:molten_netherite_alloy",
+  "amount": 100
+}

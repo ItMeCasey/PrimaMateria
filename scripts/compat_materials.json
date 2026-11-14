@@ -1,0 +1,994 @@
+{
+"advanced_alloy": {
+"forms": [
+"block",
+"ingot"
+],
+"mods": [
+"Energized Power"
+]
+},
+"aero": {
+"forms": [
+"gem"
+],
+"mods": [
+"AeroFlux"
+]
+},
+"aerogold": {
+"forms": [
+"ingot"
+],
+"mods": [
+"AeroFlux"
+]
+},
+"alexandrite": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"allthemodium": {
+"forms": [
+"block",
+"dust",
+"gem",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"AllTheModium"
+]
+},
+"allthemodium_slate": {
+"forms": [
+"ore"
+],
+"mods": [
+"AllTheModium"
+]
+},
+"aluminum": {
+"forms": [
+"ore"
+],
+"mods": [
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"amber": {
+"forms": [
+"gem",
+"ore"
+],
+"mods": [
+"Biomes O' Plenty Legacy Reborn",
+"Exotelcraft"
+]
+},
+"ametrine": {
+"forms": [
+"gem",
+"ingot",
+"ore"
+],
+"mods": [
+"Magic Vibe Decorations",
+"Mythic Upgrades"
+]
+},
+"ammolite": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"apatite": {
+"forms": [
+"ore"
+],
+"mods": [
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"aquamarine": {
+"forms": [
+"block",
+"gem",
+"ingot",
+"ore"
+],
+"mods": [
+"Magic Vibe Decorations",
+"Mythic Upgrades",
+"Silent's Gems"
+]
+},
+"arsonist": {
+"forms": [
+"ingot"
+],
+"mods": [
+"Aerial Hell"
+]
+},
+"azure_electrum": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"nugget"
+],
+"mods": [
+"Silent Gear"
+]
+},
+"azurite": {
+"forms": [
+"gem",
+"ore",
+"raw"
+],
+"mods": [
+"Aerial Hell",
+"Crystals Overhauled"
+]
+},
+"baronyte": {
+"forms": [
+"ore"
+],
+"mods": [
+"Occultism"
+]
+},
+"blazing": {
+"forms": [
+"dust",
+"gem"
+],
+"mods": [
+"Powah!",
+"Silent Gear"
+]
+},
+"blazium": {
+"forms": [
+"ore"
+],
+"mods": [
+"Occultism"
+]
+},
+"bort": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent Gear"
+]
+},
+"bronze": {
+"forms": [
+"block",
+"ingot",
+"nugget",
+"raw"
+],
+"mods": [
+"Ala Industrial",
+"IngotCraft",
+"Silent Gear"
+]
+},
+"calorite": {
+"forms": [
+"ore"
+],
+"mods": [
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"carnelian": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"celestite": {
+"forms": [
+"ore"
+],
+"mods": [
+"Crystals Overhauled"
+]
+},
+"chaos": {
+"forms": [
+"block",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"chimerite": {
+"forms": [
+"gem"
+],
+"mods": [
+"Theurgy"
+]
+},
+"cindrite": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Nerospace"
+]
+},
+"cinnabar": {
+"forms": [
+"ore"
+],
+"mods": [
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"citrine": {
+"forms": [
+"block",
+"gem",
+"ingot",
+"ore"
+],
+"mods": [
+"Crystals Overhauled",
+"Magic Vibe Decorations",
+"Mythic Upgrades",
+"Silent's Gems"
+]
+},
+"crystallite": {
+"forms": [
+"ore"
+],
+"mods": [
+"Occultism"
+]
+},
+"crystallized_alloy": {
+"forms": [
+"ingot"
+],
+"mods": [
+"Energized Power"
+]
+},
+"crystallized_lapis_lazuli": {
+"forms": [
+"gem"
+],
+"mods": [
+"Energized Power"
+]
+},
+"cupronickel": {
+"forms": [
+"block",
+"ingot"
+],
+"mods": [
+"Ala Industrial"
+]
+},
+"desh": {
+"forms": [
+"ore"
+],
+"mods": [
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"dragonyst": {
+"forms": [
+"dust"
+],
+"mods": [
+"Occultism"
+]
+},
+"electrum": {
+"forms": [
+"block",
+"ingot"
+],
+"mods": [
+"Ala Industrial"
+]
+},
+"enderite": {
+"forms": [
+"block",
+"ingot",
+"ore"
+],
+"mods": [
+"Enderite Mod",
+"IngotCraft"
+]
+},
+"enderium": {
+"forms": [
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"Immersive Ores",
+"ImmersiveOres"
+]
+},
+"energized_alloy": {
+"forms": [
+"ingot"
+],
+"mods": [
+"Energized Power"
+]
+},
+"fluix": {
+"forms": [
+"dust",
+"gem"
+],
+"mods": [
+"Applied Energistics 2",
+"Occultism"
+]
+},
+"fluorite": {
+"forms": [
+"ore"
+],
+"mods": [
+"Aerial Hell"
+]
+},
+"fluxsteel": {
+"forms": [
+"ingot"
+],
+"mods": [
+"AeroFlux"
+]
+},
+"garnet": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"glacite": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Nerospace"
+]
+},
+"heliodor": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Crystals Overhauled",
+"Silent's Gems"
+]
+},
+"iesnium": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"Occultism"
+]
+},
+"invar": {
+"forms": [
+"block",
+"ingot"
+],
+"mods": [
+"Ala Industrial"
+]
+},
+"iolite": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"jade": {
+"forms": [
+"gem",
+"ingot",
+"ore"
+],
+"mods": [
+"Mythic Upgrades",
+"Occultism"
+]
+},
+"kyanite": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"lead": {
+"forms": [
+"block",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"GrowableOres",
+"IngotCraft",
+"Skniro's GrowableOres"
+]
+},
+"malachite": {
+"forms": [
+"ore"
+],
+"mods": [
+"Biomes O' Plenty Legacy Reborn",
+"Crystals Overhauled"
+]
+},
+"mercury": {
+"forms": [
+"gem"
+],
+"mods": [
+"Theurgy"
+]
+},
+"moldavite": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"necoium": {
+"forms": [
+"ingot",
+"ore",
+"raw"
+],
+"mods": [
+"Mythic Upgrades"
+]
+},
+"neptunium": {
+"forms": [
+"block",
+"ingot",
+"nugget"
+],
+"mods": [
+"Aquaculture 2"
+]
+},
+"nerosium": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"ore",
+"raw"
+],
+"mods": [
+"Nerospace"
+]
+},
+"nerosteel": {
+"forms": [
+"block",
+"ingot",
+"ore",
+"raw"
+],
+"mods": [
+"Nerospace"
+]
+},
+"netherite_alloy": {
+"forms": [
+"block",
+"ingot"
+],
+"mods": [
+"Ala Industrial"
+]
+},
+"nickel": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"ore",
+"raw"
+],
+"mods": [
+"Ala Industrial",
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"niter": {
+"forms": [
+"ore"
+],
+"mods": [
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"onyx": {
+"forms": [
+"ore"
+],
+"mods": [
+"Crystals Overhauled"
+]
+},
+"opal": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Exotelcraft",
+"Silent's Gems"
+]
+},
+"ostrum": {
+"forms": [
+"ore"
+],
+"mods": [
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"palladium": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"ore",
+"raw"
+],
+"mods": [
+"Ala Industrial"
+]
+},
+"peridot": {
+"forms": [
+"block",
+"gem",
+"ingot",
+"ore"
+],
+"mods": [
+"Biomes O' Plenty Legacy Reborn",
+"Crystals Overhauled",
+"Mythic Upgrades",
+"Silent's Gems"
+]
+},
+"redstone_alloy": {
+"forms": [
+"ingot"
+],
+"mods": [
+"Energized Power"
+]
+},
+"rhodochrosite": {
+"forms": [
+"ore"
+],
+"mods": [
+"Crystals Overhauled"
+]
+},
+"rubber": {
+"forms": [
+"raw"
+],
+"mods": [
+"Ala Industrial"
+]
+},
+"rubellite": {
+"forms": [
+"gem"
+],
+"mods": [
+"Magic Vibe Decorations"
+]
+},
+"ruby": {
+"forms": [
+"block",
+"gem",
+"ingot",
+"ore",
+"raw"
+],
+"mods": [
+"Aerial Hell",
+"Biomes O' Plenty Legacy Reborn",
+"Exotelcraft",
+"GrowableOres",
+"Mythic Upgrades",
+"Mythic Upgrades +1",
+"Silent's Gems"
+]
+},
+"saltpeter": {
+"forms": [
+"dust"
+],
+"mods": [
+"Resource Cracker/Tools"
+]
+},
+"sapphire": {
+"forms": [
+"block",
+"gem",
+"ingot",
+"ore"
+],
+"mods": [
+"Biomes O' Plenty Legacy Reborn",
+"Crystals Overhauled",
+"GrowableOres",
+"Mythic Upgrades",
+"Silent's Gems",
+"Skniro's GrowableOres"
+]
+},
+"shielding_alloy": {
+"forms": [
+"block",
+"ingot"
+],
+"mods": [
+"Ala Industrial"
+]
+},
+"silicon": {
+"forms": [
+"block"
+],
+"mods": [
+"Energized Power"
+]
+},
+"silver": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"Ala Industrial",
+"GrowableOres",
+"IngotCraft",
+"Occultism",
+"Silent Gear",
+"Silent's Gems",
+"Skniro's GrowableOres"
+]
+},
+"soul_heart": {
+"forms": [
+"gem"
+],
+"mods": [
+"Baubley Heart Canisters"
+]
+},
+"starmetal": {
+"forms": [
+"dust"
+],
+"mods": [
+"Silent Gear"
+]
+},
+"steel": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"nugget",
+"raw"
+],
+"mods": [
+"Barely Powered",
+"BarelyPowered",
+"Energized Power",
+"IngotCraft",
+"Resource Cracker/Tools",
+"Silent Gear"
+]
+},
+"sulfur": {
+"forms": [
+"dust",
+"ore",
+"raw"
+],
+"mods": [
+"Ala Industrial",
+"GrowableOres",
+"Resource Cracker/Tools",
+"Skniro's GrowableOres"
+]
+},
+"tanzanite": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Biomes O' Plenty Legacy Reborn",
+"Silent's Gems"
+]
+},
+"tin": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"Ala Industrial",
+"Energized Power",
+"GrowableOres",
+"IngotCraft",
+"Skniro's GrowableOres"
+]
+},
+"titanium": {
+"forms": [
+"block",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"Antarchy"
+]
+},
+"topaz": {
+"forms": [
+"block",
+"gem",
+"ingot",
+"ore"
+],
+"mods": [
+"Biomes O' Plenty Legacy Reborn",
+"Mythic Upgrades",
+"Silent's Gems"
+]
+},
+"turquoise": {
+"forms": [
+"block",
+"gem",
+"ore"
+],
+"mods": [
+"Silent's Gems"
+]
+},
+"unobtainium": {
+"forms": [
+"block",
+"dust",
+"gem",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"AllTheModium"
+]
+},
+"unobtainium_allthemodium_alloy": {
+"forms": [
+"block",
+"dust",
+"ingot"
+],
+"mods": [
+"AllTheModium"
+]
+},
+"unobtainium_vibranium_alloy": {
+"forms": [
+"block",
+"dust",
+"ingot"
+],
+"mods": [
+"AllTheModium"
+]
+},
+"uraninite": {
+"forms": [
+"block",
+"ingot",
+"ore",
+"raw"
+],
+"mods": [
+"GrowableOres",
+"Powah!",
+"Skniro's GrowableOres",
+"Theurgy"
+]
+},
+"uranium": {
+"forms": [
+"block",
+"dust",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"Ala Industrial",
+"Antarchy",
+"GrowableOres",
+"Skniro's GrowableOres"
+]
+},
+"vibranium": {
+"forms": [
+"block",
+"dust",
+"gem",
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"AllTheModium",
+"Immersive Ores",
+"ImmersiveOres"
+]
+},
+"vibranium_allthemodium_alloy": {
+"forms": [
+"block",
+"dust",
+"ingot"
+],
+"mods": [
+"AllTheModium"
+]
+},
+"volucite": {
+"forms": [
+"ore",
+"raw"
+],
+"mods": [
+"Aerial Hell"
+]
+},
+"vulpus": {
+"forms": [
+"ingot",
+"nugget",
+"ore",
+"raw"
+],
+"mods": [
+"Immersive Ores",
+"ImmersiveOres"
+]
+},
+"witherite": {
+"forms": [
+"dust"
+],
+"mods": [
+"Occultism"
+]
+},
+"zurite": {
+"forms": [
+"block",
+"ingot"
+],
+"mods": [
+"Kuro Materials"
+]
+}
+}

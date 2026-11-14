@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/ostrum",
+  "result": "primamateria:molten_ostrum",
+  "amount": 100
+}

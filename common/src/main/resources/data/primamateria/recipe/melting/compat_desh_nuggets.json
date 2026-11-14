@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/desh",
+  "result": "primamateria:molten_desh",
+  "amount": 11
+}

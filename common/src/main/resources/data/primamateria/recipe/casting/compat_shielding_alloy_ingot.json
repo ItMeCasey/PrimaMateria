@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_shielding_alloy",
+  "amount": 100,
+  "result": "#c:ingots/shielding_alloy",
+  "time": 60
+}

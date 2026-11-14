@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/fluxsteel",
+  "result": "primamateria:molten_fluxsteel",
+  "amount": 100
+}

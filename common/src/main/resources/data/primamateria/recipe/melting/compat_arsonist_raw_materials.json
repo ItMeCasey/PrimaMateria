@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/arsonist",
+  "result": "primamateria:molten_arsonist",
+  "amount": 100
+}

@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_cupronickel",
+  "amount": 100,
+  "result": "#c:ingots/cupronickel",
+  "time": 60
+}

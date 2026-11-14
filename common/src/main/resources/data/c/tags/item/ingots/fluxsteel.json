@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "aeroflux:fluxsteel_ingot",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/bronze",
+  "result": "primamateria:molten_bronze",
+  "amount": 11
+}

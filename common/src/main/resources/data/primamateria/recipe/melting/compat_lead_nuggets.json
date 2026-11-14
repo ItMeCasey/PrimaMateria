@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/lead",
+  "result": "primamateria:molten_lead",
+  "amount": 11
+}

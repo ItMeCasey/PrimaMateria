@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/unobtainium",
+  "result": "primamateria:molten_unobtainium",
+  "amount": 11
+}

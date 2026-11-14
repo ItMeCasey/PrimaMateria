@@ -37,13 +37,14 @@ public record CrushingRecipe(Ingredient input, int hammerTier, List<Entry> resul
     /** One result of the recipe. */
     public record Entry(Identifier item, int min, int max, double chance) {
         static final MapCodec<Entry> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
-                Identifier.CODEC.fieldOf("item").forGetter(Entry::item),
+                ItemRef.CODEC.fieldOf("item").forGetter(Entry::item),
                 SiftingRecipe.COUNT.optionalFieldOf("count", new int[] {1, 1}).forGetter(e -> new int[] {e.min, e.max}),
                 Codec.doubleRange(0.0, 1.0).optionalFieldOf("chance", 1.0).forGetter(Entry::chance))
                 .apply(i, (item, count, chance) -> new Entry(item, count[0], count[1], chance)));
 
         CrushMath.Result toResult() {
-            return new CrushMath.Result(item.toString(), min, max, chance);
+            String resolved = ItemRef.resolveText(item);
+            return new CrushMath.Result(resolved != null ? resolved : item.toString(), min, max, chance);
         }
     }
 

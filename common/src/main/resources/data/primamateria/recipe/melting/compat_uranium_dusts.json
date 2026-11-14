@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/uranium",
+  "result": "primamateria:molten_uranium",
+  "amount": 100
+}

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/enderite",
+  "result": "primamateria:molten_enderite",
+  "amount": 100
+}

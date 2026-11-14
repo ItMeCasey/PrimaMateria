@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_ostrum",
+  "amount": 100,
+  "result": "#c:ingots/ostrum",
+  "time": 60
+}

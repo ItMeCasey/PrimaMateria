@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/moldavite",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:gems/moldavite",
+      "count": 2
+    }
+  ]
+}

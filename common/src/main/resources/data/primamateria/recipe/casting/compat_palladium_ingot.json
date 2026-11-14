@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_palladium",
+  "amount": 100,
+  "result": "#c:ingots/palladium",
+  "time": 60
+}

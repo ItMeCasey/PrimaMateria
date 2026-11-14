@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_crystallized_alloy",
+  "amount": 100,
+  "result": "#c:ingots/crystallized_alloy",
+  "time": 60
+}

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/gold",
+  "result": "primamateria:molten_gold",
+  "amount": 100
+}

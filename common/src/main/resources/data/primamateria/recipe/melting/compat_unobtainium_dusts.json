@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/unobtainium",
+  "result": "primamateria:molten_unobtainium",
+  "amount": 100
+}

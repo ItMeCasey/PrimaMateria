@@ -130,7 +130,7 @@ public final class PrimaRecipes {
     }
 
     private static boolean itemExists(Identifier id) {
-        return BuiltInRegistries.ITEM.containsKey(id);
+        return ItemRef.resolve(id) != null;
     }
 
     /** Used by registration code that needs the mod's namespace. */

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/neptunium",
+  "result": "primamateria:molten_neptunium",
+  "amount": 11
+}

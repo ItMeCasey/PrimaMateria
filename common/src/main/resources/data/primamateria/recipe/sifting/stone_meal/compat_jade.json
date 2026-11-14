@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "primamateria:stone_meal",
+  "result": "#c:gems/jade",
+  "chance": 0.04,
+  "mesh_min": 4
+}

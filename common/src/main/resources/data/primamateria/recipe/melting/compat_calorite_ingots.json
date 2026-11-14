@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/calorite",
+  "result": "primamateria:molten_calorite",
+  "amount": 100
+}

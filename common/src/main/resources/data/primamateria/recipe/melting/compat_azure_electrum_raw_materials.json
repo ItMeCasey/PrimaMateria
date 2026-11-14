@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/azure_electrum",
+  "result": "primamateria:molten_azure_electrum",
+  "amount": 100
+}

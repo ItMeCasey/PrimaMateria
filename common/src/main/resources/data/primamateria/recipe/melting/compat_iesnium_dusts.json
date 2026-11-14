@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/iesnium",
+  "result": "primamateria:molten_iesnium",
+  "amount": 100
+}

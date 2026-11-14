@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_tin",
+  "amount": 100,
+  "result": "#c:ingots/tin",
+  "time": 60
+}

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "aerialhell:azurite_crystal",
+      "required": false
+    }
+  ]
+}

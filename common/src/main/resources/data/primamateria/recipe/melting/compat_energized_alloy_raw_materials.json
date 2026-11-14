@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/energized_alloy",
+  "result": "primamateria:molten_energized_alloy",
+  "amount": 100
+}

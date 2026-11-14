@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/sulfur",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:raw_materials/sulfur",
+      "count": 2
+    }
+  ]
+}

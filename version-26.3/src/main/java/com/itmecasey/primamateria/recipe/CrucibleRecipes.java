@@ -54,8 +54,8 @@ public final class CrucibleRecipes {
 
     private static Optional<Cast> buildCast(RecipeManager recipes, String fluid) {
         for (RecipeHolder<?> holder : recipes.getRecipes()) {
-            if (holder.value() instanceof CastingRecipe r && r.fluid().toString().equals(fluid) && BuiltInRegistries.ITEM.containsKey(r.result())) {
-                return Optional.of(new Cast(r.result().toString(), r.amount(), r.time()));
+            if (holder.value() instanceof CastingRecipe r && r.fluid().toString().equals(fluid) && ItemRef.resolve(r.result()) != null) {
+                return Optional.of(new Cast(ItemRef.resolveText(r.result()), r.amount(), r.time()));
             }
         }
         return Optional.empty();

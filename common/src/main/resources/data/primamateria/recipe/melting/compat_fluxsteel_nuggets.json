@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/fluxsteel",
+  "result": "primamateria:molten_fluxsteel",
+  "amount": 11
+}

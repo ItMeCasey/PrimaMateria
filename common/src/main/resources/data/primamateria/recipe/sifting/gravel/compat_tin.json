@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:sifting",
+  "input": "minecraft:gravel",
+  "result": "#c:raw_materials/tin",
+  "chance": 0.1,
+  "mesh_min": 2
+}

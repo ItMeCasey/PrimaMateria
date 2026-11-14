@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/palladium",
+  "result": "primamateria:molten_palladium",
+  "amount": 100
+}

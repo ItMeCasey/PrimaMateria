@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_nerosium",
+  "amount": 100,
+  "result": "#c:ingots/nerosium",
+  "time": 60
+}

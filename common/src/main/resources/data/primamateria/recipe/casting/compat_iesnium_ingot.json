@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_iesnium",
+  "amount": 100,
+  "result": "#c:ingots/iesnium",
+  "time": 60
+}

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/nerosteel",
+  "result": "primamateria:molten_nerosteel",
+  "amount": 11
+}

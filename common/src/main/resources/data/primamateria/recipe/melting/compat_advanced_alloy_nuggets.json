@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/advanced_alloy",
+  "result": "primamateria:molten_advanced_alloy",
+  "amount": 11
+}

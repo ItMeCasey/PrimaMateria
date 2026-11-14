@@ -29,7 +29,7 @@ public record CastingRecipe(Identifier fluid, int amount, Identifier result, int
     public static final MapCodec<CastingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Identifier.CODEC.fieldOf("fluid").forGetter(CastingRecipe::fluid),
             Codec.intRange(1, 4000).fieldOf("amount").forGetter(CastingRecipe::amount),
-            Identifier.CODEC.fieldOf("result").forGetter(CastingRecipe::result),
+            ItemRef.CODEC.fieldOf("result").forGetter(CastingRecipe::result),
             Codec.intRange(1, 72000).fieldOf("time").forGetter(CastingRecipe::time))
             .apply(i, CastingRecipe::new));
 

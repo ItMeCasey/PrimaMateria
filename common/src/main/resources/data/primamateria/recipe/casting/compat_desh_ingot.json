@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_desh",
+  "amount": 100,
+  "result": "#c:ingots/desh",
+  "time": 60
+}

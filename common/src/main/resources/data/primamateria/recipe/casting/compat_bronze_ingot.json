@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_bronze",
+  "amount": 100,
+  "result": "#c:ingots/bronze",
+  "time": 60
+}

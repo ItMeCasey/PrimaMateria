@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/invar",
+  "result": "primamateria:molten_invar",
+  "amount": 11
+}

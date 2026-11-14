@@ -43,7 +43,7 @@ public record SiftingRecipe(Ingredient input, Identifier result, int min, int ma
 
     public static final MapCodec<SiftingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Ingredient.CODEC.fieldOf("input").forGetter(SiftingRecipe::input),
-            Identifier.CODEC.fieldOf("result").forGetter(SiftingRecipe::result),
+            ItemRef.CODEC.fieldOf("result").forGetter(SiftingRecipe::result),
             COUNT.optionalFieldOf("count", new int[] {1, 1}).forGetter(r -> new int[] {r.min, r.max}),
             Codec.doubleRange(0.0, 1.0).fieldOf("chance").forGetter(SiftingRecipe::chance),
             Codec.intRange(1, 100).optionalFieldOf("mesh_min", 1).forGetter(SiftingRecipe::meshMin),
@@ -71,8 +71,13 @@ public record SiftingRecipe(Ingredient input, Identifier result, int min, int ma
         }
     };
 
+    private String resolved() {
+        String item = ItemRef.resolveText(result);
+        return item != null ? item : result.toString();
+    }
+
     public DropEntry toEntry() {
-        return new DropEntry(result.toString(), min, max, chance, meshMin, meshMax);
+        return new DropEntry(resolved(), min, max, chance, meshMin, meshMax);
     }
 
     @Override

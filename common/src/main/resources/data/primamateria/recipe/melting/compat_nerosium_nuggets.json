@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/nerosium",
+  "result": "primamateria:molten_nerosium",
+  "amount": 11
+}

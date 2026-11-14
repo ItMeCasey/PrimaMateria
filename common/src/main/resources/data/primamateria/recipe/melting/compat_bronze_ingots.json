@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/bronze",
+  "result": "primamateria:molten_bronze",
+  "amount": 100
+}

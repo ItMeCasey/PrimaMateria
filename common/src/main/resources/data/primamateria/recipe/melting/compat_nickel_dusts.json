@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/nickel",
+  "result": "primamateria:molten_nickel",
+  "amount": 100
+}

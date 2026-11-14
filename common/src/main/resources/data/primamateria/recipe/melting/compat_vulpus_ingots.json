@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/vulpus",
+  "result": "primamateria:molten_vulpus",
+  "amount": 100
+}

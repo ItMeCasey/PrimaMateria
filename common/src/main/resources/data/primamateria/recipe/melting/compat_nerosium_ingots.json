@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/nerosium",
+  "result": "primamateria:molten_nerosium",
+  "amount": 100
+}

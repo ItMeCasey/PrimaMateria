@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/redstone_alloy",
+  "result": "primamateria:molten_redstone_alloy",
+  "amount": 100
+}

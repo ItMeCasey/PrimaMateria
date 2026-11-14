@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/peridot",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:gems/peridot",
+      "count": 2
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_titanium",
+  "amount": 100,
+  "result": "#c:ingots/titanium",
+  "time": 60
+}

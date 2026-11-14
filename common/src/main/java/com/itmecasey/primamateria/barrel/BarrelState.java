@@ -18,8 +18,15 @@ public final class BarrelState {
     public static final int GROW_SLOTS = BarrelView.GROW_SLOTS;
     public static final String WATER = "minecraft:water";
     /** Fluids a wooden barrel refuses. */
-    public static final Set<String> HOT = Set.of("minecraft:lava", "primamateria:molten_copper", "primamateria:molten_iron",
-            "primamateria:molten_gold");
+    public static final Set<String> HOT = hot();
+
+    private static Set<String> hot() {
+        Set<String> out = new java.util.HashSet<>(Set.of("minecraft:lava"));
+        for (com.itmecasey.primamateria.fluid.Metals.Metal metal : com.itmecasey.primamateria.fluid.Metals.ALL) {
+            out.add("primamateria:" + metal.fluid());
+        }
+        return Set.copyOf(out);
+    }
 
     /** A soaking recipe: {@code amount} mB of {@code fluid} turn one input into one {@code result} over {@code time} ticks. */
     public record SoakRule(String id, String fluid, int amount, String result, int time) {

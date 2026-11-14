@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/titanium",
+  "result": "primamateria:molten_titanium",
+  "amount": 11
+}

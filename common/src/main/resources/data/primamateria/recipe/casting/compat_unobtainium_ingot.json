@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_unobtainium",
+  "amount": 100,
+  "result": "#c:ingots/unobtainium",
+  "time": 60
+}

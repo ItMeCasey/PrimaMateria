@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/vulpus",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:raw_materials/vulpus",
+      "count": 2
+    }
+  ]
+}

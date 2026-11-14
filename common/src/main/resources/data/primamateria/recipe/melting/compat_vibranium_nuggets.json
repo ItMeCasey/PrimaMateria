@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/vibranium",
+  "result": "primamateria:molten_vibranium",
+  "amount": 11
+}

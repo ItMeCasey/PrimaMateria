@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/jade",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:gems/jade",
+      "count": 2
+    }
+  ]
+}

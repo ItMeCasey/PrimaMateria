@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/neptunium",
+  "result": "primamateria:molten_neptunium",
+  "amount": 100
+}

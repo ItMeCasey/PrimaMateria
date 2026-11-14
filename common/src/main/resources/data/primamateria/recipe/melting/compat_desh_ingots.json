@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/desh",
+  "result": "primamateria:molten_desh",
+  "amount": 100
+}

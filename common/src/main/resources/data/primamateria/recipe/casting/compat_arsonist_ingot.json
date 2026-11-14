@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_arsonist",
+  "amount": 100,
+  "result": "#c:ingots/arsonist",
+  "time": 60
+}

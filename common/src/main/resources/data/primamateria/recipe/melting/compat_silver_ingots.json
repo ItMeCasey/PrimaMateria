@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/silver",
+  "result": "primamateria:molten_silver",
+  "amount": 100
+}

@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_gold",
+  "amount": 100,
+  "result": "#c:ingots/gold",
+  "time": 60
+}

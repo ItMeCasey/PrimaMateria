@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/citrine",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:gems/citrine",
+      "count": 2
+    }
+  ]
+}

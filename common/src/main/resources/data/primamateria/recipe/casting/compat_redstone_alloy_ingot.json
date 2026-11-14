@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_redstone_alloy",
+  "amount": 100,
+  "result": "#c:ingots/redstone_alloy",
+  "time": 60
+}

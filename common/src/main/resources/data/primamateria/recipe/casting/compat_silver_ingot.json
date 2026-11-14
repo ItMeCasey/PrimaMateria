@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_silver",
+  "amount": 100,
+  "result": "#c:ingots/silver",
+  "time": 60
+}

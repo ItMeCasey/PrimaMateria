@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_neptunium",
+  "amount": 100,
+  "result": "#c:ingots/neptunium",
+  "time": 60
+}

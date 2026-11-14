@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_uranium",
+  "amount": 100,
+  "result": "#c:ingots/uranium",
+  "time": 60
+}

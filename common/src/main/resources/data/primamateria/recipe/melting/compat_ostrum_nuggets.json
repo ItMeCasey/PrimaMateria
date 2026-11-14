@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/ostrum",
+  "result": "primamateria:molten_ostrum",
+  "amount": 11
+}

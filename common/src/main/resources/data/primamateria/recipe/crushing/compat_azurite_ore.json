@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/azurite",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:raw_materials/azurite",
+      "count": 2
+    }
+  ]
+}

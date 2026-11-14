@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_netherite",
+  "amount": 100,
+  "result": "#c:ingots/netherite",
+  "time": 60
+}

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/netherite",
+  "result": "primamateria:molten_netherite",
+  "amount": 100
+}

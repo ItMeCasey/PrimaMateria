@@ -4,18 +4,19 @@ import java.util.Map;
 
 /** How a fluid looks inside a crucible or tray: the surface tint (0xRRGGBB) and the light it gives (0 to 15). */
 public final class FluidLook {
-    private static final Map<String, Integer> COLOR = Map.of(
-            "minecraft:lava", 0xFF6A00,
-            "primamateria:molten_copper", 0xD8742A,
-            "primamateria:molten_iron", 0xE6C9A8,
-            "primamateria:molten_gold", 0xF5C623,
-            "primamateria:brine", 0x45979C,
-            "minecraft:water", 0x3F76E4);
-    private static final Map<String, Integer> GLOW = Map.of(
-            "minecraft:lava", 15,
-            "primamateria:molten_copper", 12,
-            "primamateria:molten_iron", 13,
-            "primamateria:molten_gold", 13);
+    private static final Map<String, Integer> COLOR = new java.util.HashMap<>();
+    private static final Map<String, Integer> GLOW = new java.util.HashMap<>();
+
+    static {
+        COLOR.put("minecraft:lava", 0xFF6A00);
+        COLOR.put("primamateria:brine", 0x45979C);
+        COLOR.put("minecraft:water", 0x3F76E4);
+        GLOW.put("minecraft:lava", 15);
+        for (Metals.Metal metal : Metals.ALL) {
+            COLOR.put("primamateria:" + metal.fluid(), metal.color());
+            GLOW.put("primamateria:" + metal.fluid(), metal.glow());
+        }
+    }
 
     private FluidLook() {
     }

@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_azure_electrum",
+  "amount": 100,
+  "result": "#c:ingots/azure_electrum",
+  "time": 60
+}

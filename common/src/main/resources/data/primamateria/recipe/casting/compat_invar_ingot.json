@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_invar",
+  "amount": 100,
+  "result": "#c:ingots/invar",
+  "time": 60
+}

@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_electrum",
+  "amount": 100,
+  "result": "#c:ingots/electrum",
+  "time": 60
+}

@@ -14,10 +14,7 @@ public final class BarrelColors {
             case "minecraft:water" -> 0x3F76E4;
             case "minecraft:lava" -> 0xFF6A00;
             case "primamateria:brine" -> 0x45979C;
-            case "primamateria:molten_copper" -> 0xE07A3B;
-            case "primamateria:molten_iron" -> 0xF0B27A;
-            case "primamateria:molten_gold" -> 0xFFD84A;
-            default -> 0x808080 | (id.hashCode() & 0x7F7F7F);
+            default -> id.startsWith("primamateria:molten_") ? com.itmecasey.primamateria.fluid.FluidLook.color(id) : 0x808080 | (id.hashCode() & 0x7F7F7F);
         };
     }
 

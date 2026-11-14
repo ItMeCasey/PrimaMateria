@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/invar",
+  "result": "primamateria:molten_invar",
+  "amount": 100
+}

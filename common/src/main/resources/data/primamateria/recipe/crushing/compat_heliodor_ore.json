@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/heliodor",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:gems/heliodor",
+      "count": 2
+    }
+  ]
+}

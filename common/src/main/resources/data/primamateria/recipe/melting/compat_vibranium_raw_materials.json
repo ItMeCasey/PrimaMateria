@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/vibranium",
+  "result": "primamateria:molten_vibranium",
+  "amount": 100
+}

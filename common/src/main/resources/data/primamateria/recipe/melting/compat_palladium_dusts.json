@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/palladium",
+  "result": "primamateria:molten_palladium",
+  "amount": 100
+}

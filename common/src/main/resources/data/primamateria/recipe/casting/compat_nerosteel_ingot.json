@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_nerosteel",
+  "amount": 100,
+  "result": "#c:ingots/nerosteel",
+  "time": 60
+}

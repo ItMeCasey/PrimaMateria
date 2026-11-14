@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_aerogold",
+  "amount": 100,
+  "result": "#c:ingots/aerogold",
+  "time": 60
+}

@@ -81,11 +81,9 @@ public final class ForgeFluids implements ModFluids.Factory {
                 .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
                 .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
                 .lightLevel(FluidLook.glow("primamateria:" + id));
-        switch (id) {
-            case "molten_copper" -> p.temperature(1358).density(3400).viscosity(6000);
-            case "molten_iron" -> p.temperature(1811).density(3200).viscosity(7000);
-            default -> p.temperature(1337).density(3800).viscosity(6500);
-        }
+        int temperature = com.itmecasey.primamateria.fluid.Metals.ALL.stream().filter(m -> m.fluid().equals(id))
+                .map(com.itmecasey.primamateria.fluid.Metals.Metal::temperature).findFirst().orElse(1337);
+        p.temperature(temperature).density(3400).viscosity(6500);
         return new FluidType(p);
     }
 

@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/bort",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:gems/bort",
+      "count": 2
+    }
+  ]
+}

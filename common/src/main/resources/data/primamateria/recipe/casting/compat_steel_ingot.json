@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_steel",
+  "amount": 100,
+  "result": "#c:ingots/steel",
+  "time": 60
+}

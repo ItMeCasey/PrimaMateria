@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/cupronickel",
+  "result": "primamateria:molten_cupronickel",
+  "amount": 100
+}

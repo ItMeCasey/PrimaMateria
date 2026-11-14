@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/garnet",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:gems/garnet",
+      "count": 2
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:dusts/steel",
+  "result": "primamateria:molten_steel",
+  "amount": 100
+}

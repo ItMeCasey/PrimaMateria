@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/aerogold",
+  "result": "primamateria:molten_aerogold",
+  "amount": 11
+}

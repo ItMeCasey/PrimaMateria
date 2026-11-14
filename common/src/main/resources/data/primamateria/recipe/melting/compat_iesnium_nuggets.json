@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/iesnium",
+  "result": "primamateria:molten_iesnium",
+  "amount": 11
+}

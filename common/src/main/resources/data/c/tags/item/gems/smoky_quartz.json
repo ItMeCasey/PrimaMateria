@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "aerialhell:smoky_quartz",
+      "required": false
+    }
+  ]
+}

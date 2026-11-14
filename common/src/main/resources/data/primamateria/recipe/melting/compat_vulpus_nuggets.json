@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/vulpus",
+  "result": "primamateria:molten_vulpus",
+  "amount": 11
+}

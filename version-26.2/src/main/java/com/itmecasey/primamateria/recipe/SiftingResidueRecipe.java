@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
 public record SiftingResidueRecipe(Ingredient input, Identifier result, double chance) implements Recipe<NoInput> {
     public static final MapCodec<SiftingResidueRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Ingredient.CODEC.fieldOf("input").forGetter(SiftingResidueRecipe::input),
-            Identifier.CODEC.fieldOf("result").forGetter(SiftingResidueRecipe::result),
+            ItemRef.CODEC.fieldOf("result").forGetter(SiftingResidueRecipe::result),
             Codec.doubleRange(0.0, 1.0).fieldOf("chance").forGetter(SiftingResidueRecipe::chance))
             .apply(i, SiftingResidueRecipe::new));
 
@@ -48,7 +48,8 @@ public record SiftingResidueRecipe(Ingredient input, Identifier result, double c
     };
 
     public ResidueEntry toEntry() {
-        return new ResidueEntry(result.toString(), chance);
+        String item = ItemRef.resolveText(result);
+        return new ResidueEntry(item != null ? item : result.toString(), chance);
     }
 
     @Override

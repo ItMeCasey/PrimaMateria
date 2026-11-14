@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/unobtainium",
+  "hammer_tier": 4,
+  "results": [
+    {
+      "item": "#c:raw_materials/unobtainium",
+      "count": 2
+    }
+  ]
+}

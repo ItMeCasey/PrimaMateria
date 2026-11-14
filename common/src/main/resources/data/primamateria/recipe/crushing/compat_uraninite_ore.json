@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/uraninite",
+  "hammer_tier": 3,
+  "results": [
+    {
+      "item": "#c:raw_materials/uraninite",
+      "count": 2
+    }
+  ]
+}

@@ -17,13 +17,18 @@ public final class FluidBuckets {
     public record Bucket(String item, String fluid) {
     }
 
-    public static final List<Bucket> ALL = List.of(
-            new Bucket("minecraft:water_bucket", "minecraft:water"),
-            new Bucket("minecraft:lava_bucket", "minecraft:lava"),
-            new Bucket("primamateria:brine_bucket", "primamateria:brine"),
-            new Bucket("primamateria:molten_copper_bucket", "primamateria:molten_copper"),
-            new Bucket("primamateria:molten_iron_bucket", "primamateria:molten_iron"),
-            new Bucket("primamateria:molten_gold_bucket", "primamateria:molten_gold"));
+    public static final List<Bucket> ALL = buckets();
+
+    private static List<Bucket> buckets() {
+        List<Bucket> all = new java.util.ArrayList<>(List.of(
+                new Bucket("minecraft:water_bucket", "minecraft:water"),
+                new Bucket("minecraft:lava_bucket", "minecraft:lava"),
+                new Bucket("primamateria:brine_bucket", "primamateria:brine")));
+        for (Metals.Metal metal : Metals.ALL) {
+            all.add(new Bucket("primamateria:" + metal.fluid() + "_bucket", "primamateria:" + metal.fluid()));
+        }
+        return List.copyOf(all);
+    }
 
     private FluidBuckets() {
     }

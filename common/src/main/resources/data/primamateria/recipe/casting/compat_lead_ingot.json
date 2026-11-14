@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_lead",
+  "amount": 100,
+  "result": "#c:ingots/lead",
+  "time": 60
+}

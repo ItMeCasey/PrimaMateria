@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:ingots/nerosteel",
+  "result": "primamateria:molten_nerosteel",
+  "amount": 100
+}

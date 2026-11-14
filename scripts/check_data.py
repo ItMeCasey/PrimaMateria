@@ -21,6 +21,8 @@ ASSETS = RES / "assets/primamateria"
 DATA = RES / "data/primamateria"
 IDS = (ROOT / "common/src/main/java/com/itmecasey/primamateria/Ids.java").read_text(encoding="utf-8")
 
+METALS_JAVA = (ROOT / "common/src/main/java/com/itmecasey/primamateria/fluid/Metals.java").read_text(encoding="utf-8")
+
 errors = []
 
 
@@ -33,12 +35,16 @@ def lists_from_ids():
     strings = lambda body: re.findall(r'"([a-z0-9_.]+)"', body)
     out = {}
     for name in ("BLOCKS", "HAMMERS", "MESHES", "MATERIALS", "FLUIDS", "SOUNDS", "PARTICLES", "RECIPE_TYPES"):
-        m = re.search(r"List<String> " + name + r" = List\.of\((.*?)\);", IDS, re.S)
+        m = re.search(r"List<String> " + name + r" = (?:concat\()?List\.of\((.*?)\)[;,]", IDS, re.S)
         out[name] = strings(m.group(1)) if m else []
     consts = dict(re.findall(r'String (\w+) = "([a-z0-9_.]+)";', IDS))
     # lists that mention constants by name: resolve them
+    metals = re.findall(r'new Metal\("([a-z0-9_]+)"', METALS_JAVA)
     for name in ("BLOCKS", "MATERIALS", "RECIPE_TYPES", "FLUIDS"):
-        m = re.search(r"List<String> " + name + r" = List\.of\((.*?)\);", IDS, re.S)
+        if name == "FLUIDS":
+            out[name] = ["brine"] + ["molten_" + m for m in metals]
+            continue
+        m = re.search(r"List<String> " + name + r" = (?:concat\()?List\.of\((.*?)\)[;,]", IDS, re.S)
         resolved = []
         for token in re.findall(r'"([a-z0-9_.]+)"|([A-Z_]+)', m.group(1)):
             if token[0]:
@@ -47,6 +53,8 @@ def lists_from_ids():
                 resolved.append(consts[token[1]])
             elif token[1] in out:
                 resolved.extend(out[token[1]])
+        if name == "MATERIALS":
+            resolved += ["molten_" + x + "_bucket" for x in metals]
         out[name] = resolved
     return out
 

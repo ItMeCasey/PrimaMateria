@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_nickel",
+  "amount": 100,
+  "result": "#c:ingots/nickel",
+  "time": 60
+}

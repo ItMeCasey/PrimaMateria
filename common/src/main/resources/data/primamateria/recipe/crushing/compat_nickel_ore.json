@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/nickel",
+  "hammer_tier": 2,
+  "results": [
+    {
+      "item": "#c:raw_materials/nickel",
+      "count": 2
+    }
+  ]
+}

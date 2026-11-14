@@ -1,0 +1,7 @@
+{
+  "type": "primamateria:casting",
+  "fluid": "primamateria:molten_fluxsteel",
+  "amount": 100,
+  "result": "#c:ingots/fluxsteel",
+  "time": 60
+}

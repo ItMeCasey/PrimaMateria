@@ -1,0 +1,11 @@
+{
+  "type": "primamateria:crushing",
+  "input": "#c:ores/lead",
+  "hammer_tier": 2,
+  "results": [
+    {
+      "item": "#c:raw_materials/lead",
+      "count": 2
+    }
+  ]
+}

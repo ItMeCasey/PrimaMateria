@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/enderium",
+  "result": "primamateria:molten_enderium",
+  "amount": 11
+}

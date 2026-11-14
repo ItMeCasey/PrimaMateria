@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/cupronickel",
+  "result": "primamateria:molten_cupronickel",
+  "amount": 11
+}

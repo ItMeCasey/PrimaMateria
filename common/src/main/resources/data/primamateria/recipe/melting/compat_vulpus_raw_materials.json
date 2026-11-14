@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/vulpus",
+  "result": "primamateria:molten_vulpus",
+  "amount": 100
+}

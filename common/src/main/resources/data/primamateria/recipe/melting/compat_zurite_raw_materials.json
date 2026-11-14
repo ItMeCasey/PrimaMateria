@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:raw_materials/zurite",
+  "result": "primamateria:molten_zurite",
+  "amount": 100
+}

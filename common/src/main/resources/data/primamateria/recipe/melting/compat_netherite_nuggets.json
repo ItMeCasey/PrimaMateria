@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/netherite",
+  "result": "primamateria:molten_netherite",
+  "amount": 11
+}

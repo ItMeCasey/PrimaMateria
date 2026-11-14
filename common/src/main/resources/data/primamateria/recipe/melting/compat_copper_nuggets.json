@@ -1,0 +1,6 @@
+{
+  "type": "primamateria:melting",
+  "input": "#c:nuggets/copper",
+  "result": "primamateria:molten_copper",
+  "amount": 11
+}
