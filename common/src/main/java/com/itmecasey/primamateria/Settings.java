@@ -35,10 +35,10 @@ public final class Settings {
         def("drive.windup_max_turns", 48, "Turns a windup drive stores.");
         def("drive.windup_ticks_per_shake", 8, "Ticks between shakes of a windup drive.");
         def("drive.furnace_ticks_per_shake", 4, "Ticks between shakes of a furnace drive.");
-        def("drive.flux_ticks_per_shake", 2, "Ticks between shakes of a flux drive.");
-        def("drive.flux_fe_per_shake", 40, "Energy (FE) a flux drive uses per shake.");
-        def("drive.flux_capacity", 10000, "Energy (FE) a flux drive stores.");
-        def("mill.strokes_per_block", 6, "Drive shakes a stamp mill needs to crush one block.");
+        def("drive.powered_ticks_per_shake", 2, "Ticks between shakes of a powered drive.");
+        def("drive.powered_fe_per_shake", 40, "Energy (FE) a powered drive uses per shake.");
+        def("drive.powered_capacity", 10000, "Energy (FE) a powered drive stores.");
+        def("auto_hammer.strokes_per_block", 6, "Drive shakes an auto hammer needs to crush one block.");
         def("barrel.dew_ticks_per_mb", 4, "Ticks for a barrel under open sky to gain 1 mB of water. 0 switches dew off.");
         def("barrel.rain_multiplier", 8, "How much faster a barrel fills in rain.");
         def("barrel.time_multiplier", 1.0, "Multiplies compost, soak, steep and grow times.");

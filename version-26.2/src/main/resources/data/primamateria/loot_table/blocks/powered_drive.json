@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "primamateria:stamp_mill"
+          "name": "primamateria:powered_drive"
         }
       ],
       "conditions": [
@@ -17,5 +17,5 @@
       ]
     }
   ],
-  "random_sequence": "primamateria:blocks/stamp_mill"
+  "random_sequence": "primamateria:blocks/powered_drive"
 }

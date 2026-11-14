@@ -2,7 +2,7 @@
 
 Mod id `primamateria`. Forge and NeoForge, Minecraft 26.2 and 26.3 only. First release `2026.11.1`.
 
-Prima Materia is a skyblock resource mod. You start on a small island in the void with one tree, and you make every resource in the game by breaking matter down and sorting it: crush it with a hammer, shake it through a sieve, soak and grow it in a barrel, melt and cast it in a crucible. The name is the alchemists' "first matter", the raw stuff everything else is made from, and the look follows it: wood, fired clay, metal bands and an amethyst accent, drawn in the style of vanilla Minecraft textures at 32x.
+Prima Materia is a skyblock resource mod. You start on a small island in the void with one tree, and you make every resource in the game by breaking matter down and sorting it: crush it with a hammer, shake it through a sieve, soak and grow it in a barrel, melt and cast it in a crucible. The name is the alchemists' "first matter", the raw stuff everything else is made from, and the look follows it: wood, fired clay, metal bands and an amethyst accent, drawn in the style of vanilla Minecraft textures at 16x.
 
 Every number in this document is our own first pass, made to be fun in a few hours, and every number lives in data files so packs can change it.
 
@@ -19,9 +19,9 @@ Every number in this document is our own first pass, made to be fun in a few hou
 
 ```
 tree -> hammer -> gravel / sand / stone meal
-              -> sieve (5 mesh tiers) -> seeds, rock chips, metal grains, salts, crystal seeds
+              -> sieve (5 mesh tiers) -> seeds, rock chips, metal dust, salts, crystal seeds
               -> barrel: compost -> dirt | water + stone meal -> clay | brine + seed -> crystals
-              -> crucible: stone -> lava | grains -> molten metal -> casting tray -> ingots
+              -> crucible: stone -> lava | dust -> molten metal -> casting tray -> ingots
               -> drives: sieves that run without you
 ```
 
@@ -32,10 +32,10 @@ Five stages. The stage names are for this document and the wiki; the game never 
 | Stage | Goal | What you do | Unlocks |
 |---|---|---|---|
 | 1. Wood and fiber (0 to 20 min) | First sieve, first dirt, first stone | Hammer leaves for plant fiber. Build a wooden hammer, a sieve and a fiber mesh. Compost leaves and saplings in a wooden barrel for more dirt. Sift dirt for rock chips, seeds and saplings. Craft rock chips into cobblestone. | Cobblestone, farming, stone hammer, furnace |
-| 2. Clay and fire (20 to 45 min) | Crucible and copper | Hammer cobblestone down to gravel, sand and stone meal. Sift gravel for flint, coal and copper grains. Let a barrel fill with dew, soak stone meal for clay. Fire a crucible and a casting tray. Melt copper grains, cast ingots. Melt stone for lava. | Copper tools, copper mesh, lava, cobblestone generator, obsidian |
-| 3. Metal (45 min to 2 h) | Iron and gold, automation | Copper mesh brings iron grains, mineral salt and redstone. Iron mesh brings gold and the first crystal seeds. Build a windup drive, then a furnace drive, and feed sieves with hoppers. | Iron and gold tools, buckets, hoppers, Nether portal, drives |
-| 4. Crystal (2 to 3 h) | Diamonds | Steep mineral salt in water for brine. Grow quartz, amethyst and lapis from seeds in a barrel. Sift stone meal with the iron mesh for the first diamond seeds, grow diamonds, make the diamond mesh. | Diamonds, diamond mesh, enchanting, flux drive |
-| 5. Beyond (3 h on) | Nether and End materials, netherite | Crush netherrack into scoria and end stone into pale sand and sift them. Soak scoria in brine for soul sand and sift that for mob drops. Collect netherite scrap, make the netherite mesh and hammer. Stamp mills crush without you. | Quartz and glowstone in bulk, mob drops, ender pearls, emeralds, netherite |
+| 2. Clay and fire (20 to 45 min) | Crucible and copper | Hammer cobblestone down to gravel, sand and stone meal. Sift gravel for flint, coal and copper dust. Let a barrel fill with dew, soak stone meal for clay. Fire a crucible and a casting tray. Melt copper dust, cast ingots. Melt stone for lava. | Copper tools, copper mesh, lava, cobblestone generator, obsidian |
+| 3. Metal (45 min to 2 h) | Iron and gold, automation | Copper mesh brings iron dust, salt dust and redstone. Iron mesh brings gold and the first crystal seeds. Build a windup drive, then a furnace drive, and feed sieves with hoppers. | Iron and gold tools, buckets, hoppers, Nether portal, drives |
+| 4. Crystal (2 to 3 h) | Diamonds | Steep salt dust in water for brine. Grow quartz, amethyst and lapis from seeds in a barrel. Sift stone meal with the iron mesh for the first diamond seeds, grow diamonds, make the diamond mesh. | Diamonds, diamond mesh, enchanting, powered drive |
+| 5. Beyond (3 h on) | Nether and End materials, netherite | Crush netherrack into scoria and end stone into pale sand and sift them. Soak scoria in brine for soul sand and sift that for mob drops. Collect netherite scrap, make the netherite mesh and hammer. Auto hammers crush without you. | Quartz and glowstone in bulk, mob drops, ender pearls, emeralds, netherite |
 
 Later (not in the first release): more mold shapes, per-team islands, a void Nether and End.
 
@@ -55,8 +55,8 @@ All ids are `primamateria:<id>`. "v1" is the first release, `2026.11.1`. "later"
 | `stone_meal` | Stone Meal | The finest crushed stone. A falling block, like sand. Sifted for late materials, soaked for clay. | v1 |
 | `scoria` | Scoria | Crushed netherrack, a falling block. Sifted for Nether materials, soaked in brine for soul sand. | v1 |
 | `pale_sand` | Pale Sand | Crushed end stone, a falling block. Sifted for End materials. | v1 |
-| `stamp_mill` | Stamp Mill | Sits on a drive like a sieve. Holds one hammer and crushes the blocks fed to it. Section 7. | v1 |
-| `flux_drive` | Flux Drive | A drive that runs on energy (FE) from any power mod. The fastest drive. | v1 |
+| `auto_hammer` | Auto Hammer | Sits on a drive like a sieve. Holds one hammer and crushes the blocks fed to it. Section 7. | v1 |
+| `powered_drive` | Powered Drive | A drive that runs on energy (FE) from any power mod. The fastest drive. | v1 |
 
 Unfired clay pieces are items, not blocks (section 5).
 
@@ -76,10 +76,10 @@ Unfired clay pieces are items, not blocks (section 5).
 | `netherite_mesh` | Netherite Mesh | Mesh tier 5 (finest). | v1 |
 | `plant_fiber` | Plant Fiber | From hammered leaves. Makes the fiber mesh; 3 make 1 string. | v1 |
 | `rock_chip` | Rock Chip | From sifted dirt. 4 (2 by 2) make 1 cobblestone. | v1 |
-| `copper_grains` | Copper Grains | Sifted metal. 20 mB of molten copper each when melted (5 per ingot). | v1 |
-| `iron_grains` | Iron Grains | Same, for iron. | v1 |
-| `gold_grains` | Gold Grains | Same, for gold. | v1 |
-| `mineral_salt` | Mineral Salt | Sifted from sand. 4 steeped in a barrel of water make brine. | v1 |
+| `copper_dust` | Copper Dust | Sifted metal. 20 mB of molten copper each when melted (5 per ingot). | v1 |
+| `iron_dust` | Iron Dust | Same, for iron. | v1 |
+| `gold_dust` | Gold Dust | Same, for gold. | v1 |
+| `salt_dust` | Salt Dust | Sifted from sand. 4 steeped in a barrel of water make brine. | v1 |
 | `quartz_seed` | Quartz Seed | Grows into 2 quartz in brine. | v1 |
 | `amethyst_seed` | Amethyst Seed | Grows into 2 amethyst shards in brine. | v1 |
 | `lapis_seed` | Lapis Seed | Grows into 3 lapis lazuli in brine. | v1 |
@@ -111,9 +111,9 @@ Mesh tiers are data (`data/<namespace>/primamateria/mesh/<id>.json`). A sifting 
 
 | Tier | Id | Recipe (shaped, 3 by 3) | Speed | Gives access to |
 |---|---|---|---|---|
-| 1 | `cloth_mesh` | 4 sticks in the corners, 5 plant fiber | 1.0 | Rock chips, seeds, saplings, flint, coal, copper grains, bone meal |
-| 2 | `copper_mesh` | 4 sticks in the corners, 5 copper ingots | 1.0 | Iron grains, mineral salt, redstone, gunpowder, crops |
-| 3 | `iron_mesh` | 4 sticks in the corners, 5 iron ingots | 1.25 | Gold grains, glowstone dust, quartz, amethyst and lapis seeds |
+| 1 | `cloth_mesh` | 4 sticks in the corners, 5 plant fiber | 1.0 | Rock chips, seeds, saplings, flint, coal, copper dust, bone meal |
+| 2 | `copper_mesh` | 4 sticks in the corners, 5 copper ingots | 1.0 | Iron dust, salt dust, redstone, gunpowder, crops |
+| 3 | `iron_mesh` | 4 sticks in the corners, 5 iron ingots | 1.25 | Gold dust, glowstone dust, quartz, amethyst and lapis seeds |
 | 4 | `diamond_mesh` | 4 sticks in the corners, 5 diamonds | 1.5 | More diamond seeds, loose lapis, emerald seeds, netherite scrap, ender pearls |
 | 5 | `netherite_mesh` | 1 diamond mesh and 1 netherite ingot (shapeless) | 2.0 | Best chances everywhere, shulker shells, wither skeleton skulls |
 
@@ -151,13 +151,13 @@ A drive sits directly under a sieve and shakes it. Drives have no screen.
 | `windup_drive` | Hold use on the drive to crank: 1 turn per 5 ticks, stores up to 48 turns, shown by a brass dial on the front that sweeps a quarter circle | 1 shake per 8 ticks, 1 turn per shake | Runs while it has turns and the sieve has a load. Recipe: 4 planks, 3 copper ingots, 1 iron ingot, 1 stick. |
 | `furnace_drive` | Furnace fuel, put in by hand or hopper (1 slot, 64 items); the firebox glows while burning | 1 shake per 4 ticks | Burns only while the sieve above has a load. Recipe: 1 furnace, 1 windup drive, 4 iron ingots, 2 gold ingots. |
 
-| `flux_drive` | Energy (FE) through the loader's energy handler, buffer of 10,000 FE; a strip on the front lights in five steps with the charge | 1 shake per 2 ticks, 40 FE per shake | Runs while it has energy and the machine above has work. Recipe: 1 furnace drive, 4 redstone, 2 diamonds, 2 copper ingots. |
+| `powered_drive` | Energy (FE) through the loader's energy handler, buffer of 10,000 FE; a strip on the front lights in five steps with the charge | 1 shake per 2 ticks, 40 FE per shake | Runs while it has energy and the machine above has work. Recipe: 1 furnace drive, 4 redstone, 2 diamonds, 2 copper ingots. |
 
-A drive works the machine above it: a sieve or a stamp mill.
+A drive works the machine above it: a sieve or an auto hammer.
 
-### Stamp mill
+### Auto hammer
 
-A stamp mill sits on a drive. Use a hammer on it to fit the hammer (sneak-use with an empty hand takes it out); the hammer's tier decides what the mill can crush, and it loses 1 durability per block. Blocks go in by hand or hopper (buffer of 16). One block takes 6 strokes, and one stroke is one drive shake. Results follow the crushing recipes, bonus yield included, and go to the drive's buffer. Without a drive it does nothing.
+An auto hammer sits on a drive. Use a hammer on it to fit the hammer (sneak-use with an empty hand takes it out); the hammer's tier decides what the auto hammer can crush, and it loses 1 durability per block. Blocks go in by hand or hopper (buffer of 16). One block takes 6 strokes, and one stroke is one drive shake. Results follow the crushing recipes, bonus yield included, and go to the drive's buffer. Without a drive it does nothing.
 
 All drives keep a 9-slot output buffer for drops, residue and crushed blocks. Hoppers and pipes take from the buffer through the bottom and sides. When the buffer is full the sieve stops after the current load. A redstone signal stops a drive.
 
@@ -175,7 +175,7 @@ Barrel recipe families:
 | Composting | `primamateria:composting` | Each organic item adds compost units. At 1000 the barrel matures for 20 seconds, the surface darkening from green to brown, then holds 1 result block, taken by hand or hopper. | Result `minecraft:dirt`. Values: sapling 100, leaves 80, plant fiber 50, seeds 60, wheat 80, apple 100, flower 80, cactus 100, sugar cane 80, rotten flesh 100, bread 160, bone meal 40 (and it halves the maturing time once). Tag-based where a tag exists. |
 | Soaking | `primamateria:soaking` | An item or block put into a barrel of fluid turns into something else and uses some fluid. Takes a few seconds. | Water (250 mB) + stone meal = clay block, 5 s. Water (250 mB) + dirt = mud, 5 s. Brine (250 mB) + scoria = soul sand, 5 s. |
 | Mixing | `primamateria:mixing` | A second fluid poured into a barrel that holds a fluid makes a block. Uses both. | Clay barrel with 1000 mB lava + 1000 mB water = obsidian. Barrel with 1000 mB water + 1000 mB lava = stone. |
-| Steeping | `primamateria:steeping` | An item dissolved in a fluid over time changes the fluid. | 1000 mB water + 4 mineral salt = 1000 mB brine, 30 s. |
+| Steeping | `primamateria:steeping` | An item dissolved in a fluid over time changes the fluid. | 1000 mB water + 4 salt dust = 1000 mB brine, 30 s. |
 | Growing | `primamateria:growing` | A seed placed in a barrel of the right fluid grows slowly into a result and uses fluid. Up to 4 seeds grow at once, each on its own timer, each shown as a crystal that gets bigger. | In brine, 250 mB each: quartz seed = 2 quartz, 90 s. Amethyst seed = 2 amethyst shards, 120 s. Lapis seed = 3 lapis lazuli, 120 s. Diamond seed = 1 diamond, 300 s. Emerald seed = 1 emerald, 300 s. |
 
 **Brine** (`primamateria:brine`) is a real fluid with a bucket (`primamateria:brine_bucket`), so pipes and tanks of other mods can move it. It is the only new world fluid in the first release.
@@ -190,7 +190,7 @@ Barrel recipe families:
 
 | Family | Recipe type | First-release recipes |
 |---|---|---|
-| Melting | `primamateria:melting` | Cobblestone, stone, gravel = 200 mB lava. Netherrack = 500 mB lava. Copper, iron, gold grains = 20 mB of their melt. Raw copper, iron, gold and their ingots = 100 mB. |
+| Melting | `primamateria:melting` | Cobblestone, stone, gravel = 200 mB lava. Netherrack = 500 mB lava. Copper, iron, gold dust = 20 mB of their melt. Raw copper, iron, gold and their ingots = 100 mB. |
 | Casting | `primamateria:casting` | 100 mB molten copper, iron, gold = 1 ingot of that metal, 3 s. |
 
 Crafting recipes for the blocks (rows top to bottom, `.` is empty):
@@ -227,21 +227,21 @@ One sifting recipe is one drop: input block, lowest mesh tier, optional highest 
 | Drop | Count | Chance | Mesh |
 |---|---|---|---|
 | Flint | 1 | 22% | T1+ |
-| Copper grains | 1 to 2 | 14% | T1+ |
+| Copper dust | 1 to 2 | 14% | T1+ |
 | Coal | 1 | 9% | T1+ |
-| Iron grains | 1 | 10% | T2 only |
-| Iron grains | 1 to 2 | 16% | T3+ |
-| Gold grains | 1 | 5% | T3+ |
+| Iron dust | 1 | 10% | T2 only |
+| Iron dust | 1 to 2 | 16% | T3+ |
+| Gold dust | 1 | 5% | T3+ |
 
 **Sand** (`sifting/sand/*`), residue: stone meal 15%
 
 | Drop | Count | Chance | Mesh |
 |---|---|---|---|
-| Copper grains | 1 | 8% | T1+ |
+| Copper dust | 1 | 8% | T1+ |
 | Cactus | 1 | 4% | T1+ |
-| Mineral salt | 1 | 12% | T2+ |
-| Iron grains | 1 | 7% | T2+ |
-| Gold grains | 1 | 8% | T3+ |
+| Salt dust | 1 | 12% | T2+ |
+| Iron dust | 1 | 7% | T2+ |
+| Gold dust | 1 | 8% | T3+ |
 | Quartz seed | 1 | 6% | T3+ |
 
 **Stone meal** (`sifting/stone_meal/*`)
@@ -266,7 +266,7 @@ One sifting recipe is one drop: input block, lowest mesh tier, optional highest 
 |---|---|---|---|
 | Quartz | 1 to 2 | 18% | T2+ |
 | Glowstone dust | 1 | 10% | T2+ |
-| Gold grains | 1 | 10% | T3+ |
+| Gold dust | 1 | 10% | T3+ |
 | Blaze powder | 1 | 6% | T3+ |
 | Nether wart | 1 | 4% | T3+ |
 | Netherite scrap | 1 | 1% | T4 only |
@@ -294,7 +294,7 @@ One sifting recipe is one drop: input block, lowest mesh tier, optional highest 
 | Emerald seed | 1 | 4% | T4+ |
 | Shulker shell | 1 | 1.5% | T5+ |
 
-Rough pacing check: one iron ingot is 5 grains. With the copper mesh, gravel gives 0.10 grains per block, so about 50 gravel per ingot by hand (about 4 minutes with full trays); with the iron mesh 0.24 per block, about 21 gravel per ingot. A diamond is one seed (2% of stone meal on the iron mesh, about 50 blocks; 4% on the diamond mesh) plus 5 minutes of growing, and four grow at once. These are the numbers Casey tunes after playing.
+Rough pacing check: one iron ingot is 5 dust. With the copper mesh, gravel gives 0.10 dust per block, so about 50 gravel per ingot by hand (about 4 minutes with full trays); with the iron mesh 0.24 per block, about 21 gravel per ingot. A diamond is one seed (2% of stone meal on the iron mesh, about 50 blocks; 4% on the diamond mesh) plus 5 minutes of growing, and four grow at once. These are the numbers Casey tunes after playing.
 
 ## 11. Starting on a void island
 
@@ -351,10 +351,10 @@ Exact formats with examples are in `ARCHITECTURE.md`.
 | `drive.windup_max_turns` | 48 | Stored turns |
 | `drive.windup_ticks_per_shake` | 8 | |
 | `drive.furnace_ticks_per_shake` | 4 | |
-| `drive.flux_ticks_per_shake` | 2 | |
-| `drive.flux_fe_per_shake` | 40 | |
-| `drive.flux_capacity` | 10000 | |
-| `mill.strokes_per_block` | 6 | |
+| `drive.powered_ticks_per_shake` | 2 | |
+| `drive.powered_fe_per_shake` | 40 | |
+| `drive.powered_capacity` | 10000 | |
+| `auto_hammer.strokes_per_block` | 6 | |
 | `barrel.dew_ticks_per_mb` | 4 | 0 switches dew off |
 | `barrel.rain_multiplier` | 8 | |
 | `barrel.time_multiplier` | 1.0 | Scales compost, soak, steep and grow times |
@@ -365,7 +365,7 @@ Exact formats with examples are in `ARCHITECTURE.md`.
 
 ## 14. First release versus later
 
-**In `2026.11.1`:** the sieve with 5 meshes and the full animation; 6 hammers and the crushing chain to stone meal, scoria and pale sand; soul sand sifting for mob drops; the stamp mill; the flux drive; wooden and clay barrels with all five recipe families; brine; 5 crystal seeds; the crucible, 3 melts, the casting tray with ingots; windup and furnace drives; the Void Island preset and start island; the properties config; BEI, JEI, REI and EMI categories and drop table information pages (each where a build exists for the version and loader); SMWTI and Jade lines; KubeJS support; the ModJS `PrimaMateria` global; wiki pages.
+**In `2026.11.1`:** the sieve with 5 meshes and the full animation; 6 hammers and the crushing chain to stone meal, scoria and pale sand; soul sand sifting for mob drops; the auto hammer; the powered drive; wooden and clay barrels with all five recipe families; brine; 5 crystal seeds; the crucible, 3 melts, the casting tray with ingots; windup and furnace drives; the Void Island preset and start island; the properties config; BEI, JEI, REI and EMI categories and drop table information pages (each where a build exists for the version and loader); SMWTI and Jade lines; KubeJS support; the ModJS `PrimaMateria` global; wiki pages.
 
 **Later:** mold shapes; per-team islands; a void Nether and End; wood variants of the sieve and barrel.
 
@@ -376,14 +376,14 @@ Prima Materia is a clean-room design. Nobody working on it opens the code, asset
 1. **A load, not a block.** The sieve takes up to 4 blocks in one tray and rewards filling it (1.6 times the efficiency). Sieves do not link to their neighbors.
 2. **Hold, do not click.** Sifting is one held button with a steady rhythm, and the sieve reloads from the stack in your hand.
 3. **Drops are rolled first and revealed.** You watch the finds appear on the mesh as the material thins, and fines fall through as residue.
-4. **Our own material and tier names.** Stone meal, rock chips, plant fiber, metal grains, mineral salt, crystal seeds; scoria, pale sand. Five mesh tiers: cloth, copper, iron, diamond, netherite.
+4. **Our own material and tier names.** Stone meal, rock chips, plant fiber, metal dust, salt dust, crystal seeds; scoria, pale sand. Five mesh tiers: cloth, copper, iron, diamond, netherite.
 5. **No leaf tool, no insects, no cursed water, no mob dolls.** Plant fiber comes from the hammer. There is no special leaf-harvesting tool and no mob-making item; mob drops are sifted from soul sand.
 6. **Our own barrel.** An open tub with a soak slot, dew collection and five recipe families of our own, with a wooden and a fired version.
 7. **Crystals are grown.** Quartz, amethyst, lapis and diamonds come from seeds growing in brine on a timer, four at a time, visible in the barrel. The end of the progression is not a dice roll.
 8. **Melts are data.** Molten metals are data-defined crucible contents with a color, not registered fluids, so a pack adds a metal with three JSON files.
-9. **Casting is its own block.** Metal comes out as sifted grains, is melted, poured into a tray and cooled. There is no crafting of ore pieces into ore blocks.
-10. **Mechanical drives.** Automation is a spring you wind and a firebox, placed under the sieve. No energy system is needed; the flux drive is there for packs that have one.
+9. **Casting is its own block.** Metal comes out as sifted dust, is melted, poured into a tray and cooled. There is no crafting of ore pieces into ore blocks.
+10. **Mechanical drives.** Automation is a spring you wind and a firebox, placed under the sieve. No energy system is needed; the powered drive is there for packs that have one.
 11. **No screens and no text.** Every block is read from its model and used by hand.
-12. **Vanilla-style 32x art and a keyframed sieve.** Our own textures in the Minecraft style, Blockbench models and animation system (see `ART.md` and `SIFTING.md`).
+12. **Vanilla look and a keyframed sieve.** Blocks built from Minecraft's own textures, 16x16 items in the Minecraft style, Blockbench models and animation system (see `ART.md` and `SIFTING.md`).
 
 It is also different from our own Barely Prospecting, which is hand-only panning with trays, a basin and a lure. Prima Materia is about sieves, barrels, casting and automation, and shares no items or ids with it.

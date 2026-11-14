@@ -11,7 +11,7 @@ PrimaMateria/
   common/src/main/java/com/itmecasey/primamateria/
       PrimaMateria.java            mod id, init
       Ids.java                     every id as a string (frozen)
-      view/                        SieveView, BarrelView, CrucibleView, TrayView, DriveView, MillView (frozen records)
+      view/                        SieveView, BarrelView, CrucibleView, TrayView, DriveView, AutoHammerView (frozen records)
       event/                       GameEvents (frozen)
       Settings.java                config/primamateria.properties (pure Java)
       sift/                        SiftMath, SiftLoad, Finds, MeshTier (pure)
@@ -29,7 +29,7 @@ PrimaMateria/
   version-26.2/src/main/java/com/itmecasey/primamateria/
       ModContent.java              every registry entry (blocks, items, sounds; A and C add block entities, recipe types, fluid, particles)
       StateProps.java, ModShapes.java   block state properties and voxel shapes (frozen names)
-      block/                       SieveBlock, BarrelBlock, CrucibleBlock, CastingTrayBlock, DriveBlock, StampMillBlock, falling blocks
+      block/                       SieveBlock, BarrelBlock, CrucibleBlock, CastingTrayBlock, DriveBlock, AutoHammerBlock, falling blocks
       blockentity/                 SieveBlockEntity, BarrelBlockEntity, CrucibleBlockEntity, CastingTrayBlockEntity, DriveBlockEntity
       item/                        HammerItem, MeshItem
       recipe/                      one class per recipe type, serializers, RecipeLookup
@@ -56,6 +56,8 @@ PrimaMateria/
 
 Rules that keep it in order:
 
+- **Frozen interfaces change on paper first.** A change to `Ids`, `ModContent`, a view record, `StateProps`, `GameEvents`, `RecipeLookup` or a data format is written in this document first and gets one line in `CHANGELOG.md` under "Interfaces", so the other workstreams can follow.
+
 - **`common/` has no game classes.** It compiles and tests without Minecraft. Everything a number depends on lives there.
 - **`version-26.2` is edited by hand; `version-26.3` is never edited by hand.** `scripts/sync_versions.py` copies and patches it. Each known 26.3 difference is one function in that script.
 - **Each loader folder is its own Gradle build** that includes `common/` and its `version-*` folder as source sets. Loader code is only: entry point, event bus wiring, item and fluid handler capabilities, network registration, client entry.
@@ -81,7 +83,7 @@ All data loads from datapacks and reloads with `/reload`. Recipes are real recip
 ```json
 { "type": "primamateria:sifting",
   "input": "minecraft:gravel",
-  "result": "primamateria:iron_grains",
+  "result": "primamateria:iron_dust",
   "count": [1, 2],
   "chance": 0.16,
   "mesh_min": 3 }
@@ -112,7 +114,7 @@ One composting recipe is active (the highest-priority datapack's). `time` is in 
 
 ```json
 { "type": "primamateria:steeping",
-  "fluid": "minecraft:water", "input": "primamateria:mineral_salt", "count": 4,
+  "fluid": "minecraft:water", "input": "primamateria:salt_dust", "count": 4,
   "result_fluid": "primamateria:brine", "time": 600 }
 ```
 
@@ -125,7 +127,7 @@ One composting recipe is active (the highest-priority datapack's). `time` is in 
 
 ```json
 { "type": "primamateria:melting",
-  "input": "primamateria:iron_grains",
+  "input": "primamateria:iron_dust",
   "result": { "melt": "primamateria:molten_iron" }, "amount": 20 }
 ```
 `result` is `{ "melt": id }` or `{ "fluid": id }`.
@@ -197,7 +199,7 @@ Same rules as the other mods (`Mod-Playbook/ROUND_MODJS_AND_HINTS.md`, Part A). 
 | Group | Members | Notes |
 |---|---|---|
 | Events | `PrimaMateria.on('sifted', e => ...)`, `'crushed'`, `'barrelFinished'`, `'melted'`, `'cast'`, `'driveWound'` | The `GameEvents` channels. `e` has `level`, `pos`, `player` (may be null), the input, and a mutable `drops` list for `sifted` and `crushed`. `e.cancel()` on `sifted` returns the load unprocessed. |
-| State (read-only) | `PrimaMateria.sieveAt(level, pos)`, `barrelAt`, `crucibleAt`, `trayAt`, `driveAt`, `millAt` | The view records. Null when the block is something else. |
+| State (read-only) | `PrimaMateria.sieveAt(level, pos)`, `barrelAt`, `crucibleAt`, `trayAt`, `driveAt`, `autoHammerAt` | The view records. Null when the block is something else. |
 | Content | `PrimaMateria.sifting.add({...})`, `.remove(filter)`, `.replace(filter, {...})`; the same for `crushing`, `soaking`, `mixing`, `steeping`, `growing`, `melting`, `casting` | Same field names as the JSON. Applied after each datapack reload, in script order. |
 | Data | `PrimaMateria.meshes.add/remove`, `PrimaMateria.heat.add/remove`, `PrimaMateria.melts.add/remove`, `PrimaMateria.compost.add/remove` | Mirrors the four data folders. |
 | Config | `PrimaMateria.config.get('sieve.max_load')` | Read-only. |
@@ -234,7 +236,7 @@ So the first release ships BEI, SMWTI and ModJS on all four builds, JEI, REI and
 | Category id | Icon | One card shows |
 |---|---|---|
 | `primamateria:sifting` | Sieve | One input block and one mesh, with every drop it can give as a result slot, each with its count range and chance as a value under the slot. One card per input and mesh tier pair that differs. Residue in a separate slot. Meshes and drives are catalysts. |
-| `primamateria:crushing` | Wooden hammer | Input block, lowest hammer, results with chances. Hammers and the stamp mill are catalysts. |
+| `primamateria:crushing` | Wooden hammer | Input block, lowest hammer, results with chances. Hammers and the auto hammer are catalysts. |
 | `primamateria:composting` | Wooden barrel with compost | Every compostable with its units as a value, the result block and the maturing time. |
 | `primamateria:barrel` | Wooden barrel | Soaking, mixing, steeping and growing: fluid slots, an item slot, a result and a time value. A clay barrel icon marks recipes that need the clay barrel. |
 | `primamateria:melting` | Crucible | Input, result fluid or melt with its amount. Heat sources are catalysts with their heat value. |
@@ -248,7 +250,7 @@ Each siftable block (dirt, gravel, sand, stone meal, scoria, soul sand, pale san
 
 ### In-world info
 
-SMWTI (preferred, all four builds) and Jade (NeoForge builds) show the state of our blocks when looked at, as names and values: sieve (mesh, load, progress), barrel (contents, amount, stage, time left), crucible (contents, amount, heat), casting tray (stage), drives (charge), stamp mill (hammer, queue). The lines come from the view records.
+SMWTI (preferred, all four builds) and Jade (NeoForge builds) show the state of our blocks when looked at, as names and values: sieve (mesh, load, progress), barrel (contents, amount, stage, time left), crucible (contents, amount, heat), casting tray (stage), drives (charge), auto hammer (hammer, queue). The lines come from the view records.
 
 ### Proof
 
@@ -278,7 +280,7 @@ The four Gradle modules, `common/`, `version-26.2`, the generated `version-26.3`
 - `common/.../Ids.java`: every id as a string, in lists: blocks, block entities, hammers, meshes, materials, recipe types, data folders, the brine fluid, melts, sounds, particles. A new id is added here first.
 - `version-26.2/.../ModContent.java`: registers every block (a plain placeholder `Block`), every item (a plain `Item`) and every sound event from the `Ids` lists, plus the creative tab. Workstream A swaps the constructor calls in `makeBlock` and `makeItem` for the real classes and adds its own register methods for block entity types, recipe types and the brine fluid; workstream C adds one for particles. Ids and maps stay.
 - The interface files listed under "Interfaces" below.
-- `lang/en_us.json` with every name, and a placeholder 32x cube model, blockstate, item model and loot table for every block and item, written by `scripts/make_placeholders.py` (it never overwrites an existing file, so real art is safe).
+- `lang/en_us.json` with every name, and a placeholder cube model, blockstate, item model and loot table for every block and item, written by `scripts/make_placeholders.py` (it never overwrites an existing file, so real art is safe).
 - `PrimaMateria.init` finds `script.ModJsBridge.install()` by name, so workstream D adds the bridge without touching a frozen file.
 
 Loader entry classes (`NeoForgePrimaMateria`, `ForgePrimaMateria`) belong to workstream A after the scaffold; the client classes (`NeoForgeClient`, `ForgeClient`) to workstream C; the dev classes to A.
@@ -318,9 +320,9 @@ Delivers: wiki, listing text, CI files. The CurseForge description describes the
 | Interface | Between | Content |
 |---|---|---|
 | `Ids` (common) and `ModContent` | all | Final registry ids. Nobody renames one. |
-| `view/SieveView` (record) | A fills, C reads | `meshId`, `meshTexture`, `loadBlock`, `load` (0 to 4), `progress` (0 to 1), `shakeCount`, `lastShakeTick`, `drive` (`DriveKind`: none, hand, windup, furnace, flux), `blocked`, `seed`, `finds` (item, count, revealAt, spot)[] |
-| `view/BarrelView`, `CrucibleView`, `TrayView`, `DriveView`, `MillView` (records) | A fills, C reads | Contents id and kind, amount, color, stage and stage progress, grow slots (crystal texture, progress, slot)[], heat, pouring sides, cooling progress, charge, running, fitted hammer, queued blocks |
-| `StateProps` (version) | A sets, B models, C reads | `MOVING` (sieve, stamp mill), `MESH` 0 to 8 and `FILL` 0 to 4 (sieve), `LIT` (furnace drive), `CHARGE` 0 to 5 (flux drive), `FACING` (drives, casting tray) |
+| `view/SieveView` (record) | A fills, C reads | `meshId`, `meshTexture`, `loadBlock`, `load` (0 to 4), `progress` (0 to 1), `shakeCount`, `lastShakeTick`, `drive` (`DriveKind`: none, hand, windup, furnace, powered), `blocked`, `seed`, `finds` (item, count, revealAt, spot)[] |
+| `view/BarrelView`, `CrucibleView`, `TrayView`, `DriveView`, `AutoHammerView` (records) | A fills, C reads | Contents id and kind, amount, color, stage and stage progress, grow slots (crystal texture, progress, slot)[], heat, pouring sides, cooling progress, charge, running, fitted hammer, queued blocks |
+| `StateProps` (version) | A sets, B models, C reads | `MOVING` (sieve, auto hammer), `MESH` 0 to 8 and `FILL` 0 to 4 (sieve), `LIT` (furnace drive), `CHARGE` 0 to 5 (powered drive), `FACING` (drives, casting tray) |
 | Bone contract | B builds, C animates | Per model, the bone names in `SIFTING.md` section 2 (sieve) and one table per other model kept in `docs/BONES.md`, written by C in its first day and followed by B. The exporter fails when a contract bone is missing. |
 | `ModShapes` (version) | B writes, A reads | One voxel shape constant per model block (full cubes until B replaces them). |
 | `data/RecipeLookup` (common) | A writes, D reads | `RecipeLookup.get()` returns a snapshot of plain records for each recipe type and the four data maps, on both sides, for the recipe viewers and the script bridge. |
@@ -331,7 +333,7 @@ Delivers: wiki, listing text, CI files. The CurseForge description describes the
 
 1. Step 0 scaffold (done).
 2. A, B, C and D start together.
-   - A: sieve logic first, then hammer, barrel, crucible and tray, drives and stamp mill, Nether and End chain, world preset.
+   - A: sieve logic first, then hammer, barrel, crucible and tray, drives and auto hammer, Nether and End chain, world preset.
    - B: sieve model first, approval frame, then the rest.
    - C: loader and sampler, sieve renderer on a gray box, then the bone contract doc, then the rest.
    - D: BEI and the script bridge against `RecipeLookup` and `GameEvents` (usable as soon as A's recipe types exist), then the other viewers and in-world info.

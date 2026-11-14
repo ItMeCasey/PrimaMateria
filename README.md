@@ -10,19 +10,12 @@ By ItMeCasey Studios. Mod id `primamateria`. First release planned as `2026.11.1
 
 - [docs/DESIGN.md](docs/DESIGN.md): the game. Loop, progression, every block, item, recipe family and drop table.
 - [docs/SIFTING.md](docs/SIFTING.md): the sifting animation, rendering, sound and performance budget.
-- [docs/ART.md](docs/ART.md): the 32x art direction, palette, models and textures to make, the icon.
+- [docs/ART.md](docs/ART.md): the 16x art direction, palette, models and textures to make, the icon.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): modules, data formats, ModJS and BEI, tests, the work split.
 
-## Build and test
+## Build
 
-Each Forge or NeoForge folder is its own Gradle build (Java 25): `forge-26.2`, `neoforge-26.2`, `forge-26.3`, `neoforge-26.3`. Shared pure logic lives in `common/`; everything that touches the game lives in `version-26.2`, and `version-26.3` is generated from it by `scripts/sync_versions.py`. Every Gradle command goes through the slot wrapper.
-
-```
-cd neoforge-26.2 && bash /c/Users/casey/.claude/tools/gradle-slot.sh ./gradlew build --no-daemon   # jar and unit tests
-python scripts/sync_versions.py                 # after every change to version-26.2
-python scripts/server_check.py all              # headless server self test on all four builds (ports 8734 to 8737)
-python scripts/make_placeholders.py             # placeholder textures, models, names and loot tables for new ids
-```
+Each Forge or NeoForge folder is its own Gradle build (Java 25): `forge-26.2`, `neoforge-26.2`, `forge-26.3`, `neoforge-26.3`. Shared pure logic lives in `common/`; everything that touches the game lives in `version-26.2`, and `version-26.3` is generated from it by `scripts/sync_versions.py`. Developer notes are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Clean-room rule
 

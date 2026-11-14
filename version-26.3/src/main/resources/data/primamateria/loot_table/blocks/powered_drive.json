@@ -9,10 +9,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "primamateria:flux_drive"
+          "name": "primamateria:powered_drive"
         }
       ]
     }
   ],
-  "random_sequence": "primamateria:blocks/flux_drive"
+  "random_sequence": "primamateria:blocks/powered_drive"
 }

@@ -88,9 +88,9 @@ public final class ModContent {
         return switch (name) {
             case Ids.STONE_MEAL, Ids.PALE_SAND -> p.mapColor(MapColor.SAND).strength(0.5F).sound(SoundType.SAND);
             case Ids.SCORIA -> p.mapColor(MapColor.NETHER).strength(0.6F).sound(SoundType.GRAVEL);
-            case Ids.SIEVE, Ids.WOODEN_BARREL, Ids.STAMP_MILL, Ids.WINDUP_DRIVE ->
+            case Ids.SIEVE, Ids.WOODEN_BARREL, Ids.AUTO_HAMMER, Ids.WINDUP_DRIVE ->
                     p.mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD).noOcclusion();
-            case Ids.FURNACE_DRIVE, Ids.FLUX_DRIVE ->
+            case Ids.FURNACE_DRIVE, Ids.POWERED_DRIVE ->
                     p.mapColor(MapColor.METAL).strength(3.0F, 6.0F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops();
             default -> p.mapColor(MapColor.TERRACOTTA_ORANGE).strength(1.5F, 6.0F).sound(SoundType.STONE).noOcclusion()
                     .requiresCorrectToolForDrops();

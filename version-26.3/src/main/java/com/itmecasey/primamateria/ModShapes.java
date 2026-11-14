@@ -15,8 +15,8 @@ public final class ModShapes {
     public static final VoxelShape CASTING_TRAY = Shapes.block();
     public static final VoxelShape WINDUP_DRIVE = Shapes.block();
     public static final VoxelShape FURNACE_DRIVE = Shapes.block();
-    public static final VoxelShape FLUX_DRIVE = Shapes.block();
-    public static final VoxelShape STAMP_MILL = Shapes.block();
+    public static final VoxelShape POWERED_DRIVE = Shapes.block();
+    public static final VoxelShape AUTO_HAMMER = Shapes.block();
 
     private ModShapes() {
     }

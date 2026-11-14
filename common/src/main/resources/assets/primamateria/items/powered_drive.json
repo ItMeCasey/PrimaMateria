@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "primamateria:item/iron_grains"
+    "model": "primamateria:block/powered_drive"
   }
 }

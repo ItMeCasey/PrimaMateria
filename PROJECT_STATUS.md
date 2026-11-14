@@ -1,7 +1,7 @@
 # Project Status
 <!-- status-format: 1 -->
 Updated: 2026-11-13
-Summary: Prima Materia (sieve, barrel and crucible skyblock mod for Forge and NeoForge 26.2 and 26.3) has its design written and a local git repository; no code, models or builds exist yet.
+Summary: Prima Materia (sieve, barrel and crucible skyblock mod for Forge and NeoForge 26.2 and 26.3) has its design and a scaffold that builds and passes its self test on all four targets with every block and item as a stand-in; no gameplay yet, nothing pushed.
 Spend: none
 
 ## Design
@@ -10,7 +10,7 @@ Spend: none
 - [x] Art direction: palette, shading rules, model and texture lists, icon concept (docs/ART.md) (w:2)
 - [x] Architecture: modules, data formats, ModJS, BEI, tests, work split (docs/ARCHITECTURE.md) (w:2)
 - [x] Local git repository with first commit (w:1)
-- [ ] Casey answers the open design questions (world type, sieve load, melts, pacing, sounds); answered so far: MIT license, Barrel name, 32x, mesh tiers cloth to netherite, and the Nether and End chain, stamp mill, flux drive, mob drops and all four recipe viewers in the first release (w:1)
+- [ ] Casey answers the open design questions (world type, sieve load, melts, pacing, sounds); answered so far: MIT license, Barrel name, vanilla textures for blocks and 16x16 items, Auto Hammer and Powered Drive names, mesh tiers cloth to netherite, and the Nether and End chain, auto hammer, powered drive, mob drops and all four recipe viewers in the first release (w:1)
 
 ## Foundation
 - [x] Four Gradle modules (forge and neoforge for 26.2 and 26.3) with shared common/ and version-26.x folders (w:4)
@@ -30,23 +30,23 @@ Spend: none
 - [ ] Crucible: heat, melting, melts as data, lava out (w:4)
 - [ ] Casting tray: pour, cool, ingot out (w:3)
 - [ ] Windup drive and furnace drive with output buffers (w:4)
-- [ ] Flux drive (FE) (w:3)
-- [ ] Stamp mill (w:3)
+- [ ] Powered drive (FE) (w:3)
+- [ ] Auto hammer (w:3)
 - [ ] Nether and End chain: scoria, pale sand, soul sand sifting, netherite hammer and mesh (w:3)
 - [ ] Shipped recipes and drop tables for the first release (w:3)
 - [ ] Void Island world preset and start island structure (w:3)
 
 ## Blocks, Models and Textures
 - [ ] Sieve model and textures in Blockbench; style approved by Casey (w:4)
-- [ ] Shared material sheets (wood, wood end, stone, clay, brass, iron) (w:3)
 - [ ] Wooden barrel and clay barrel models (w:3)
 - [ ] Crucible and casting tray models (w:3)
 - [ ] Windup drive and furnace drive models (w:4)
-- [ ] Stamp mill and flux drive models (w:4)
+- [ ] Auto hammer and powered drive models (w:4)
 - [ ] Crystal model and five crystal textures (w:2)
-- [ ] Block detail textures (meshes, compost, brine, melt, insides, dial, firebox, stone meal) (w:3)
-- [ ] Item textures (26) (w:3)
-- [ ] Particle textures (w:1)
+- [x] Stand-in block models built from vanilla textures by reference (w:2)
+- [~] Block textures, 16x16: meshes, stone meal, scoria and pale sand drawn (first pass, waiting for review); brine, melt and crystals not drawn (w:3)
+- [~] Item textures (26), 16x16: first pass drawn, waiting for Casey's review next to vanilla (w:3)
+- [x] Particle textures (w:1)
 - [ ] Selection shapes and display transforms for every block (w:2)
 
 ## Animation Renderer
@@ -77,7 +77,9 @@ Spend: none
 - [ ] docs/scripting.md (ModJS, KubeJS, datapacks) (w:1)
 - [x] docs/known-gaps.md with the viewer and scripting builds per version (w:1)
 - [ ] Real-client check per supported integration with frames (BEI, SMWTI, ModJS on four builds; JEI, REI, Jade on NeoForge) (w:4)
-- [ ] When they port: JEI, REI and Jade on Forge 26.2 and 26.3; EMI and KubeJS on any 26.2 or 26.3 build (w:1)
+- [ ] Follow-up when a build appears (recheck with curseforge-lookup before every release): JEI, REI and Jade on Forge 26.2 and 26.3 (w:1)
+- [ ] Follow-up when a build appears: EMI client check on any 26.2 or 26.3 build (w:1)
+- [ ] Follow-up when a build appears: KubeJS bridge written against the KubeJS API and client-checked on any 26.2 or 26.3 build (w:1)
 
 ## Testing
 - [ ] Unit tests of the pure logic in all four modules (w:3)

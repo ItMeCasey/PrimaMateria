@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "primamateria:item/copper_grains"
+    "model": "primamateria:item/copper_dust"
   }
 }

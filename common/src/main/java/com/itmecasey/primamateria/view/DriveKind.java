@@ -1,6 +1,6 @@
 package com.itmecasey.primamateria.view;
 
-/** What is working a sieve or a stamp mill. Each kind has its own shake animation. */
+/** What is working a sieve or an auto hammer. Each kind has its own shake animation. */
 public enum DriveKind {
-    NONE, HAND, WINDUP, FURNACE, FLUX
+    NONE, HAND, WINDUP, FURNACE, POWERED
 }

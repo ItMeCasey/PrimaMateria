@@ -9,10 +9,10 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "primamateria:stamp_mill"
+          "name": "primamateria:auto_hammer"
         }
       ]
     }
   ],
-  "random_sequence": "primamateria:blocks/stamp_mill"
+  "random_sequence": "primamateria:blocks/auto_hammer"
 }

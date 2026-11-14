@@ -62,7 +62,7 @@ public final class GameEvents {
         }
     }
 
-    /** A block was crushed by a hammer (by hand or in a stamp mill). Listeners may change {@link #drops}. */
+    /** A block was crushed by a hammer (by hand or in an auto hammer). Listeners may change {@link #drops}. */
     public static final class Crushed {
         public final Where where;
         public final String input;

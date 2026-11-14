@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "primamateria:item/copper_grains"
+    "layer0": "primamateria:item/iron_dust"
   }
 }

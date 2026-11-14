@@ -66,7 +66,7 @@ The server owns the facts: load, progress, shake count, the rolled finds and whe
 
 ## 3. The material layer, the fines and the finds
 
-**Layer.** A box drawn by the renderer at the `layer` bone, textured with the loaded block's own top texture (looked up from the block's model, tinted like the block). Height = load quarters times remaining progress. The top face is split into a 3 by 3 grid of vertices; the center vertex is higher than the rim (domed), and each vertex leans toward the trailing side of the swing by an amount taken from the tray's velocity, so the surface slumps and levels. The texture is offset by a pixel or two on alternate shakes so the grains appear to shuffle. 18 triangles for the top, 4 quads for the sides.
+**Layer.** A box drawn by the renderer at the `layer` bone, textured with the loaded block's own top texture (looked up from the block's model, tinted like the block). Height = load quarters times remaining progress. The top face is split into a 3 by 3 grid of vertices; the center vertex is higher than the rim (domed), and each vertex leans toward the trailing side of the swing by an amount taken from the tray's velocity, so the surface slumps and levels. The texture is offset by a pixel or two on alternate shakes so the dust appear to shuffle. 18 triangles for the top, 4 quads for the sides.
 
 **Fines.** A custom particle (`primamateria:fines`): a 1 px or 2 px speck colored from the block's texture, spawned at the `chute` bone in a few thin streams, falling with gravity and dying on the first block below. Count per shake = 1 to 3, scaled by layer thickness. If the recipe set has residue for this block, the streams are a little thicker; when a residue item is actually produced it falls as a normal small item along the same path.
 
@@ -80,7 +80,7 @@ The server owns the facts: load, progress, shake count, the rolled finds and whe
 
 ### Pipeline
 
-1. **Author.** `branding/models/sieve.bbmodel` holds the model (bones, cubes, per-face UV, 32x textures) and the animations listed above. Keyframe values must be plain numbers; expressions are not allowed.
+1. **Author.** `branding/models/sieve.bbmodel` holds the model (bones, cubes, per-face UV, 16x textures) and the animations listed above. Keyframe values must be plain numbers; expressions are not allowed.
 2. **Export.** `scripts/export_anims.py` reads the `.bbmodel` (it is JSON) and writes two files into `common/src/main/resources/assets/primamateria/`:
    - `models/block/sieve_frame.json` (and the item model): the static bones as a normal Minecraft block model.
    - `primamateria_anim/sieve.json`: the moving bones (pivot, parent, cubes with UV) and every clip (per bone and channel, a list of keyframes: time, value, interpolation, bezier handles). The script fails with a clear message on an expression keyframe, an unknown interpolation, or a missing contract bone.

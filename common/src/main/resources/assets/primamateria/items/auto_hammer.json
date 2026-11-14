@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "primamateria:block/flux_drive"
+    "model": "primamateria:block/auto_hammer"
   }
 }

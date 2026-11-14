@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "primamateria:item/mineral_salt"
+    "model": "primamateria:item/gold_dust"
   }
 }
