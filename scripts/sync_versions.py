@@ -52,10 +52,29 @@ def copy_dev_resources():
         shutil.copytree(src, dst)
 
 
+def copy_loader_entries():
+    """The loader entry classes (registration, reload listener) and dev hooks are identical in 26.2 and 26.3: copy them too, so a
+    registration added for 26.2 can never be missing in 26.3. The client classes and the integration plugins are not touched."""
+    names = {
+        "neoforge": ["main/java/com/itmecasey/primamateria/neoforge/NeoForgePrimaMateria.java",
+                     "dev/java/com/itmecasey/primamateria/neoforge/dev/NeoForgeDev.java"],
+        "forge": ["main/java/com/itmecasey/primamateria/forge/ForgePrimaMateria.java",
+                  "dev/java/com/itmecasey/primamateria/forge/dev/ForgeDev.java"],
+    }
+    for loader, files in names.items():
+        for rel in files:
+            src = ROOT / f"{loader}-26.2" / "src" / rel
+            dst = ROOT / f"{loader}-26.3" / "src" / rel
+            if src.exists():
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(src, dst)
+
+
 def main():
     copy_tree("main")
     copy_tree("dev")
     copy_dev_resources()
+    copy_loader_entries()
     for patch in PATCHES:
         patch()
     print(f"version-26.3 synced from version-26.2 ({len(PATCHES)} patches)")
