@@ -42,7 +42,20 @@ def copy_tree(name):
         shutil.copytree(src, dst)
 
 
+def copy_loaders():
+    """The Forge and NeoForge entry classes are identical in 26.2 and 26.3, so 26.2 is copied over 26.3 too."""
+    for loader in ("neoforge", "forge"):
+        for part in ("main", "dev"):
+            src = ROOT / f"{loader}-26.2" / "src" / part / "java"
+            dst = ROOT / f"{loader}-26.3" / "src" / part / "java"
+            if src.exists():
+                if dst.exists():
+                    shutil.rmtree(dst)
+                shutil.copytree(src, dst)
+
+
 def main():
+    copy_loaders()
     copy_tree("main")
     copy_tree("dev")
     for patch in PATCHES:
