@@ -50,7 +50,7 @@ public final class ForgePrimaMateria {
             ForgeClient.install(context);
         }
         AttachCapabilitiesEvent.BlockEntities.BUS.addListener(ForgePrimaMateria::attach);
-        channel = ChannelBuilder.named(ModContent.id("lookup"))
+        channel = ChannelBuilder.named(net.minecraft.resources.Identifier.fromNamespaceAndPath(com.itmecasey.primamateria.PrimaMateria.MODID, "lookup"))
                 .networkProtocolVersion(1)
                 .optional()
                 .simpleChannel();

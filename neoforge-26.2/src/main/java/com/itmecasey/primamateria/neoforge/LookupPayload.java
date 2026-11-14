@@ -1,6 +1,5 @@
 package com.itmecasey.primamateria.neoforge;
 
-import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.data.LookupSync;
 import com.itmecasey.primamateria.data.LookupWire;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -11,7 +10,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 /** One frame of the recipe lookup, server to client (see {@link LookupWire}). */
 public record LookupPayload(LookupWire.Frame frame) implements CustomPacketPayload {
-    public static final Type<LookupPayload> TYPE = new Type<>(ModContent.id("lookup"));
+    public static final Type<LookupPayload> TYPE = new Type<>(net.minecraft.resources.Identifier.fromNamespaceAndPath(com.itmecasey.primamateria.PrimaMateria.MODID, "lookup"));
     public static final StreamCodec<RegistryFriendlyByteBuf, LookupPayload> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, p -> p.frame().sync(),
             ByteBufCodecs.VAR_INT, p -> p.frame().index(),
