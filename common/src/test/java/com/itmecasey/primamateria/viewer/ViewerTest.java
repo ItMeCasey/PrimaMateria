@@ -101,7 +101,7 @@ class ViewerTest {
         assertEquals(Cards.Kind.MELT, cast.inputs().get(0).kind());
         assertEquals("100 mB", cast.inputNotes().get(0));
         assertEquals("3 s", cast.values().get(0));
-        assertEquals(Cards.all(s).size(), Cards.sifting(s).size() + 1 + 1 + 4 + 2 + 1);
+        assertEquals(Cards.all(s).size(), Cards.sifting(s).size() + 1 + 1 + 4 + 2 + 1 + 2);
     }
 
     @Test
@@ -134,11 +134,26 @@ class ViewerTest {
                 texts.add(o.top());
                 texts.add(o.bottom());
             });
-            for (String t : texts) {
-                assertTrue(t.length() <= 9, "'" + t + "' is longer than a value");
-                assertFalse(t.contains(" the ") || t.endsWith("."), t);
+            for (String whole : texts) {
+                for (String t : whole.split("[|]")) {
+                    assertTrue(t.length() <= 9, "'" + t + "' is longer than a value");
+                    assertFalse(t.contains(" the ") || t.endsWith("."), t);
+                }
             }
         }
+    }
+
+    @Test
+    void dropsCardsCarryOneChanceCellPerTier() {
+        List<Cards.Card> drops = Cards.drops(s);
+        assertEquals(2, drops.size());
+        Cards.Card gravel = drops.get(0);
+        assertEquals("T1|T2|T3|T4|T5", gravel.values().get(0));
+        assertEquals("-|-|16%|16%|16%", gravel.outputs().get(1).top());
+        Cards.Layout l = Cards.layout(gravel);
+        assertEquals(4, l.outputs().size());
+        assertTrue(l.texts().stream().anyMatch(t -> t.text().equals("T3")));
+        assertTrue(l.texts().stream().anyMatch(t -> t.text().equals("16%")));
     }
 
     @Test

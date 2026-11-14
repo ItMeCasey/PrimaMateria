@@ -27,7 +27,9 @@ public final class Cards {
         COMPOSTING("composting", 150, 44),
         BARREL("barrel", 170, 50),
         MELTING("melting", 150, 44),
-        CASTING("casting", 150, 44);
+        CASTING("casting", 150, 44),
+        /** The information page of a siftable block: every drop with its chance at each mesh tier. */
+        DROPS("drops", 180, 140);
 
         public final String path;
         public final int width;
@@ -126,6 +128,7 @@ public final class Cards {
         out.addAll(barrel(s));
         out.addAll(melting(s));
         out.addAll(casting(s));
+        out.addAll(drops(s));
         return out;
     }
 
@@ -331,6 +334,35 @@ public final class Cards {
         return cards;
     }
 
+    public static final int DROP_ROWS = 6;
+    public static final int DROP_COLUMN_X = 60;
+
+    /**
+     * The information page of each siftable block: the block as the input, the meshes as the catalyst, one output per drop. The
+     * {@code top} text of an output holds its chances per mesh tier joined by {@code |} ("-|-|16%|16%|16%"), {@code bottom} its
+     * count range, and the first value is the list of tier names joined the same way.
+     */
+    public static List<Card> drops(Snapshot s) {
+        List<Card> cards = new ArrayList<>();
+        Map<Integer, List<String>> meshes = meshesByTier(s);
+        List<Entry> catalysts = new ArrayList<>();
+        meshes.values().forEach(l -> l.forEach(m -> catalysts.add(Entry.item(m, 1))));
+        for (DropTable.Table t : DropTable.all(s)) {
+            List<String> header = new ArrayList<>();
+            t.tiers().forEach(tier -> header.add("T" + tier));
+            int pages = Math.max(1, (t.rows().size() + DROP_ROWS - 1) / DROP_ROWS);
+            for (int p = 0; p < pages; p++) {
+                List<Output> outs = new ArrayList<>();
+                for (DropTable.Row r : t.rows().subList(p * DROP_ROWS, Math.min(t.rows().size(), (p + 1) * DROP_ROWS))) {
+                    outs.add(new Output(Entry.item(r.item(), 1), String.join("|", r.cells()), r.label()));
+                }
+                cards.add(new Card(Category.DROPS, "drops/" + t.input().replace(':', '/').replace('#', '_') + "#" + p,
+                        List.of(Entry.item(t.input(), 1)), catalysts, outs, List.of(""), List.of(String.join("|", header))));
+            }
+        }
+        return cards;
+    }
+
     // ---- layout ----
 
     /** The place of everything on a card of this category. Every viewer uses it, so a card looks the same in all of them. */
@@ -359,6 +391,27 @@ public final class Cards {
                     }
                     if (!o.bottom().isEmpty()) {
                         texts.add(new Text(cx + CELL_WIDTH / 2, cy + SLOT + 10, o.bottom(), true));
+                    }
+                }
+            }
+            case DROPS -> {
+                inputs.add(new Spot(4, 4));
+                catalyst = new Spot(30, 4);
+                String[] head = card.values().isEmpty() ? new String[0] : card.values().get(0).split("[|]");
+                int col = Math.min(24, (card.category().width - DROP_COLUMN_X) / Math.max(1, head.length));
+                for (int i = 0; i < head.length; i++) {
+                    texts.add(new Text(DROP_COLUMN_X + i * col + col / 2, 9, head[i], true));
+                }
+                for (int i = 0; i < card.outputs().size(); i++) {
+                    int y = 26 + i * 18;
+                    outputs.add(new Spot(4, y));
+                    Output o = card.outputs().get(i);
+                    if (!o.bottom().isEmpty()) {
+                        texts.add(new Text(24, y + 5, o.bottom(), false));
+                    }
+                    String[] cells = o.top().split("[|]");
+                    for (int c = 0; c < cells.length; c++) {
+                        texts.add(new Text(DROP_COLUMN_X + c * col + col / 2, y + 5, cells[c], true));
                     }
                 }
             }
