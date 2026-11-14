@@ -27,9 +27,9 @@ public final class Settings {
     }
 
     static {
-        def("sieve.shakes_per_block", 8, "Shakes needed for a load of 1 block with a mesh of speed 1.0.");
-        def("sieve.extra_block_factor", 0.5, "Extra work for each further block in a load, as a share of the first block.");
-        def("sieve.max_load", 4, "Most blocks in one load (1 to 4).");
+        def("sieve.shakes_per_block", 8, "Shakes needed to sift one block with a mesh of speed 1.0.");
+        def("sieve.link", true, "Sieves next to each other are shaken and refilled together.");
+        def("sieve.link_radius", 1, "How far linking reaches in blocks around a sieve (1 is a 3 by 3 square; 1 to 3).");
         def("sieve.drop_multiplier", 1.0, "Multiplies every sifting chance.");
         def("hammer.bonus_per_tier", 0.10, "Chance of one extra result per hammer tier above 2.");
         def("drive.windup_max_turns", 48, "Turns a windup drive stores.");

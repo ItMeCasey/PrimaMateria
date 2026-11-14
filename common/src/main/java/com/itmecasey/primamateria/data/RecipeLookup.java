@@ -51,11 +51,10 @@ public final class RecipeLookup {
     public record Growing(String id, String fluid, int amount, String seed, String result, int count, int time, String crystal) {
     }
 
-    /** {@code isMelt} tells whether {@code result} is a melt id or a fluid id. */
-    public record Melting(String id, String input, String result, boolean isMelt, int amount) {
+    public record Melting(String id, String input, String fluid, int amount) {
     }
 
-    public record Casting(String id, String melt, int amount, String result, int time) {
+    public record Casting(String id, String fluid, int amount, String result, int time) {
     }
 
     public record Mesh(String id, String item, int tier, double speed, String texture, int slot) {
@@ -65,18 +64,15 @@ public final class RecipeLookup {
     public record Heat(String id, String block, String state, int heat) {
     }
 
-    public record Melt(String id, int color, int glow, String nameKey) {
-    }
-
     public record Compost(String id, String item, int units, double matureBoost) {
     }
 
     public record Snapshot(List<Crushing> crushing, List<Sifting> sifting, List<Residue> residue, List<Composting> composting,
                            List<Soaking> soaking, List<Mixing> mixing, List<Steeping> steeping, List<Growing> growing,
-                           List<Melting> melting, List<Casting> casting, List<Mesh> meshes, List<Heat> heat, List<Melt> melts,
+                           List<Melting> melting, List<Casting> casting, List<Mesh> meshes, List<Heat> heat,
                            List<Compost> compost) {
         public static final Snapshot EMPTY = new Snapshot(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(),
-                List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
+                List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
 
         public Snapshot {
             crushing = List.copyOf(crushing);
@@ -91,7 +87,6 @@ public final class RecipeLookup {
             casting = List.copyOf(casting);
             meshes = List.copyOf(meshes);
             heat = List.copyOf(heat);
-            melts = List.copyOf(melts);
             compost = List.copyOf(compost);
         }
     }

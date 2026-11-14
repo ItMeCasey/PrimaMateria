@@ -45,7 +45,7 @@ All ids are `primamateria:<id>`. "v1" is the first release, `2026.11.1`. "later"
 
 | Id | Name | What it does | Scope |
 |---|---|---|---|
-| `sieve` | Sieve | Holds one mesh and a load of 1 to 4 blocks of one material. Shaking it (by hand or by a drive below it) turns the load into drops. Section 6. | v1 |
+| `sieve` | Sieve | Holds one mesh and one block of material at a time. Shaking it (by hand or by a drive below it) turns the block into drops. Sieves next to each other work together. Section 6. | v1 |
 | `wooden_barrel` | Wooden Barrel | Open tub. Holds 1000 mB of a cool fluid or 1000 units of compost. Collects dew and rain. Composting, soaking, steeping, growing. Cannot hold lava. Section 8. | v1 |
 | `clay_barrel` | Clay Barrel | Fired barrel. Same as the wooden barrel, and also holds lava, so it can do mixing recipes with a hot fluid. | v1 |
 | `crucible` | Crucible | Fired pot. Melts solids over a heat source into lava or molten metal, 4000 mB. Section 9. | v1 |
@@ -84,6 +84,8 @@ Unfired clay pieces are items, not blocks (section 5).
 | `amethyst_seed` | Amethyst Seed | Grows into 2 amethyst shards in brine. | v1 |
 | `lapis_seed` | Lapis Seed | Grows into 3 lapis lazuli in brine. | v1 |
 | `diamond_seed` | Diamond Seed | Grows into 1 diamond in brine, slowly. | v1 |
+| `brine_bucket` | Brine Bucket | A bucket of brine. | v1 |
+| `molten_copper_bucket`, `molten_iron_bucket`, `molten_gold_bucket` | Molten Copper, Iron, Gold Bucket | A bucket of each molten metal. | v1 |
 | `raw_crucible` | Unfired Crucible | Smelt in a furnace to get the crucible block. | v1 |
 | `raw_casting_tray` | Unfired Casting Tray | Smelt to get the casting tray block. | v1 |
 | `raw_clay_barrel` | Unfired Clay Barrel | Smelt to get the clay barrel block. | v1 |
@@ -96,14 +98,15 @@ Vanilla items the mod hands out directly: flint, coal, redstone, bone meal, gunp
 ## 6. Sieve
 
 - **Mesh.** Use a mesh item on an empty sieve to fit it. Sneak-use with an empty hand on an empty sieve to take it out. A sieve without a mesh takes no material.
-- **Load.** Use a siftable block on the sieve to add it, up to 4 of the same block. The load shows as a layer in the tray, one quarter of the tray height per block.
-- **Shake.** Hold use on a loaded sieve with any item or an empty hand. While you hold, the sieve shakes once every 6 ticks. Nothing happens when you only tap; holding is the action. You may hold a stack of the same material in your hand: when a load finishes, the sieve reloads from that stack, so you never stop.
-- **Work.** A load of 1 block needs 8 shakes with a mesh of speed 1.0. Each extra block in the load adds half as much again: 8, 12, 16, 20 shakes for loads of 1, 2, 3, 4. A full tray takes 2.5 times as long as a single block and gives 4 times the rolls, so filling the tray is 1.6 times as efficient. The mesh `speed` divides the shake count.
-- **Drops.** The server rolls every drop when the load starts, from the sifting recipes that match the block and the mesh tier, once per block in the load. The rolled drops are revealed on the mesh as the layer thins and are handed out when the load finishes: into the inventory below the sieve (or below its drive) when there is one, otherwise they hop off the tray toward the player who shook it.
+- **One block at a time.** Use a siftable block on the sieve to put it in. A sieve holds a single block and has no storage: nothing more goes in until that block is done. The block shows as a layer in the tray that thins as it is sifted.
+- **Shake.** Hold use on a filled sieve with any item or an empty hand. While you hold, the sieve shakes once every 6 ticks. Nothing happens when you only tap; holding is the action. You may hold a stack of the same material in your hand: when a block finishes, the sieve takes the next one from that stack, so you never stop.
+- **Work.** A block needs 8 shakes with a mesh of speed 1.0. The mesh `speed` divides the shake count.
+- **Linked sieves.** Sieves next to each other at the same height work as one. Shaking a sieve also shakes every filled sieve within `sieve.link_radius` blocks of it (default 1, so a 3 by 3 square of nine; up to 3), and putting a block in from a stack also fills each empty linked sieve from the same stack. Each sieve keeps its own mesh and rolls its own drops. `sieve.link=false` switches linking off. A drive shakes only the sieve on top of it.
+- **Drops.** The server rolls every drop when the block goes in, from the sifting recipes that match the block and the mesh tier. The rolled drops are revealed on the mesh as the layer thins and are handed out when the block is done: into the inventory below the sieve (or below its drive) when there is one, otherwise they hop off the tray toward the player who shook it.
 - **Residue.** Some materials leave fines: a chance per block to drop the next finer block (gravel leaves sand, sand leaves stone meal). Residue falls straight down through the mesh, into the inventory below or onto the ground under the sieve.
-- **Automation.** Hoppers and pipes may insert siftable blocks from the top and sides (same rules as by hand). Drops and residue leave through the bottom. The mesh slot is never automated.
-- **Comparator.** Signal 0 when empty, 1 to 15 for the progress of the current load.
-- **Break.** Breaking the sieve drops the block, the mesh and the unprocessed load. Drops already rolled for the load are discarded and rolled again later.
+- **Automation.** Hoppers and pipes may insert one siftable block from the top and sides when the sieve is empty (same rules as by hand). Drops and residue leave through the bottom. The mesh slot is never automated.
+- **Comparator.** Signal 0 when empty, 1 to 15 for the progress of the current block.
+- **Break.** Breaking the sieve drops the sieve, the mesh and the unfinished block. Drops already rolled for it are discarded and rolled again later.
 
 ### Mesh tiers
 
@@ -147,9 +150,9 @@ A drive sits directly under a sieve and shakes it. Drives have no screen.
 
 | Drive | Power | Rate | Details |
 |---|---|---|---|
-| Hand | Hold use | 1 shake per 6 ticks | Reloads from the stack in your hand. |
+| Hand | Hold use | 1 shake per 6 ticks | Refills from the stack in your hand; works linked sieves too. |
 | `windup_drive` | Hold use on the drive to crank: 1 turn per 5 ticks, stores up to 48 turns, shown by a brass dial on the front that sweeps a quarter circle | 1 shake per 8 ticks, 1 turn per shake | Runs while it has turns and the sieve has a load. Recipe: 4 planks, 3 copper ingots, 1 iron ingot, 1 stick. |
-| `furnace_drive` | Furnace fuel, put in by hand or hopper (1 slot, 64 items); the firebox glows while burning | 1 shake per 4 ticks | Burns only while the sieve above has a load. Recipe: 1 furnace, 1 windup drive, 4 iron ingots, 2 gold ingots. |
+| `furnace_drive` | Furnace fuel, put in by hand or hopper (1 slot, 64 items); the firebox glows while burning | 1 shake per 4 ticks | Burns only while the sieve above holds a block. Recipe: 1 furnace, 1 windup drive, 4 iron ingots, 2 gold ingots. |
 
 | `powered_drive` | Energy (FE) through the loader's energy handler, buffer of 10,000 FE; a strip on the front lights in five steps with the charge | 1 shake per 2 ticks, 40 FE per shake | Runs while it has energy and the machine above has work. Recipe: 1 furnace drive, 4 redstone, 2 diamonds, 2 copper ingots. |
 
@@ -159,7 +162,7 @@ A drive works the machine above it: a sieve or an auto hammer.
 
 An auto hammer sits on a drive. Use a hammer on it to fit the hammer (sneak-use with an empty hand takes it out); the hammer's tier decides what the auto hammer can crush, and it loses 1 durability per block. Blocks go in by hand or hopper (buffer of 16). One block takes 6 strokes, and one stroke is one drive shake. Results follow the crushing recipes, bonus yield included, and go to the drive's buffer. Without a drive it does nothing.
 
-All drives keep a 9-slot output buffer for drops, residue and crushed blocks. Hoppers and pipes take from the buffer through the bottom and sides. When the buffer is full the sieve stops after the current load. A redstone signal stops a drive.
+All drives keep a 9-slot output buffer for drops, residue and crushed blocks. Hoppers and pipes take from the buffer through the bottom and sides. When the buffer is full the sieve stops after the current block. A redstone signal stops a drive.
 
 ## 8. Barrel
 
@@ -178,19 +181,19 @@ Barrel recipe families:
 | Steeping | `primamateria:steeping` | An item dissolved in a fluid over time changes the fluid. | 1000 mB water + 4 salt dust = 1000 mB brine, 30 s. |
 | Growing | `primamateria:growing` | A seed placed in a barrel of the right fluid grows slowly into a result and uses fluid. Up to 4 seeds grow at once, each on its own timer, each shown as a crystal that gets bigger. | In brine, 250 mB each: quartz seed = 2 quartz, 90 s. Amethyst seed = 2 amethyst shards, 120 s. Lapis seed = 3 lapis lazuli, 120 s. Diamond seed = 1 diamond, 300 s. Emerald seed = 1 emerald, 300 s. |
 
-**Brine** (`primamateria:brine`) is a real fluid with a bucket (`primamateria:brine_bucket`), so pipes and tanks of other mods can move it. It is the only new world fluid in the first release.
+**Brine** (`primamateria:brine`) is a real fluid with a bucket (`primamateria:brine_bucket`), so pipes and tanks of other mods can move it. The mod adds four fluids: brine and the three molten metals (section 9).
 
 ## 9. Crucible and casting
 
 - **Heat.** A crucible needs a heat source in the block below it. Heat sources are data (`data/<namespace>/primamateria/heat/<id>.json`: block or block tag, optional block state, heat value). First release: torch 1, campfire 2, magma block 3, fire 3, lava 4, soul campfire 4, soul fire 5.
 - **Melting.** Put solids in by hand or hopper (buffer of 4 items). The crucible melts 2 mB per tick per point of heat. It holds one kind of content at a time, 4000 mB.
-- **Contents.** The crucible holds either a real fluid (lava) or a **melt**. A melt is a data-defined molten material, not a world fluid (`data/<namespace>/primamateria/melt/<id>.json`: color, glow, name key). Packs add a new metal with a melt file, a melting recipe and a casting recipe, and no Java. First release melts: `primamateria:molten_copper`, `primamateria:molten_iron`, `primamateria:molten_gold`.
-- **Lava** leaves by bucket or through the fluid handler (pipes).
-- **Casting.** A casting tray placed against the side of a crucible is fed by it: while the tray is empty and the crucible holds at least 100 mB of a melt with a casting recipe, the crucible pours 100 mB (a visible stream), the tray glows and cools for 3 seconds, then holds the ingot, taken by hand or by a hopper below. One crucible feeds up to 4 trays.
+- **Contents.** The crucible holds one real fluid at a time, 4000 mB: lava, or a molten metal. Molten copper, iron and gold (`primamateria:molten_copper`, `molten_iron`, `molten_gold`) are real fluids with buckets, so tanks and pipes of other mods store and move them, and a clay barrel holds them. Their look is vanilla lava tinted to the metal. A pack adds a metal by using any registered fluid (its own or another mod's) in a melting and a casting recipe.
+- **Fluids** leave by bucket or through the fluid handler (pipes), and come in the same way.
+- **Casting.** A casting tray placed against the side of a crucible is fed by it: while the tray is empty and the crucible holds at least 100 mB of a fluid with a casting recipe, the crucible pours 100 mB (a visible stream), the tray glows and cools for 3 seconds, then holds the ingot, taken by hand or by a hopper below. One crucible feeds up to 4 trays. A tray also takes its fluid from a bucket or a pipe.
 
 | Family | Recipe type | First-release recipes |
 |---|---|---|
-| Melting | `primamateria:melting` | Cobblestone, stone, gravel = 200 mB lava. Netherrack = 500 mB lava. Copper, iron, gold dust = 20 mB of their melt. Raw copper, iron, gold and their ingots = 100 mB. |
+| Melting | `primamateria:melting` | Cobblestone, stone, gravel = 200 mB lava. Netherrack = 500 mB lava. Copper, iron, gold dust = 20 mB of the molten metal. Raw copper, iron, gold and their ingots = 100 mB. |
 | Casting | `primamateria:casting` | 100 mB molten copper, iron, gold = 1 ingot of that metal, 3 s. |
 
 Crafting recipes for the blocks (rows top to bottom, `.` is empty):
@@ -205,7 +208,7 @@ Crafting recipes for the blocks (rows top to bottom, `.` is empty):
 
 ## 10. Sifting drop tables (first pass)
 
-One sifting recipe is one drop: input block, lowest mesh tier, optional highest tier, result, count range and chance. The tables below are the shipped defaults, per block of load. "T2+" means mesh tier 2 or finer.
+One sifting recipe is one drop: input block, lowest mesh tier, optional highest tier, result, count range and chance. The tables below are the shipped defaults, per block sifted. "T2+" means mesh tier 2 or finer.
 
 **Dirt** (`sifting/dirt/*`)
 
@@ -294,7 +297,7 @@ One sifting recipe is one drop: input block, lowest mesh tier, optional highest 
 | Emerald seed | 1 | 4% | T4+ |
 | Shulker shell | 1 | 1.5% | T5+ |
 
-Rough pacing check: one iron ingot is 5 dust. With the copper mesh, gravel gives 0.10 dust per block, so about 50 gravel per ingot by hand (about 4 minutes with full trays); with the iron mesh 0.24 per block, about 21 gravel per ingot. A diamond is one seed (2% of stone meal on the iron mesh, about 50 blocks; 4% on the diamond mesh) plus 5 minutes of growing, and four grow at once. These are the numbers Casey tunes after playing.
+Rough pacing check: one iron ingot is 5 dust. With the copper mesh, gravel gives 0.10 dust per block, so about 50 gravel per ingot by hand (about 2 minutes on a 3 by 3 of linked sieves); with the iron mesh 0.24 per block, about 21 gravel per ingot. A diamond is one seed (2% of stone meal on the iron mesh, about 50 blocks; 4% on the diamond mesh) plus 5 minutes of growing, and four grow at once. These are the numbers Casey tunes after playing.
 
 ## 11. Starting on a void island
 
@@ -319,8 +322,8 @@ Recipe types (in `data/<namespace>/recipe/`, so datapacks, KubeJS and ModJS hand
 | `primamateria:mixing` | Barrel | `base_fluid`, `added_fluid`, `amount`, `result`, `needs_heatproof` |
 | `primamateria:steeping` | Barrel | `fluid`, `input`, `count`, `result_fluid`, `time` |
 | `primamateria:growing` | Barrel | `fluid`, `amount`, `seed`, `result`, `count`, `time` |
-| `primamateria:melting` | Crucible | `input`, `result` (fluid or melt id), `amount` |
-| `primamateria:casting` | Casting tray | `melt`, `amount`, `result`, `time` |
+| `primamateria:melting` | Crucible | `input`, `result` (fluid id), `amount` |
+| `primamateria:casting` | Casting tray | `fluid`, `amount`, `result`, `time` |
 
 Data files that are not recipes (in `data/<namespace>/primamateria/`):
 
@@ -328,12 +331,11 @@ Data files that are not recipes (in `data/<namespace>/primamateria/`):
 |---|---|---|
 | `mesh/` | A mesh tier | `item`, `tier`, `speed`, `texture` |
 | `heat/` | A heat source | `block` or `tag`, `state` (optional), `heat` |
-| `melt/` | A molten material | `color`, `glow`, `name` |
 | `compost/` | A compost value | `item` or `tag`, `units`, `mature_boost` (optional) |
 
 Exact formats with examples are in `ARCHITECTURE.md`.
 
-**Scripting and packs.** Because every recipe, drop, mesh tier, heat source, melt and compost value is a datapack file, datapacks and KubeJS add, change and remove them directly. ModJS scripts get a `PrimaMateria` global (events, reads, content calls), and KubeJS gets the same events and reads through a helper script. Both are optional. Details and the per-version availability table are in `ARCHITECTURE.md` sections 4 and 5.
+**Scripting and packs.** Because every recipe, drop, mesh tier, heat source and compost value is a datapack file, datapacks and KubeJS add, change and remove them directly. ModJS scripts get a `PrimaMateria` global (events, reads, content calls), and KubeJS gets the same events and reads through a helper script. Both are optional. Details and the per-version availability table are in `ARCHITECTURE.md` sections 4 and 5.
 
 **Recipe viewers.** BEI, JEI, REI and EMI each get six categories (sifting, crushing, composting, barrel, melting, casting) and an information page per siftable block with its full drop table by mesh tier. SMWTI and Jade show block state in the world.
 
@@ -343,9 +345,9 @@ Exact formats with examples are in `ARCHITECTURE.md`.
 
 | Key | Default | Meaning |
 |---|---|---|
-| `sieve.shakes_per_block` | 8 | Shakes for a load of 1 at speed 1.0 |
-| `sieve.extra_block_factor` | 0.5 | Extra work per extra block of load |
-| `sieve.max_load` | 4 | Blocks per load, 1 to 4 |
+| `sieve.shakes_per_block` | 8 | Shakes to sift one block at speed 1.0 |
+| `sieve.link` | `true` | Sieves next to each other are shaken and filled together |
+| `sieve.link_radius` | 1 | How far linking reaches, in blocks (1 is a 3 by 3 square; 1 to 3) |
 | `sieve.drop_multiplier` | 1.0 | Scales every sifting chance |
 | `hammer.bonus_per_tier` | 0.10 | Extra-result chance per hammer tier above 2 |
 | `drive.windup_max_turns` | 48 | Stored turns |
@@ -365,7 +367,7 @@ Exact formats with examples are in `ARCHITECTURE.md`.
 
 ## 14. First release versus later
 
-**In `2026.11.1`:** the sieve with 5 meshes and the full animation; 6 hammers and the crushing chain to stone meal, scoria and pale sand; soul sand sifting for mob drops; the auto hammer; the powered drive; wooden and clay barrels with all five recipe families; brine; 5 crystal seeds; the crucible, 3 melts, the casting tray with ingots; windup and furnace drives; the Void Island preset and start island; the properties config; BEI, JEI, REI and EMI categories and drop table information pages (each where a build exists for the version and loader); SMWTI and Jade lines; KubeJS support; the ModJS `PrimaMateria` global; wiki pages.
+**In `2026.11.1`:** the sieve with 5 meshes and the full animation; 6 hammers and the crushing chain to stone meal, scoria and pale sand; soul sand sifting for mob drops; the auto hammer; the powered drive; wooden and clay barrels with all five recipe families; brine; 5 crystal seeds; the crucible, 3 molten metal fluids, the casting tray with ingots; windup and furnace drives; the Void Island preset and start island; the properties config; BEI, JEI, REI and EMI categories and drop table information pages (each where a build exists for the version and loader); SMWTI and Jade lines; KubeJS support; the ModJS `PrimaMateria` global; wiki pages.
 
 **Later:** mold shapes; per-team islands; a void Nether and End; wood variants of the sieve and barrel.
 
@@ -373,14 +375,14 @@ Exact formats with examples are in `ARCHITECTURE.md`.
 
 Prima Materia is a clean-room design. Nobody working on it opens the code, assets, language files or data of any other sifting mod, and nothing here is taken from one. The genre's general ideas (crush stone finer, sift it, compost for dirt, melt stone for lava, start in the void) are common ground; the design, names, numbers, art and code are ours. What is intentionally different from the usual way these mods work:
 
-1. **A load, not a block.** The sieve takes up to 4 blocks in one tray and rewards filling it (1.6 times the efficiency). Sieves do not link to their neighbors.
-2. **Hold, do not click.** Sifting is one held button with a steady rhythm, and the sieve reloads from the stack in your hand.
+1. **Our own sieve rules.** One block at a time with no storage, drops rolled when the block goes in, and a link radius the pack sets in the config.
+2. **Hold, do not click.** Sifting is one held button with a steady rhythm, and the sieve refills from the stack in your hand.
 3. **Drops are rolled first and revealed.** You watch the finds appear on the mesh as the material thins, and fines fall through as residue.
 4. **Our own material and tier names.** Stone meal, rock chips, plant fiber, metal dust, salt dust, crystal seeds; scoria, pale sand. Five mesh tiers: cloth, copper, iron, diamond, netherite.
 5. **No leaf tool, no insects, no cursed water, no mob dolls.** Plant fiber comes from the hammer. There is no special leaf-harvesting tool and no mob-making item; mob drops are sifted from soul sand.
 6. **Our own barrel.** An open tub with a soak slot, dew collection and five recipe families of our own, with a wooden and a fired version.
 7. **Crystals are grown.** Quartz, amethyst, lapis and diamonds come from seeds growing in brine on a timer, four at a time, visible in the barrel. The end of the progression is not a dice roll.
-8. **Melts are data.** Molten metals are data-defined crucible contents with a color, not registered fluids, so a pack adds a metal with three JSON files.
+8. **Molten metals are real fluids.** Tanks, pipes and buckets handle them, and casting works with any fluid a recipe names.
 9. **Casting is its own block.** Metal comes out as sifted dust, is melted, poured into a tray and cooled. There is no crafting of ore pieces into ore blocks.
 10. **Mechanical drives.** Automation is a spring you wind and a firebox, placed under the sieve. No energy system is needed; the powered drive is there for packs that have one.
 11. **No screens and no text.** Every block is read from its model and used by hand.

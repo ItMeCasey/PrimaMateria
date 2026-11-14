@@ -8,22 +8,26 @@ import java.util.List;
  *
  * @param meshId        the fitted mesh item, or empty
  * @param meshTexture   texture of the fitted mesh (from its mesh data file), or empty
- * @param loadBlock     the block being sifted, or empty
- * @param load          blocks in the tray, 0 to 4
- * @param progress      0 at the start of a load, 1 when it is done
- * @param shakeCount    shakes done on this load
+ * @param block         the block being sifted, or empty when the sieve is empty
+ * @param progress      0 when the block goes in, 1 when it is done
+ * @param shakeCount    shakes done on this block
  * @param lastShakeTick game time of the last shake
  * @param drive         what is shaking the sieve
  * @param blocked       the drive below cannot hand out results
- * @param seed          per-load random seed, for find rotation and the diagonal shakes
- * @param finds         drops already rolled for this load, in reveal order
+ * @param seed          per-block random seed, for find rotation and the diagonal shakes
+ * @param finds         drops already rolled for this block, in reveal order
  */
-public record SieveView(String meshId, String meshTexture, String loadBlock, int load, float progress, int shakeCount,
+public record SieveView(String meshId, String meshTexture, String block, float progress, int shakeCount,
                         long lastShakeTick, DriveKind drive, boolean blocked, long seed, List<Find> finds) {
-    public static final SieveView EMPTY = new SieveView("", "", "", 0, 0F, 0, 0L, DriveKind.NONE, false, 0L, List.of());
+    public static final SieveView EMPTY = new SieveView("", "", "", 0F, 0, 0L, DriveKind.NONE, false, 0L, List.of());
 
     /** Spots on the mesh a find can lie on (a 3 by 2 grid). */
     public static final int FIND_SPOTS = 6;
+
+    /** True when a block is in the sieve. */
+    public boolean filled() {
+        return !block.isEmpty();
+    }
 
     /**
      * One rolled drop shown on the mesh.

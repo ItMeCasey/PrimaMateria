@@ -71,7 +71,7 @@ public final class SelfTest {
             verdict("sound_registered_" + name, BuiltInRegistries.SOUND_EVENT.containsKey(ModContent.id(name)), name);
         }
         verdict("creative_tab_registered", BuiltInRegistries.CREATIVE_MODE_TAB.containsKey(ModContent.id(Ids.CREATIVE_TAB)), Ids.CREATIVE_TAB);
-        verdict("id_counts", ModContent.BLOCKS.size() == 12 && ModContent.ITEMS.size() == 12 + 26,
+        verdict("id_counts", ModContent.BLOCKS.size() == 12 && ModContent.ITEMS.size() == 12 + 29,
                 ModContent.BLOCKS.size() + " blocks, " + ModContent.ITEMS.size() + " items, " + ModContent.SOUNDS.size() + " sounds");
     }
 
@@ -87,7 +87,7 @@ public final class SelfTest {
     }
 
     private static void settings() {
-        verdict("settings_defaults", Settings.getInt("sieve.shakes_per_block") > 0 && Settings.getInt("sieve.max_load") >= 1,
+        verdict("settings_defaults", Settings.getInt("sieve.shakes_per_block") > 0 && Settings.getInt("sieve.link_radius") >= 1,
                 Settings.keys().size() + " keys");
     }
 }

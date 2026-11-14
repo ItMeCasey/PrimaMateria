@@ -36,7 +36,7 @@ Decided by Casey on 2026-11-13: **vanilla textures for the blocks, 16x16 for eve
 | Fiber and cloth | `hay_block_side`, `white_wool` tinted, `string` item | Cloth mesh, plant fiber |
 | Amethyst | `amethyst_block`, `amethyst_cluster` | Crystal seeds, crystals, the powered drive strip. The accent |
 | Brine | `water_still` shifted toward teal | Brine, salt dust tint |
-| Ember | `lava_still`, `magma` | Melts, firebox glow, cooling ingots |
+| Ember | `lava_still`, `magma` | Molten metals, firebox glow, cooling ingots |
 | Crushed blocks | `gravel`, `sand`, `netherrack`, `end_stone` | Stone meal, scoria, pale sand: each is a finer-grained version of its source block |
 
 The table below is a first approximation of those ramps, darkest to lightest (tone 3 is the base). The artist replaces each row with the values actually sampled from the vanilla texture before drawing; when the two differ, vanilla wins.
@@ -69,7 +69,7 @@ These are the habits of the current vanilla textures, written down so every text
 6. **One-pixel bevel on separate parts.** A tone 4 line on the top and left edge and a tone 2 line on the bottom and right, so parts read as separate pieces.
 7. **Contact shadow.** Where one part sits on another, the lower part gets a 1 px tone 1 line under the joint.
 8. **Metals have a glint, everything else is matte.** One tone 5 glint per metal piece.
-9. **Emissive is rare.** Only melts, the firebox, cooling ingots and growing crystals glow.
+9. **Emissive is rare.** Only molten metals, the firebox, cooling ingots and growing crystals glow.
 
 ## 4. The vanilla test
 
@@ -133,7 +133,7 @@ All 16x16 PNG. Model blocks need none: they use vanilla textures by reference (s
 | `scoria.png` | Netherrack broken small | `netherrack`, `gravel` |
 | `pale_sand.png` | End stone as sand | `end_stone`, `sand` |
 | `brine_still.png`, `brine_flow.png` | Animated strips like water, teal | `water_still`, `water_flow` |
-| `melt.png` | Animated gray molten surface, tinted by the melt's color; emissive | `lava_still` |
+| `molten_metal_still.png`, `molten_metal_flow.png` | Animated gray molten surface, tinted per metal (copper, iron, gold) by the fluid's color; emissive | `lava_still`, `lava_flow` |
 | `compost.png` | Used for a barrel's compost, tinted from green to brown as it matures | `composter_compost` |
 | `crystal_quartz.png`, `crystal_amethyst.png`, `crystal_lapis.png`, `crystal_diamond.png`, `crystal_emerald.png` | Small crystal clusters for the growing model | `amethyst_cluster`, `small_amethyst_bud` |
 

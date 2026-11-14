@@ -48,6 +48,11 @@ R = {
     "scoria": ramp("#2a0b0b", "#3d1010", "#511515", "#652828", "#723232", "#854242"),     # netherrack
     "pale": ramp("#a8a070", "#bdb682", "#cdc68b", "#d5da94", "#dee6a4", "#eef6b4"),       # end_stone
 }
+MOLTEN = {  # the bucket's fill: lava's orange and yellow, pulled toward each metal
+    "copper": ramp("#7a2a10", "#b4481a", "#d9702a", "#ee9448", "#f7b878", "#fdd9a8"),
+    "iron": ramp("#6a2a18", "#a8441f", "#d26a30", "#e89a5a", "#f1bf8c", "#f8dcc0"),
+    "gold": ramp("#8a4a0a", "#c87c12", "#e8a820", "#f7c940", "#fbe070", "#fff3a8"),
+}
 STICK = ramp("#281e0b", "#493615", "#684e1e", "#896727")                                    # stick, tool handles
 
 
@@ -257,6 +262,8 @@ def build():
     out[i + "raw_casting_tray"] = sprite(RAW_TRAY, R["clay"])
     out[i + "raw_clay_barrel"] = sprite(RAW_BARREL, R["clay"])
     out[i + "brine_bucket"] = sprite(BUCKET, R["bucket"], R["brine"])
+    for metal in ("copper", "iron", "gold"):
+        out[i + f"molten_{metal}_bucket"] = sprite(BUCKET, R["bucket"], MOLTEN[metal])
     out[p + "fines_0"] = particle(8, [(3, 3, 255)])
     out[p + "fines_1"] = particle(8, [(3, 3, 255), (4, 3, 255), (3, 4, 220), (4, 4, 220)])
     out[p + "fines_2"] = particle(8, [(3, 3, 255), (3, 4, 255), (4, 4, 220)])

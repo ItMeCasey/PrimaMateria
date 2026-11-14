@@ -10,7 +10,7 @@ Spend: none
 - [x] Art direction: palette, shading rules, model and texture lists, icon concept (docs/ART.md) (w:2)
 - [x] Architecture: modules, data formats, ModJS, BEI, tests, work split (docs/ARCHITECTURE.md) (w:2)
 - [x] Local git repository with first commit (w:1)
-- [ ] Casey answers the open design questions (world type, sieve load, melts, pacing, sounds); answered so far: MIT license, Barrel name, vanilla textures for blocks and 16x16 items, Auto Hammer and Powered Drive names, mesh tiers cloth to netherite, and the Nether and End chain, auto hammer, powered drive, mob drops and all four recipe viewers in the first release (w:1)
+- [ ] Casey answers the open design questions (all answered 2026-11-13); decisions: MIT license, Barrel name, vanilla textures for blocks and 16x16 items, Auto Hammer and Powered Drive names, mesh tiers cloth to netherite, and the Nether and End chain, auto hammer, powered drive, mob drops and all four recipe viewers in the first release (w:1)
 
 ## Foundation
 - [x] Four Gradle modules (forge and neoforge for 26.2 and 26.3) with shared common/ and version-26.x folders (w:4)
@@ -22,12 +22,14 @@ Spend: none
 
 ## Logic and Data
 - [x] Config file (config/primamateria.properties) with every key and default (w:2)
-- [ ] Data readers and reload listeners: mesh tiers, heat sources, melts, compost values, synced to clients (w:3)
-- [ ] Sieve: mesh slot, load of 1 to 4, hold-to-shake, drops rolled at load, residue, hopper in and out, comparator (w:5)
+- [ ] Data readers and reload listeners: mesh tiers, heat sources, compost values, synced to clients (w:3)
+- [ ] Sieve: mesh slot, one block at a time, hold-to-shake, drops rolled when the block goes in, residue, hopper in and out, comparator (w:5)
+- [ ] Linked sieves (sieve.link, sieve.link_radius): shake and refill together (w:3)
 - [ ] Hammers and crushing recipes (5 tiers, bonus yield) (w:3)
 - [ ] Barrel: dew and rain, composting, soaking, mixing, steeping, growing; wooden and clay versions (w:5)
 - [ ] Brine fluid and bucket (w:2)
-- [ ] Crucible: heat, melting, melts as data, lava out (w:4)
+- [ ] Crucible: heat, melting into lava or molten metal fluids, fluid in and out (w:4)
+- [ ] Molten copper, iron and gold as real fluids with buckets (w:3)
 - [ ] Casting tray: pour, cool, ingot out (w:3)
 - [ ] Windup drive and furnace drive with output buffers (w:4)
 - [ ] Powered drive (FE) (w:3)
@@ -44,7 +46,7 @@ Spend: none
 - [ ] Auto hammer and powered drive models (w:4)
 - [ ] Crystal model and five crystal textures (w:2)
 - [x] Stand-in block models built from vanilla textures by reference (w:2)
-- [~] Block textures, 16x16: meshes, stone meal, scoria and pale sand drawn (first pass, waiting for review); brine, melt and crystals not drawn (w:3)
+- [~] Block textures, 16x16: meshes, stone meal, scoria and pale sand drawn (first pass, waiting for review); brine, molten metals and crystals not drawn (w:3)
 - [~] Item textures (26), 16x16: first pass drawn, waiting for Casey's review next to vanilla (w:3)
 - [x] Particle textures (w:1)
 - [ ] Selection shapes and display transforms for every block (w:2)

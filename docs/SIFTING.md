@@ -6,18 +6,18 @@ No text is involved anywhere. No progress bar, no overlay, no tooltip.
 
 ## 1. What the player sees, start to finish
 
-One load, by hand, about 2.4 seconds for one block and 6 seconds for a full tray.
+One block, by hand, about 2.4 seconds. Linked sieves (`sieve.link`, DESIGN.md section 6) all do this at the same moment, each with its own mesh, drops and layer.
 
 | Moment | Time | What happens |
 |---|---|---|
-| Load | 0.25 s | The block lands in the tray: the material layer rises from nothing to its height with an ease-out and a small overshoot (it "plops"), the tray dips 0.5 px and comes back, a soft thud plays, 4 to 6 dust specks puff up from the surface. Each extra block adds a quarter of the tray height the same way. |
+| Load | 0.25 s | The block lands in the tray: the material layer rises from nothing to its height with an ease-out and a small overshoot (it "plops"), the tray dips 0.5 px and comes back, a soft thud plays, 4 to 6 dust specks puff up from the surface. |
 | First shake | 0.3 s | The tray slides to one side and back. The layer lags a little behind the tray (it is loose material), so the surface slumps toward the trailing side and levels out again. |
 | Shaking | every 0.3 s | Tray swings left, right, left. The swing is not a sine wave: it accelerates fast and stops hard at each end (ease-in, then a sharp stop), which is what makes shaking look like shaking. On each stop: a rasp sound, a burst of fines under the mesh, and the layer drops a step. |
-| Thinning | whole load | The layer gets thinner with progress. Its surface texture is the block's own texture, so gravel looks like gravel. The thinner it gets, the more of the mesh shows through at the edges first (the layer is drawn slightly domed: thick in the middle, thin at the rim). |
-| Fines falling | whole load | Under the mesh, thin streams of material-colored specks fall from the tray to the ground or into the container below. More while the layer is thick, fewer as it thins. |
-| Reveal | at set points | A found item appears lying on the mesh as the layer sinks past it: first a corner pokes out, then the whole item, tilted flat. Each reveal has a quiet tick, pitched by its place in the load. Finds stay on the mesh and jiggle with each shake. |
+| Thinning | whole block | The layer gets thinner with progress. Its surface texture is the block's own texture, so gravel looks like gravel. The thinner it gets, the more of the mesh shows through at the edges first (the layer is drawn slightly domed: thick in the middle, thin at the rim). |
+| Fines falling | whole block | Under the mesh, thin streams of material-colored specks fall from the tray to the ground or into the container below. More while the layer is thick, fewer as it thins. |
+| Reveal | at set points | A found item appears lying on the mesh as the layer sinks past it: first a corner pokes out, then the whole item, tilted flat. Each reveal has a quiet tick, pitched by its place in the block's drops. Finds stay on the mesh and jiggle with each shake. |
 | Finish | 0.5 s | The last of the layer falls through. The tray gives one bigger settle (overshoot and back), a wood knock plays, and the finds hop off the tray in a small arc toward the player, or drop down through a brief opening motion into the container below. |
-| Reload | 0.25 s | If the player holds more of the same block, the next load plops in and the rhythm does not stop. |
+| Refill | 0.25 s | If the player holds more of the same block, the next block plops in and the rhythm does not stop. With linked sieves every empty one is refilled from the stack at the same moment. |
 
 Progress is readable from the block alone in three ways: the layer thickness, how much mesh is visible, and how many finds are showing. From across a room you can tell a sieve is empty (bare mesh), loaded and waiting (full still layer), working (moving, dusty) or blocked (full still layer, drive not moving).
 
@@ -32,7 +32,7 @@ The sieve model has a static frame and moving parts. Bone names are a contract b
 | `frame` | never | Legs, rails, brass corner brackets. Drawn as a normal baked block model, not by the renderer. |
 | `tray` | slides on X and Z, tiny roll and pitch | The wooden tray with brass rivets. Hangs from the frame on four short straps. |
 | `strap_nw`, `strap_ne`, `strap_sw`, `strap_se` | rotate to follow the tray | Children of `frame`, each rotates a few degrees so the tray visibly hangs. |
-| `mesh` | child of `tray`; sags | Scale Y keyframes make it sag under a full load and bounce at each stop. Its texture is the fitted mesh's. |
+| `mesh` | child of `tray`; sags | Scale Y keyframes make it sag under a fresh block and bounce at each stop. Its texture is the fitted mesh's. |
 | `layer` | child of `tray` | A locator only. The renderer builds the material layer here (section 3). |
 | `finds` | child of `mesh` | A locator. Found items are placed on a 3 by 2 grid of spots around it. |
 | `chute` | child of `frame` | A locator under the tray where fines spawn. |
@@ -58,21 +58,21 @@ Blockbench keyframes carry an interpolation mode. Our loader supports four: `lin
 
 ### Server and client time
 
-The server owns the facts: load, progress, shake count, the rolled finds and when they are revealed. The client owns the motion.
+The server owns the facts: the block, progress, shake count, the rolled finds and when they are revealed. The client owns the motion.
 
-- The server sends the sieve's state when it changes: on load, on each shake, on finish. One small packet per shake per sieve, only to players tracking the chunk.
+- The server sends the sieve's state when it changes: when a block goes in, on each shake, on finish. One small packet per shake per sieve, only to players tracking the chunk.
 - The client keeps an animation clock per sieve. Each shake packet nudges the clip phase to the next "stop" point over 2 ticks, so the visual stop and the server shake line up without popping, even with lag. If packets stop arriving for 10 ticks, the clip blends to `idle`.
 - Layer height on the client eases toward the server's progress (critically damped spring, about 4 ticks to settle), with a small extra drop at each stop. It never jumps.
 
 ## 3. The material layer, the fines and the finds
 
-**Layer.** A box drawn by the renderer at the `layer` bone, textured with the loaded block's own top texture (looked up from the block's model, tinted like the block). Height = load quarters times remaining progress. The top face is split into a 3 by 3 grid of vertices; the center vertex is higher than the rim (domed), and each vertex leans toward the trailing side of the swing by an amount taken from the tray's velocity, so the surface slumps and levels. The texture is offset by a pixel or two on alternate shakes so the dust appear to shuffle. 18 triangles for the top, 4 quads for the sides.
+**Layer.** A box drawn by the renderer at the `layer` bone, textured with the loaded block's own top texture (looked up from the block's model, tinted like the block). Height = one block's full height times remaining progress. The top face is split into a 3 by 3 grid of vertices; the center vertex is higher than the rim (domed), and each vertex leans toward the trailing side of the swing by an amount taken from the tray's velocity, so the surface slumps and levels. The texture is offset by a pixel or two on alternate shakes so the material seems to shuffle. 18 triangles for the top, 4 quads for the sides.
 
 **Fines.** A custom particle (`primamateria:fines`): a 1 px or 2 px speck colored from the block's texture, spawned at the `chute` bone in a few thin streams, falling with gravity and dying on the first block below. Count per shake = 1 to 3, scaled by layer thickness. If the recipe set has residue for this block, the streams are a little thicker; when a residue item is actually produced it falls as a normal small item along the same path.
 
 **Dust.** A soft 4 px puff (`primamateria:sift_dust`), 1 per shake above the layer for dry materials (sand, stone meal, gravel), none for dirt. Material class comes from the block's sound type, so modded blocks work without data.
 
-**Finds.** Rolled by the server at load time. Each find has a reveal point (a progress value between 0.15 and 0.9, spread evenly, shuffled by the load's seed) and a spot on the 3 by 2 grid. The client draws a find as the flat item model lying on the mesh, scaled 0.4, rotated by the seed. No clipping is needed: the layer covers the find until its top sinks past it. At most 6 finds are drawn; more are still dropped at the end. On finish each find follows a short arc (0.4 s) and the real item entities or inventory inserts happen as the arc ends.
+**Finds.** Rolled by the server when the block goes in. Each find has a reveal point (a progress value between 0.15 and 0.9, spread evenly, shuffled by the block's seed) and a spot on the 3 by 2 grid. The client draws a find as the flat item model lying on the mesh, scaled 0.4, rotated by the seed. No clipping is needed: the layer covers the find until its top sinks past it. At most 6 finds are drawn; more are still dropped at the end. On finish each find follows a short arc (0.4 s) and the real item entities or inventory inserts happen as the arc ends.
 
 ## 4. How it renders
 
@@ -88,7 +88,7 @@ The server owns the facts: load, progress, shake count, the rolled finds and whe
 4. **Sample.** Each frame, for each sieve that is animating, `AnimSampler` evaluates the active clip (and the one it is blending from) at the sieve's clock: binary search per channel, then interpolate. The sieve has 7 bones and about 12 channels, so this is a few dozen float operations.
 5. **Draw.** A block entity renderer draws: the baked bone cubes with the sampled transforms, the layer box, the finds. The static frame is part of the chunk mesh and costs nothing per frame.
 
-The same loader is used for the barrel (surface ripple, crystal growth scale), the crucible (melt surface, pour stream), the casting tray (cooling glow) and the drives (windup key turning, furnace door flicker), each with a small `.bbmodel` animation set. The sieve is the first and the reference.
+The same loader is used for the barrel (surface ripple, crystal growth scale), the crucible (molten surface, pour stream), the casting tray (cooling glow) and the drives (windup key turning, furnace door flicker), each with a small `.bbmodel` animation set. The sieve is the first and the reference.
 
 ### Resting sieves cost nothing
 
@@ -97,7 +97,7 @@ The sieve has a block state property `moving` (true or false).
 - `moving=false`: the tray and mesh are part of the normal block model (a block state variant that includes them at rest, with the fitted mesh chosen by a second property `mesh`: `none`, or one of 8 texture slots that the mesh data files map to). The renderer returns at once unless the sieve holds a load, in which case it draws only the still layer box and finds.
 - `moving=true`: the variant has only the frame; the renderer draws the tray, mesh, straps, layer and finds.
 
-The server sets `moving` when shaking starts and clears it 20 ticks after the last shake, so a sieve does not flip the state (and rebuild its chunk section) between loads of a continuous run.
+The server sets `moving` when shaking starts and clears it 20 ticks after the last shake, so a sieve does not flip the state (and rebuild its chunk section) between blocks of a continuous run.
 
 ## 5. Sound
 
@@ -136,14 +136,14 @@ Target: 200 sieves in view, 64 of them moving, on a mid-range PC (the test PC), 
 | Rule | Value |
 |---|---|
 | Resting, empty sieve | 0 draw calls from the renderer, 0 sampling |
-| Resting, loaded sieve | 1 layer box, up to 6 finds |
+| Resting, filled sieve | 1 layer box, up to 6 finds |
 | Moving sieve, within 24 blocks | Full: bones, domed layer, finds, particles, sound |
 | Moving sieve, 24 to 48 blocks | Bones and a flat layer box; no finds, no particles, no dome; clip sampled every second frame |
 | Moving sieve, beyond 48 blocks | Rest pose and a flat layer at the right height; no sampling |
 | Geometry per moving sieve | At most 40 cubes in moving bones (target 24), 26 quads for the layer |
 | Particles | At most 3 per shake per sieve; at most 150 sift particles alive per client, oldest dropped |
 | Sounds | At most 4 shake sounds per tick per client |
-| Network | 1 packet per shake per sieve, 12 bytes of payload, tracking players only; full state only on load, finish and chunk load |
+| Network | 1 packet per shake per sieve, 12 bytes of payload, tracking players only; full state only when a block goes in, on finish and on chunk load |
 | Allocation | None per frame: sampled transforms go into arrays owned by the sieve's render state |
 | Shared sampling | Drive clips have no per-sieve variation, so sieves on the same drive type and the same phase tick share one sampled pose per frame |
 
@@ -155,7 +155,7 @@ Target: 200 sieves in view, 64 of them moving, on a mid-range PC (the test PC), 
 
 - **`full`** (default): everything above.
 - **`reduced`**: no tray motion, no dome, no finds on the mesh, no particles. The layer still shrinks smoothly and sounds still play. For players who dislike motion and for weak PCs.
-- **`off`**: the block entity renderer does nothing. The sieve uses block state only: the tray and mesh are always in the block model, and a block state property `fill` (0 to 4) picks one of five layer heights drawn with a generic "sift material" texture tinted by the load's map color (a block color handler that reads the block entity). The server updates `fill` only when the remaining amount crosses a quarter, so a load changes the chunk at most 4 times. Sounds still play. This is also what other render engines see if they skip block entity renderers.
+- **`off`**: the block entity renderer does nothing. The sieve uses block state only: the tray and mesh are always in the block model, and a block state property `fill` (0 to 4) picks one of five layer heights drawn with a generic "sift material" texture tinted by the block's map color (a block color handler that reads the block entity). The server updates `fill` only when the remaining amount crosses a quarter, so a block changes the chunk at most 4 times. Sounds still play. This is also what other render engines see if they skip block entity renderers.
 
 Sounds have their own switch in the game's sound settings (the Blocks slider); `client.particles=false` removes fines and dust in any mode.
 

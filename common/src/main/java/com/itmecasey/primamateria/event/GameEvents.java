@@ -32,22 +32,20 @@ public final class GameEvents {
     }
 
     /**
-     * A sieve load is about to hand out its drops. Listeners may change {@link #drops} or cancel; a canceled load stays in the
-     * sieve unprocessed.
+     * A sieve is about to hand out the drops of one block. Listeners may change {@link #drops} or cancel; a canceled block
+     * stays in the sieve unsifted.
      */
     public static final class Sifted {
         public final Where where;
         public final String input;
-        public final int load;
         public final String meshId;
         public final int meshTier;
         public final List<Drop> drops;
         private boolean canceled;
 
-        public Sifted(Where where, String input, int load, String meshId, int meshTier, List<Drop> drops) {
+        public Sifted(Where where, String input, String meshId, int meshTier, List<Drop> drops) {
             this.where = where;
             this.input = input;
-            this.load = load;
             this.meshId = meshId;
             this.meshTier = meshTier;
             this.drops = new ArrayList<>(drops);
@@ -85,12 +83,12 @@ public final class GameEvents {
     public record BarrelFinished(Where where, String family, String recipeId, String result, int count) {
     }
 
-    /** A crucible melted one solid item into {@code amount} mB of {@code contentId}. */
-    public record Melted(Where where, String input, String contentId, boolean isMelt, int amount) {
+    /** A crucible melted one solid item into {@code amount} mB of {@code fluid}. */
+    public record Melted(Where where, String input, String fluid, int amount) {
     }
 
     /** A casting tray finished cooling. */
-    public record Cast(Where where, String meltId, String result, int count) {
+    public record Cast(Where where, String fluid, String result, int count) {
     }
 
     /** A player cranked a windup drive; {@code turns} is the new total. */

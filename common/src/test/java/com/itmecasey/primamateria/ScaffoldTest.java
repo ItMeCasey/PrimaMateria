@@ -24,7 +24,7 @@ class ScaffoldTest {
         all.addAll(Ids.ITEMS);
         assertEquals(all.size(), new HashSet<>(all).size(), "a block and an item share an id");
         assertEquals(12, Ids.BLOCKS.size());
-        assertEquals(26, Ids.ITEMS.size());
+        assertEquals(29, Ids.ITEMS.size());
         assertEquals(Ids.HAMMERS.size(), Ids.HAMMER_DURABILITY.size());
         assertEquals(5, Ids.MESHES.size());
         assertTrue(Ids.BLOCKS.containsAll(Ids.BLOCK_ENTITIES));
@@ -47,8 +47,8 @@ class ScaffoldTest {
             assertTrue(lang.contains("\"item.primamateria." + id + "\""), "no name for item " + id);
             assertNotNull(resource("assets/primamateria/items/" + id + ".json"), id);
         }
-        for (String id : Ids.MELTS) {
-            assertTrue(lang.contains("\"melt.primamateria." + id + "\""), "no name for melt " + id);
+        for (String id : Ids.FLUIDS) {
+            assertTrue(lang.contains("\"fluid.primamateria." + id + "\""), "no name for fluid " + id);
         }
         assertTrue(lang.contains("\"itemGroup.primamateria\""));
     }
@@ -57,13 +57,13 @@ class ScaffoldTest {
     void settingsHaveDefaultsAndReadOverrides() throws IOException {
         Settings.reset();
         assertEquals(8, Settings.getInt("sieve.shakes_per_block"));
-        assertEquals(0.5, Settings.getDouble("sieve.extra_block_factor"));
+        assertTrue(Settings.getBool("sieve.link"));
         assertEquals("preset_only", Settings.getString("start.island"));
         assertTrue(Settings.getBool("client.particles"));
-        Settings.load(new StringReader("sieve.max_load=2\nunknown.key=5\n"));
-        assertEquals(2, Settings.getInt("sieve.max_load"));
+        Settings.load(new StringReader("sieve.link_radius=2\nunknown.key=5\n"));
+        assertEquals(2, Settings.getInt("sieve.link_radius"));
         Settings.reset();
-        assertEquals(4, Settings.getInt("sieve.max_load"));
+        assertEquals(1, Settings.getInt("sieve.link_radius"));
     }
 
     @Test
@@ -79,7 +79,7 @@ class ScaffoldTest {
             e.cancel();
         });
         GameEvents.Sifted event = GameEvents.SIFTED.fire(new GameEvents.Sifted(
-                new GameEvents.Where(null, 0, 64, 0, null), "minecraft:gravel", 4, "primamateria:cloth_mesh", 1, List.of()));
+                new GameEvents.Where(null, 0, 64, 0, null), "minecraft:gravel", "primamateria:cloth_mesh", 1, List.of()));
         assertEquals(List.of("minecraft:gravel"), seen);
         assertEquals(1, event.drops.size());
         assertTrue(event.canceled());
@@ -89,7 +89,7 @@ class ScaffoldTest {
 
     @Test
     void viewsStartEmpty() {
-        assertEquals(0, SieveView.EMPTY.load());
+        assertFalse(SieveView.EMPTY.filled());
         assertTrue(SieveView.EMPTY.finds().isEmpty());
     }
 

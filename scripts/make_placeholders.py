@@ -112,15 +112,20 @@ ITEMS = {
     "diamond_seed": ("Diamond Seed", False), "emerald_seed": ("Emerald Seed", False),
     "raw_crucible": ("Unfired Crucible", False), "raw_casting_tray": ("Unfired Casting Tray", False),
     "raw_clay_barrel": ("Unfired Clay Barrel", False), "brine_bucket": ("Brine Bucket", False),
+    "molten_copper_bucket": ("Molten Copper Bucket", False), "molten_iron_bucket": ("Molten Iron Bucket", False),
+    "molten_gold_bucket": ("Molten Gold Bucket", False),
 }
 
 EXTRA_LANG = {
     "itemGroup.primamateria": "Prima Materia",
     "fluid.primamateria.brine": "Brine",
     "block.primamateria.brine": "Brine",
-    "melt.primamateria.molten_copper": "Molten Copper",
-    "melt.primamateria.molten_iron": "Molten Iron",
-    "melt.primamateria.molten_gold": "Molten Gold",
+    "fluid.primamateria.molten_copper": "Molten Copper",
+    "fluid.primamateria.molten_iron": "Molten Iron",
+    "fluid.primamateria.molten_gold": "Molten Gold",
+    "block.primamateria.molten_copper": "Molten Copper",
+    "block.primamateria.molten_iron": "Molten Iron",
+    "block.primamateria.molten_gold": "Molten Gold",
     "generator.primamateria.void_island": "Void Island",
 }
 

@@ -53,7 +53,7 @@ public final class Ids {
 
     public static final List<String> MATERIALS = List.of(PLANT_FIBER, ROCK_CHIP, COPPER_DUST, IRON_DUST, GOLD_DUST,
             SALT_DUST, "quartz_seed", "amethyst_seed", "lapis_seed", "diamond_seed", "emerald_seed", RAW_CRUCIBLE,
-            RAW_CASTING_TRAY, RAW_CLAY_BARREL, BRINE_BUCKET);
+            RAW_CASTING_TRAY, RAW_CLAY_BARREL, BRINE_BUCKET, "molten_copper_bucket", "molten_iron_bucket", "molten_gold_bucket");
 
     /** Every item that is not a block item: hammers, meshes, materials. */
     public static final List<String> ITEMS = concat(HAMMERS, MESHES, MATERIALS);
@@ -75,13 +75,12 @@ public final class Ids {
     // ---- data folders under data/<namespace>/primamateria/ ----
     public static final String DATA_MESH = "mesh";
     public static final String DATA_HEAT = "heat";
-    public static final String DATA_MELT = "melt";
     public static final String DATA_COMPOST = "compost";
 
-    // ---- fluid and melts ----
-    /** The one new world fluid (workstream A registers it; flowing form is {@code flowing_brine}). */
+    // ---- fluids ----
+    /** The four fluids the mod adds (workstream A registers each with a flowing form {@code flowing_<id>} and a bucket item). */
     public static final String BRINE = "brine";
-    public static final List<String> MELTS = List.of("molten_copper", "molten_iron", "molten_gold");
+    public static final List<String> FLUIDS = List.of(BRINE, "molten_copper", "molten_iron", "molten_gold");
 
     // ---- sounds (registered by ModContent; workstream C supplies the files) ----
     public static final List<String> SOUNDS = List.of("sieve.load", "sieve.shake.coarse", "sieve.shake.fine", "sieve.shake.soil",

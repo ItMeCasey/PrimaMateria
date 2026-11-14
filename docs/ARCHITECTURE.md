@@ -14,16 +14,16 @@ PrimaMateria/
       view/                        SieveView, BarrelView, CrucibleView, TrayView, DriveView, AutoHammerView (frozen records)
       event/                       GameEvents (frozen)
       Settings.java                config/primamateria.properties (pure Java)
-      sift/                        SiftMath, SiftLoad, Finds, MeshTier (pure)
+      sift/                        SiftMath, SiftLink, Finds, MeshTier (pure)
       barrel/                         BarrelState, CompostMath, GrowSlots (pure)
-      crucible/                    CrucibleMath, Melt, Heat (pure)
+      crucible/                    CrucibleMath, Heat (pure)
       drive/                       DriveMath (pure)
-      data/                        RecipeLookup (frozen), JSON readers for mesh, heat, melt, compost files (pure, Gson)
+      data/                        RecipeLookup (frozen), JSON readers for mesh, heat, compost files (pure, Gson)
       anim/                        AnimModel, AnimClip, Keyframe, Easing, AnimSampler, AnimJson (pure)
       script/                      ModJsBridge, PrimaMateriaApi, ScriptEvents, ScriptHooks, info records
   common/src/main/resources/
       assets/primamateria/         blockstates, models, items, textures, lang/en_us.json, sounds.json, sounds/, primamateria_anim/
-      data/primamateria/           recipe/, primamateria/{mesh,heat,melt,compost}/, structure/, worldgen/world_preset/, loot_table/, tags
+      data/primamateria/           recipe/, primamateria/{mesh,heat,compost}/, structure/, worldgen/world_preset/, loot_table/, tags
       primamateria_logo.png
   common/src/test/java/...         JUnit tests of everything pure, plus the ModJS stub classes
   version-26.2/src/main/java/com/itmecasey/primamateria/
@@ -33,7 +33,7 @@ PrimaMateria/
       blockentity/                 SieveBlockEntity, BarrelBlockEntity, CrucibleBlockEntity, CastingTrayBlockEntity, DriveBlockEntity
       item/                        HammerItem, MeshItem
       recipe/                      one class per recipe type, serializers, RecipeLookup
-      datapack/                    reload listeners for mesh, heat, melt, compost; sync to clients
+      datapack/                    reload listeners for mesh, heat, compost; sync to clients
       net/                         SieveShakePacket, state sync payloads
       world/                       void preset wiring, start island placement
       client/                      render/ (SieveRenderer, BarrelRenderer, ...), particle/, ClientSetup, block color handlers
@@ -66,7 +66,7 @@ Rules that keep it in order:
 
 ## 2. Data formats
 
-All data loads from datapacks and reloads with `/reload`. Recipes are real recipe types, so the recipe manager, datapacks, KubeJS and ModJS handle them without help from us. The four small non-recipe folders are read by our own reload listeners and synced to clients (BEI and the renderer need them).
+All data loads from datapacks and reloads with `/reload`. Recipes are real recipe types, so the recipe manager, datapacks, KubeJS and ModJS handle them without help from us. The three small non-recipe folders are read by our own reload listeners and synced to clients (BEI and the renderer need them).
 
 ### Recipes (`data/<namespace>/recipe/<path>.json`)
 
@@ -128,13 +128,13 @@ One composting recipe is active (the highest-priority datapack's). `time` is in 
 ```json
 { "type": "primamateria:melting",
   "input": "primamateria:iron_dust",
-  "result": { "melt": "primamateria:molten_iron" }, "amount": 20 }
+  "result": "primamateria:molten_iron", "amount": 20 }
 ```
-`result` is `{ "melt": id }` or `{ "fluid": id }`.
+`result` is a fluid id: lava, a molten metal, or any fluid another mod registers.
 
 ```json
 { "type": "primamateria:casting",
-  "melt": "primamateria:molten_iron", "amount": 100,
+  "fluid": "primamateria:molten_iron", "amount": 100,
   "result": "minecraft:iron_ingot", "time": 60 }
 ```
 
@@ -152,12 +152,6 @@ Any item can be made a mesh. `slot` (1 to 8) is the block state value used when 
 { "block": "minecraft:campfire", "state": { "lit": "true" }, "heat": 2 }
 ```
 `block` or `tag`. The highest matching value wins.
-
-### Melts (`data/<namespace>/primamateria/melt/<id>.json`)
-
-```json
-{ "color": "#d8742a", "glow": 12, "name": "melt.primamateria.molten_copper" }
-```
 
 ### Compost values (`data/<namespace>/primamateria/compost/<id>.json`)
 
@@ -201,8 +195,8 @@ Same rules as the other mods (`Mod-Playbook/ROUND_MODJS_AND_HINTS.md`, Part A). 
 | Events | `PrimaMateria.on('sifted', e => ...)`, `'crushed'`, `'barrelFinished'`, `'melted'`, `'cast'`, `'driveWound'` | The `GameEvents` channels. `e` has `level`, `pos`, `player` (may be null), the input, and a mutable `drops` list for `sifted` and `crushed`. `e.cancel()` on `sifted` returns the load unprocessed. |
 | State (read-only) | `PrimaMateria.sieveAt(level, pos)`, `barrelAt`, `crucibleAt`, `trayAt`, `driveAt`, `autoHammerAt` | The view records. Null when the block is something else. |
 | Content | `PrimaMateria.sifting.add({...})`, `.remove(filter)`, `.replace(filter, {...})`; the same for `crushing`, `soaking`, `mixing`, `steeping`, `growing`, `melting`, `casting` | Same field names as the JSON. Applied after each datapack reload, in script order. |
-| Data | `PrimaMateria.meshes.add/remove`, `PrimaMateria.heat.add/remove`, `PrimaMateria.melts.add/remove`, `PrimaMateria.compost.add/remove` | Mirrors the four data folders. |
-| Config | `PrimaMateria.config.get('sieve.max_load')` | Read-only. |
+| Data | `PrimaMateria.meshes.add/remove`, `PrimaMateria.heat.add/remove`, `PrimaMateria.compost.add/remove` | Mirrors the three data folders. |
+| Config | `PrimaMateria.config.get('sieve.link_radius')` | Read-only. |
 
 ### KubeJS bridge
 
@@ -239,10 +233,10 @@ So the first release ships BEI, SMWTI and ModJS on all four builds, JEI, REI and
 | `primamateria:crushing` | Wooden hammer | Input block, lowest hammer, results with chances. Hammers and the auto hammer are catalysts. |
 | `primamateria:composting` | Wooden barrel with compost | Every compostable with its units as a value, the result block and the maturing time. |
 | `primamateria:barrel` | Wooden barrel | Soaking, mixing, steeping and growing: fluid slots, an item slot, a result and a time value. A clay barrel icon marks recipes that need the clay barrel. |
-| `primamateria:melting` | Crucible | Input, result fluid or melt with its amount. Heat sources are catalysts with their heat value. |
-| `primamateria:casting` | Casting tray | Melt amount, result, time. |
+| `primamateria:melting` | Crucible | Input, result fluid with its amount. Heat sources are catalysts with their heat value. |
+| `primamateria:casting` | Casting tray | Fluid amount, result, time. |
 
-Cards carry names and values only: counts, chances, amounts, times. No sentences. Melts are shown with a tinted melt icon (a `CardPainter` in BEI, the matching drawable in the others). Clicking any slot looks up its recipes and uses as usual.
+Cards carry names and values only: counts, chances, amounts, times. No sentences. Fluids are shown with their tinted fluid icon. Clicking any slot looks up its recipes and uses as usual.
 
 ### Drop table information pages
 
@@ -250,7 +244,7 @@ Each siftable block (dirt, gravel, sand, stone meal, scoria, soul sand, pale san
 
 ### In-world info
 
-SMWTI (preferred, all four builds) and Jade (NeoForge builds) show the state of our blocks when looked at, as names and values: sieve (mesh, load, progress), barrel (contents, amount, stage, time left), crucible (contents, amount, heat), casting tray (stage), drives (charge), auto hammer (hammer, queue). The lines come from the view records.
+SMWTI (preferred, all four builds) and Jade (NeoForge builds) show the state of our blocks when looked at, as names and values: sieve (mesh, block, progress), barrel (contents, amount, stage, time left), crucible (contents, amount, heat), casting tray (stage), drives (charge), auto hammer (hammer, queue). The lines come from the view records.
 
 ### Proof
 
@@ -260,7 +254,7 @@ Each supported integration gets a real-client check per target build (open the v
 
 | Layer | What | Where |
 |---|---|---|
-| Unit | Sift math (shake counts, load factor, mesh speed), drop rolling with a fixed seed, mesh tier filtering, residue, compost math, grow slots, crucible rates, drive math, config parsing, every data reader with good and bad JSON | `common/src/test`, JUnit, run in all four modules |
+| Unit | Sift math (shake counts, mesh speed, link area), drop rolling with a fixed seed, mesh tier filtering, residue, compost math, grow slots, crucible rates, drive math, config parsing, every data reader with good and bad JSON | `common/src/test`, JUnit, run in all four modules |
 | Unit | Animation: JSON loading, each easing mode against known values, clip blending, looping, the contract-bone check | `common/src/test` |
 | Unit | Script bridge and the KubeJS helper with the stub ModJS classes and Rhino; a run with no script mod present | `common/src/test` |
 | Data | A script check that every shipped recipe and data file parses, every id in `DESIGN.md` exists in `ModContent`, every lang key exists, and no lang value contains more than a name | `scripts/check_data.py` |
@@ -277,8 +271,8 @@ One short scaffold step first (done), then five workstreams in parallel: A logic
 
 The four Gradle modules, `common/`, `version-26.2`, the generated `version-26.3` and the scripts exist, all four modules build, and a dev server on each starts with every id registered (`python scripts/server_check.py all`). These shared files are **frozen** (changes only through the PM):
 
-- `common/.../Ids.java`: every id as a string, in lists: blocks, block entities, hammers, meshes, materials, recipe types, data folders, the brine fluid, melts, sounds, particles. A new id is added here first.
-- `version-26.2/.../ModContent.java`: registers every block (a plain placeholder `Block`), every item (a plain `Item`) and every sound event from the `Ids` lists, plus the creative tab. Workstream A swaps the constructor calls in `makeBlock` and `makeItem` for the real classes and adds its own register methods for block entity types, recipe types and the brine fluid; workstream C adds one for particles. Ids and maps stay.
+- `common/.../Ids.java`: every id as a string, in lists: blocks, block entities, hammers, meshes, materials, recipe types, data folders, the four fluids (brine and three molten metals), sounds, particles. A new id is added here first.
+- `version-26.2/.../ModContent.java`: registers every block (a plain placeholder `Block`), every item (a plain `Item`) and every sound event from the `Ids` lists, plus the creative tab. Workstream A swaps the constructor calls in `makeBlock` and `makeItem` for the real classes and adds its own register methods for block entity types, recipe types and the four fluids with their buckets; workstream C adds one for particles. Ids and maps stay.
 - The interface files listed under "Interfaces" below.
 - `lang/en_us.json` with every name, and a placeholder cube model, blockstate, item model and loot table for every block and item, written by `scripts/make_placeholders.py` (it never overwrites an existing file, so real art is safe).
 - `PrimaMateria.init` finds `script.ModJsBridge.install()` by name, so workstream D adds the bridge without touching a frozen file.
@@ -320,8 +314,8 @@ Delivers: wiki, listing text, CI files. The CurseForge description describes the
 | Interface | Between | Content |
 |---|---|---|
 | `Ids` (common) and `ModContent` | all | Final registry ids. Nobody renames one. |
-| `view/SieveView` (record) | A fills, C reads | `meshId`, `meshTexture`, `loadBlock`, `load` (0 to 4), `progress` (0 to 1), `shakeCount`, `lastShakeTick`, `drive` (`DriveKind`: none, hand, windup, furnace, powered), `blocked`, `seed`, `finds` (item, count, revealAt, spot)[] |
-| `view/BarrelView`, `CrucibleView`, `TrayView`, `DriveView`, `AutoHammerView` (records) | A fills, C reads | Contents id and kind, amount, color, stage and stage progress, grow slots (crystal texture, progress, slot)[], heat, pouring sides, cooling progress, charge, running, fitted hammer, queued blocks |
+| `view/SieveView` (record) | A fills, C reads | `meshId`, `meshTexture`, `block` (the block being sifted, or empty), `progress` (0 to 1), `shakeCount`, `lastShakeTick`, `drive` (`DriveKind`: none, hand, windup, furnace, powered), `blocked`, `seed`, `finds` (item, count, revealAt, spot)[] |
+| `view/BarrelView`, `CrucibleView`, `TrayView`, `DriveView`, `AutoHammerView` (records) | A fills, C reads | Contents (fluid id), amount, color, stage and stage progress, grow slots (crystal texture, progress, slot)[], heat, pouring sides, cooling progress, charge, running, fitted hammer, queued blocks |
 | `StateProps` (version) | A sets, B models, C reads | `MOVING` (sieve, auto hammer), `MESH` 0 to 8 and `FILL` 0 to 4 (sieve), `LIT` (furnace drive), `CHARGE` 0 to 5 (powered drive), `FACING` (drives, casting tray) |
 | Bone contract | B builds, C animates | Per model, the bone names in `SIFTING.md` section 2 (sieve) and one table per other model kept in `docs/BONES.md`, written by C in its first day and followed by B. The exporter fails when a contract bone is missing. |
 | `ModShapes` (version) | B writes, A reads | One voxel shape constant per model block (full cubes until B replaces them). |
