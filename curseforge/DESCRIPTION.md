@@ -10,9 +10,10 @@ Prima Materia is a skyblock resource mod for Forge and NeoForge on Minecraft 26.
 - **Hammers.** Six tiers, wooden to netherite. Crush leaves, cobblestone, gravel and stone into fiber, gravel, sand and stone meal. Higher tiers give bonus results.
 - **The Barrel.** Wooden and clay. Collects dew and rain, composts plants into dirt, soaks stone meal into clay, steeps salt into brine and grows quartz, amethyst, lapis, diamond and emerald crystals from seeds. The clay barrel also holds lava.
 - **The Crucible and the Casting Tray.** Fire a crucible, melt stone into lava and dust into molten copper, iron and gold, pour it into a casting tray and take the ingot.
+- **Real fluids.** Brine and molten copper, iron and gold are placeable fluids with their own buckets. Molten metals burn and spread fire like lava; brine behaves like water. The barrels, the crucible and the casting tray work with the fluid pipes, tanks and buckets of other mods.
 - **Drives.** Windup, furnace and powered (FE) drives go under a sieve. The Auto Hammer sits on a drive and crushes blocks fed to it. Hoppers feed and empty the machines.
 - **Nether and End materials.** Crush netherrack and end stone, sift them, soak scoria in brine for soul sand, and reach netherite.
-- **Void Island world type** with a start island.
+- **Void Island world type** with a start island. The island is a structure file a datapack can replace.
 - **Everything is data.** Recipes, drop tables, mesh tiers, heat sources, melts and compost values are datapack JSON. Add, change or remove any of them with a datapack, KubeJS or ModJS.
 - **Settings file** for sieve speed, drop multiplier, drive speeds, barrel timings and crucible rates.
 
@@ -29,7 +30,7 @@ Prima Materia is a skyblock resource mod for Forge and NeoForge on Minecraft 26.
 | ModJS | yes | yes | yes | yes |
 | KubeJS | datapack JSON and recipes; event helper when KubeJS ports | same | same | same |
 
-- **Recipe viewers:** sifting, crushing, composting, barrel, melting and casting each have their own category with the catalyst, the mesh tier or hammer tier it needs, and the chance and count of every drop. Every siftable block has a drop table page with one column per mesh tier. Click any slot to look it up.
+- **Recipe viewers:** on a dedicated server too, since the server sends its recipes to every joining player. Sifting, crushing, composting, barrel, melting and casting each have their own category with the catalyst, the mesh tier or hammer tier it needs, and the chance and count of every drop. Every siftable block has a drop table page with one column per mesh tier. Click any slot to look it up.
 - **In-world info:** Show Me What This Is and Jade show the state of the sieve, barrel, crucible, casting tray, drives and Auto Hammer.
 - **Scripting:** ModJS gets a `PrimaMateria` global with events (sifted, crushed, barrel finished, melted, cast, drive wound), read access to machine state and calls to add, change or remove recipes and data. KubeJS edits every recipe type and data file directly.
 

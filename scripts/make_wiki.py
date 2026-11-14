@@ -198,7 +198,7 @@ Barrels are used in the world; they have no screen. A barrel holds either one fl
 - **Dew and rain:** a barrel with open sky above it gains water by itself (`barrel.dew_ticks_per_mb`, faster in rain by `barrel.rain_multiplier`).
 - **Breaking** a barrel drops waiting results; its contents are lost.
 
-In this release brine and the molten metals are internal fluids held by barrels, the crucible and the casting tray and moved by bucket; see [[known-gaps]].
+Brine and the molten metals are real fluids. They can be placed in the world with their buckets, and the barrels, the crucible and the casting tray expose the loader's fluid handler, so pipes and tanks from other mods fill and drain them.
 
 ## Composting
 
@@ -284,7 +284,7 @@ A fired pot that melts solids into lava or a molten metal, 4000 mB, one fluid at
 - **Buckets:** a lava bucket or a molten metal bucket fills it; an empty bucket takes 1000 mB of a bucketable fluid out. A water bucket does not go in.
 - **Pouring:** it pours into casting trays placed against its four sides, in the order north, east, south, west, while the tray is empty and it holds enough of a fluid that has a casting recipe.
 
-In this release the molten metals are internal fluids; see [[known-gaps]].
+Molten copper, iron and gold are real fluids: a bucket places one in the world, where it burns and spreads fire like lava and never makes new sources. Pipes and tanks from other mods can fill and drain the crucible and the casting tray.
 
 ## Heat sources
 

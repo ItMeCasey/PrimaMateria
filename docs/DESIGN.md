@@ -181,13 +181,13 @@ Barrel recipe families:
 | Steeping | `primamateria:steeping` | An item dissolved in a fluid over time changes the fluid. | 1000 mB water + 4 salt dust = 1000 mB brine, 30 s. |
 | Growing | `primamateria:growing` | A seed placed in a barrel of the right fluid grows slowly into a result and uses fluid. Up to 4 seeds grow at once, each on its own timer, each shown as a crystal that gets bigger. | In brine, 250 mB each: quartz seed = 2 quartz, 90 s. Amethyst seed = 2 amethyst shards, 120 s. Lapis seed = 3 lapis lazuli, 120 s. Diamond seed = 1 diamond, 300 s. Emerald seed = 1 emerald, 300 s. |
 
-**Brine** (`primamateria:brine`) is held by barrels and moves by bucket (`primamateria:brine_bucket`). Brine and the three molten metals are internal fluids in the first release (section 16).
+**Brine** (`primamateria:brine`) is held by barrels and moves by bucket (`primamateria:brine_bucket`). Brine and the three molten metals are real fluids (section 16).
 
 ## 9. Crucible and casting
 
 - **Heat.** A crucible needs a heat source in the block below it. Heat sources are data (`data/<namespace>/primamateria/heat/<id>.json`: block or block tag, optional block state, heat value). First release: torch 1, campfire 2, magma block 3, fire 3, lava 4, soul campfire 4, soul fire 5.
 - **Melting.** Put solids in by hand or hopper (buffer of 4 items). The crucible melts 2 mB per tick per point of heat. It holds one kind of content at a time, 4000 mB.
-- **Contents.** The crucible holds one fluid at a time, 4000 mB: lava, or a molten metal (`primamateria:molten_copper`, `molten_iron`, `molten_gold`). In the first release these are held internally by the crucible, the barrels and the casting tray, and move between them by bucket (the molten metal buckets are real items); there is no placeable molten metal in the world yet, and other mods' pipes and tanks cannot move them (see section 16). A pack adds a metal with a melting and a casting recipe that name a fluid id.
+- **Contents.** The crucible holds one fluid at a time, 4000 mB: lava, or a molten metal (`primamateria:molten_copper`, `molten_iron`, `molten_gold`). They are real, placeable fluids (fluid type, source, flowing fluid, liquid block, bucket) and the crucible, the barrels and the casting tray expose the loader's fluid handler, so other mods' pipes and tanks move them. A pack adds a metal with a melting and a casting recipe that name a fluid id.
 - **Buckets** fill and empty the crucible as usual (a lava bucket or a molten metal bucket goes in, an empty bucket takes 1000 mB out; a water bucket does not go in).
 - **Casting.** A casting tray placed against the side of a crucible is fed by it: while the tray is empty and the crucible holds at least 100 mB of a fluid with a casting recipe, the crucible pours 100 mB (a visible stream), the tray glows and cools for 3 seconds, then holds the ingot, taken by hand or by a hopper below. One crucible feeds up to 4 trays. A tray also takes its fluid from a bucket or a pipe.
 
@@ -398,7 +398,7 @@ These were open questions. Casey was asleep and asked for the mod to be complete
 |---|---|
 | Void Nether and End, starter chest | The Overworld of a Void Island world is void; the Nether and End are normal. One shared island at spawn with one oak tree. No chest and no starter items. |
 | Sieve load | One block at a time, no storage. Sieves within `sieve.link_radius` (default 1) work together (`sieve.link`). |
-| Molten metals and brine | Decided with Casey: real fluids that other mods' tanks and pipes can store. **Not done in the first release.** They are internal fluids (an id and an amount) held by the barrels, the crucible and the casting tray and moved by bucket. Registering four placeable fluids with a fluid type, a block, a bucket and client fluid models on both loaders, and exposing the barrels and the crucible as fluid handlers, is the first item of the next release. |
+| Molten metals and brine | Decided with Casey: real fluids that other mods' tanks and pipes can store. **Delivered in 2026.11.2**: four placeable fluids with a fluid type, block, bucket and client models on both loaders, and the barrels, the crucible and the casting tray are fluid handlers. |
 | Pacing | Iron at about 45 minutes, a Nether portal at about 2 hours, diamonds at about 3 hours. These are targets from arithmetic, not from play; the drop tables are data and tunable. |
 | Sounds | The sieve plays our own sounds, started by the client renderer from the sieve's state (load, shake, reveal, finish, mesh), with a per-tick cap; the server plays none for the sieve. The drive sounds have files but no trigger yet. |
 | Textures and models | The 16x16 textures and the stand-in or Blockbench models in the repository are approved as they are. Redraws are welcome after the release. |
