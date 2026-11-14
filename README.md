@@ -4,7 +4,7 @@ A skyblock resource mod for Minecraft 26.2 and 26.3 on Forge and NeoForge. You s
 
 By ItMeCasey Studios. Mod id `primamateria`. First release planned as `2026.11.1`.
 
-**Status: scaffold.** The four modules build and every block and item exists as a placeholder; no gameplay yet. See [PROJECT_STATUS.md](PROJECT_STATUS.md).
+**Status: 2026.11.1, feature complete, not released.** Sieve, hammers, barrels, crucible, drives and the Void Island start work; the four modules build and pass their tests. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and [docs/known-gaps.md](docs/known-gaps.md).
 
 ## Design documents
 

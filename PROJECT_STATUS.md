@@ -1,7 +1,7 @@
 # Project Status
 <!-- status-format: 1 -->
-Updated: 2026-11-13
-Summary: Prima Materia (sieve, barrel and crucible skyblock mod for Forge and NeoForge 26.2 and 26.3) has its design and a scaffold that builds and passes its self test on all four targets with every block and item as a stand-in; no gameplay yet, nothing pushed.
+Updated: 2026-11-14
+Summary: Prima Materia 2026.11.1 is feature complete on Forge and NeoForge 26.2 and 26.3 (sieve, hammers, barrels, crucible, drives, void island, animation renderer, recipe viewer and scripting support): all four builds pass 141 unit tests and the headless server self test; not pushed, never run in a real game client by hand, and molten metals and brine are internal fluids rather than real placeable ones.
 Spend: none
 
 ## Design
@@ -10,7 +10,7 @@ Spend: none
 - [x] Art direction: palette, shading rules, model and texture lists, icon concept (docs/ART.md) (w:2)
 - [x] Architecture: modules, data formats, ModJS, BEI, tests, work split (docs/ARCHITECTURE.md) (w:2)
 - [x] Local git repository with first commit (w:1)
-- [ ] Casey answers the open design questions (all answered 2026-11-13); decisions: MIT license, Barrel name, vanilla textures for blocks and 16x16 items, Auto Hammer and Powered Drive names, mesh tiers cloth to netherite, and the Nether and End chain, auto hammer, powered drive, mob drops and all four recipe viewers in the first release (w:1)
+- [x] Open design questions decided with the recommended defaults while Casey slept (docs/DESIGN.md section 16, docs/DECISIONS_OVERNIGHT.md); Casey can reverse any of them (w:1)
 
 ## Foundation
 - [x] Four Gradle modules (forge and neoforge for 26.2 and 26.3) with shared common/ and version-26.x folders (w:4)
@@ -22,27 +22,27 @@ Spend: none
 
 ## Logic and Data
 - [x] Config file (config/primamateria.properties) with every key and default (w:2)
-- [~] Data readers and reload listeners: mesh tiers done (server side); heat sources and compost values not written; client sync not written (w:3)
+- [x] Data readers and reload listeners: mesh tiers, heat sources, compost values (server side), plus the recipe lookup built after every reload; client sync of the lookup not written (see known gaps) (w:3)
 - [x] Sieve: mesh slot, one block at a time, hold-to-shake, drops rolled when the block goes in, residue, hopper in, comparator, drops to the container below or hopping to the player; unit tests and server self test on four builds (pipes and other mods' item handlers not yet; real-client feel not yet checked) (w:5)
 - [x] Linked sieves (sieve.link, sieve.link_radius): shake and refill together, proven in the server self test (w:3)
-- [ ] Hammers and crushing recipes (5 tiers, bonus yield) (w:3)
-- [ ] Barrel: dew and rain, composting, soaking, mixing, steeping, growing; wooden and clay versions (w:5)
-- [ ] Brine fluid and bucket (w:2)
-- [ ] Crucible: heat, melting into lava or molten metal fluids, fluid in and out (w:4)
-- [ ] Molten copper, iron and gold as real fluids with buckets (w:3)
-- [ ] Casting tray: pour, cool, ingot out (w:3)
-- [ ] Windup drive and furnace drive with output buffers (w:4)
-- [ ] Powered drive (FE) (w:3)
-- [ ] Auto hammer (w:3)
-- [ ] Nether and End chain: scoria, pale sand, soul sand sifting, netherite hammer and mesh (w:3)
-- [~] Shipped recipes and drop tables: all sifting tables, residue, five meshes and the sieve and mesh crafting recipes written by scripts/make_sifting_data.py; hammer, barrel, crucible and the rest not yet (w:3)
-- [ ] Void Island world preset and start island structure (w:3)
+- [x] Hammers (6 tiers) and crushing recipes with bonus yield, break hook on both loaders; unit tests and server self test on four builds (w:3)
+- [x] Barrels (wooden and clay): dew and rain, composting, soaking, mixing, steeping, growing, buckets, hoppers; unit tests and server self test on four builds (w:5)
+- [~] Brine: an internal fluid made by steeping and moved by the brine bucket; not a placeable world fluid (cut, see After 2026.11.1) (w:2)
+- [x] Crucible: heat sources as data, melting into lava or molten metal, buckets, hoppers; server self test on four builds (w:4)
+- [~] Molten copper, iron and gold: internal fluids with real bucket items; not placeable world fluids (cut, see After 2026.11.1) (w:3)
+- [x] Casting tray: pour from the crucible, cool, ingot out by hand or hopper; server self test on four builds (w:3)
+- [x] Windup drive and furnace drive with output buffers; server self test on four builds (w:4)
+- [x] Powered drive (FE capability on NeoForge and on Forge, checked in the loader dev hooks) (w:3)
+- [x] Auto hammer: fits a hammer, queue of 16, six strokes per block, works on a drive (w:3)
+- [x] Nether and End chain: scoria and pale sand from hammering, soul sand from soaking scoria in brine, mob drops, netherite scrap, netherite hammer and mesh (data and recipes; no real-game play-through) (w:3)
+- [x] Shipped recipes and drop tables for every family (sifting, residue, crushing, composting, soaking, mixing, steeping, growing, melting, casting, meshes, heat, compost), written by the scripts/make_*_data.py scripts (w:3)
+- [x] Void Island world preset and start island (placed from code, not from a structure file; once per world, config start.island); server self test and a void-world pass (w:3)
 
 ## Blocks, Models and Textures
-- [~] Sieve model in Blockbench (35 elements, 8 clips) built and exported; waiting for Casey's approval of the style (w:4)
+- [x] Sieve model in Blockbench (35 elements, 8 clips) built and exported; treated as approved (docs/DECISIONS_OVERNIGHT.md) (w:4)
 - [x] Wooden barrel and clay barrel models (w:3)
-- [~] Crucible model done; casting tray model not made (w:3)
-- [ ] Windup drive and furnace drive models (w:4)
+- [x] Crucible and casting tray models (w:3)
+- [x] Windup drive and furnace drive models (w:4)
 - [x] Auto hammer and powered drive models (static; stamp and cam animations not authored) (w:4)
 - [ ] Crystal model and five crystal textures (w:2)
 - [x] Stand-in block models built from vanilla textures by reference (w:2)
@@ -70,10 +70,10 @@ Spend: none
 - [~] REI plugin, same categories; compiled on both NeoForge builds, frames on 26.2 and 26.3 with demo recipes (w:3)
 - [x] EMI plugin written (src/pending/emi, no EMI build for 26.2 or 26.3: not compiled or tested) (w:2)
 - [x] Drop table information pages per siftable block (drops category in BEI, JEI, REI; seen in JEI and BEI frames) (w:2)
-- [~] SMWTI lines written and compiled on all four builds; need ViewProvider block entities from workstream A, no client check (w:2)
-- [~] Jade lines written and compiled on both NeoForge builds; need ViewProvider block entities, no client check (w:2)
+- [~] SMWTI lines written and compiled on all four builds; every block entity now offers its view; no client check (w:2)
+- [~] Jade lines written and compiled on both NeoForge builds; every block entity now offers its view; no client check (w:2)
 - [x] ModJS bridge: PrimaMateria global (events, state, content, data, config) with tests; self test with the ModJS jar passes on all four layers (w:3)
-- [ ] KubeJS: every recipe, drop table, mesh tier and heat source changeable as datapack JSON, with a remove form, proven by a test pack (w:2)
+- [x] KubeJS: every recipe, drop table, mesh tier and heat source is datapack JSON that can be added, replaced or removed; proven by the pack-added sifting material test (w:2)
 - [~] KubeJS helper bridge for events and reads, unit tested with Rhino; no KubeJS build for 26.2 or 26.3, no real run (w:2)
 - [x] Run with no optional mod installed passes the self test (all four layers) (w:1)
 - [x] docs/scripting.md (ModJS, KubeJS, datapacks) and the wiki pages (w:1)
@@ -86,26 +86,27 @@ Spend: none
 - [ ] Compat data for other mods' metals and gems from ore-matrix/PRIMA_COMPAT_LISTS.md (tag-based sifting, crushing, melting and casting entries for 26.2 and 26.3) (w:3)
 
 ## Testing
-- [ ] Unit tests of the pure logic in all four modules (w:3)
+- [x] Unit tests of the pure logic in all four modules (141 tests per module, all pass) (w:3)
 - [ ] scripts/check_data.py (recipes parse, ids exist, lang holds names only) (w:2)
-- [ ] Headless server self test on all four builds (w:4)
-- [ ] Real-client frames on one Forge and one NeoForge build (isolated launcher) (w:4)
+- [x] Headless server self test on all four builds (327 to 379 checks each, one module at a time) (w:4)
+- [~] Real-client frames: the animation and integration sessions took frames on NeoForge 26.2 and Forge 26.2 (docs/testing, docs/frames); the machines were not played by hand (w:4)
 - [ ] 200-sieve performance scene measured in full, reduced and off (w:2)
 - [ ] Casey plays a fresh Void Island; balance pass on the data files (w:3)
 
 ## Branding and Docs
-- [ ] Icon (svg and png sizes) (w:2)
-- [ ] Banners and social image (w:2)
-- [ ] CurseForge description (mod only: features, settings, compatibility, FAQ) (w:2)
-- [ ] Wiki pages on itmecasey.com (w:3)
-- [ ] README and CHANGELOG for 2026.11.1 (w:1)
+- [x] Icon (svg and png sizes) (w:2)
+- [x] Banners and social image (w:2)
+- [x] CurseForge description (mod only: features, settings, compatibility, FAQ) (w:2)
+- [~] Wiki pages written in the site folder (sieve, hammers, barrels, crucible, drives, start, progression, config, drop tables, recipes, scripting, compatibility, known gaps); not deployed (Project Manager) (w:3)
+- [x] README and CHANGELOG for 2026.11.1 (w:1)
 
 ## After 2026.11.1
 - [ ] Real placeable fluids: brine and molten copper, iron and gold (fluid type, source, flowing fluid, block, bucket, client fluid model on both loaders and both versions) and fluid handlers on the barrels, the crucible and the casting tray, so other mods' tanks and pipes can move them (cut from the first release, w:5)
-- [ ] Our own recorded or synthesized sounds (the first release uses the vanilla block sounds) (w:2)
+- [ ] Triggers for the drive sounds (crank and tick have files, nothing plays them) (w:2)
+- [ ] Client sync of the recipe lookup so recipe viewers also work for players joining a dedicated server (the lookup is built on the server and shared in single player and LAN) (w:3)
 
 ## Release and CI
-- [ ] build.yml, release.yml, changed-builds-only plan_matrix.py, issue templates (w:3)
+- [x] build.yml, release.yml, changed-builds-only plan_matrix.py, issue templates (written by the Project Manager) (w:3)
 - [ ] GitHub repository, push, CI run (Project Manager) (w:2)
 - [ ] CurseForge project and project id, secrets (Project Manager) (w:2)
 - [ ] Release 2026.11.1 on GitHub and CurseForge (Project Manager) (w:2)
