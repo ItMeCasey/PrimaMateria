@@ -9,9 +9,9 @@ The names the renderer relies on. `scripts/export_anims.py` fails when one is mi
 | `frame` | none | (8, 0, 8) | Static. Its cubes go into the block model, not the renderer. |
 | `tray` | `frame` | (8, 13, 8) | Moves on X and Z (up to 1 unit each way, the clearance inside the rails), rolls a few degrees about its hang point. Walls and rivets. |
 | `strap_nw`, `strap_ne`, `strap_sw`, `strap_se` | `frame` | top of the strap | Brass hangers; rotate a few degrees to follow the tray. |
-| `mesh` | `tray` | (8, 10, 8) | One plate; its texture is replaced at run time by the fitted mesh's texture. Sags and bounces. |
-| `layer` | `tray` | (8, 10, 8) | Locator. The renderer builds the material layer from here (7 by 7 units, base at y = 10). |
-| `finds` | `mesh` | (8, 10, 8) | Locator. Finds are placed on a 3 by 2 grid around it. |
+| `mesh` | `tray` | (8, 11.5, 8) | One plate; its texture is replaced at run time by the fitted mesh's texture. Sags and bounces. |
+| `layer` | `tray` | (8, 11.5, 8) | Locator. The renderer builds the material layer from here (7 by 7 units, base at y = 11.5, a quarter of a load is 0.8 units). |
+| `finds` | `mesh` | (8, 11.5, 8) | Locator. Finds are placed on a 3 by 2 grid around it. |
 | `chute` | `frame` | (8, 8, 8) | Locator under the tray where fines spawn. |
 
 Rules for authors: keyframe values are plain numbers (no expressions); interpolation is `linear`, `step`, `catmullrom` or `bezier`; rotation order is Z, then Y, then X (as Blockbench groups); cubes in moving bones are axis aligned and use one texture each; at most 40 cubes in moving bones (now 13).

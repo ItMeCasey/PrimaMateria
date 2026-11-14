@@ -36,7 +36,7 @@ import org.jspecify.annotations.Nullable;
 public class SieveRenderer<T extends BlockEntity & SieveViewSource> implements BlockEntityRenderer<T, SieveRenderer.State> {
     private static final float[] SPOT_X = {5.7F, 8F, 10.3F};
     private static final float[] SPOT_Z = {6.6F, 9.4F};
-    private static final float FIND_Y = 10.15F;
+    private static final float FIND_Y = 11.65F;
 
     /** What the frame needs, copied from the block entity during extraction. Small: the heavy state is in {@link SieveCache}. */
     public static class State extends BlockEntityRenderState {
@@ -63,8 +63,18 @@ public class SieveRenderer<T extends BlockEntity & SieveViewSource> implements B
 
     @Override
     public void extractRenderState(T be, State s, float partial, Vec3 cam, ModelFeatureRenderer.@Nullable CrumblingOverlay crumbling) {
+        long t0 = com.itmecasey.primamateria.Dev.ENABLED ? System.nanoTime() : 0L;
         BlockEntityRenderer.super.extractRenderState(be, s, partial, cam, crumbling);
         s.draw = false;
+        extract(be, s, partial, cam);
+        if (com.itmecasey.primamateria.Dev.ENABLED) {
+            SieveStats.nanos += System.nanoTime() - t0;
+            SieveStats.calls++;
+            SieveStats.drawn += s.draw ? 1 : 0;
+        }
+    }
+
+    private void extract(T be, State s, float partial, Vec3 cam) {
         Level level = be.getLevel();
         AnimModel model = SieveModels.sieve();
         if (level == null || model == null) {
@@ -163,6 +173,14 @@ public class SieveRenderer<T extends BlockEntity & SieveViewSource> implements B
         if (!s.draw) {
             return;
         }
+        long t0 = com.itmecasey.primamateria.Dev.ENABLED ? System.nanoTime() : 0L;
+        submitAll(s, pose, collector);
+        if (com.itmecasey.primamateria.Dev.ENABLED) {
+            SieveStats.nanos += System.nanoTime() - t0;
+        }
+    }
+
+    private void submitAll(State s, PoseStack pose, SubmitNodeCollector collector) {
         SieveCache c = s.cache;
         if (s.bones) {
             for (int i = 0; i < c.boneDraws.length; i++) {

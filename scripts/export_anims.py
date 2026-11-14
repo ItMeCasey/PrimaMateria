@@ -26,7 +26,7 @@ CONTRACT = {"sieve": ["frame", "tray", "strap_nw", "strap_ne", "strap_sw", "stra
 MESH_TEXTURES = ["mesh_cloth", "mesh_copper", "mesh_iron", "mesh_diamond", "mesh_netherite"]
 FACE_ORDER = ["north", "east", "south", "west", "up", "down"]
 INTERP = {"linear", "step", "catmullrom", "bezier"}
-FILL_QUARTER = 1.1
+FILL_QUARTER = 0.8
 DISPLAY_KEEP = ("thirdperson_righthand", "thirdperson_lefthand", "firstperson_righthand", "firstperson_lefthand", "ground", "gui", "fixed")
 
 
@@ -202,13 +202,13 @@ def sieve(doc):
         write(ASSETS / f"models/block/sieve_mesh_{slot}.json", d)
     # the still layer: a plain box on the tray floor, one quarter is 1.1 units, tinted by the load's map color (tintindex 0)
     for k in range(1, 5):
-        top = round(10 + FILL_QUARTER * k, 2)
+        top = round(11.5 + FILL_QUARTER * k, 2)
         faces = {f: {"uv": [4.5, 4.5, 11.5, 11.5] if f in ("up", "down") else [4.5, 0, 11.5, FILL_QUARTER * k],
                      "texture": "#sift", "tintindex": 0} for f in FACE_ORDER}
         write(ASSETS / f"models/block/sieve_fill_{k}.json",
               {"parent": "minecraft:block/block", "textures": {"sift": "minecraft:block/white_concrete_powder",
                "particle": "minecraft:block/oak_planks"},
-               "elements": [{"from": [4.5, 10, 4.5], "to": [11.5, top, 11.5], "faces": faces}]})
+               "elements": [{"from": [4.5, 11.5, 4.5], "to": [11.5, top, 11.5], "faces": faces}]})
     # the item: frame, tray and the cloth mesh
     full = model_json(doc, frame_cubes + tray_cubes + mesh_cubes)
     write(ASSETS / "models/block/sieve.json", full)

@@ -192,6 +192,7 @@ public final class ShotTour {
             player().getAbilities().flying = false;
             Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
             Settings.set("client.animations", "full");
+            Minecraft.getInstance().options.hideGui = true;
         });
         then(4, () -> {
             server("fill -8 " + (y - 1) + " -8 24 " + (y - 1) + " 24 minecraft:smooth_stone");
@@ -267,11 +268,15 @@ public final class ShotTour {
             fpsSum = 0;
             fpsSamples = 0;
             sampling = true;
+            com.itmecasey.primamateria.client.SieveStats.reset();
         });
         then(120, () -> {
             sampling = false;
-            LOGGER.info("PRIMAMATERIA-SHOTS fps mode={} sieves=20 average_fps={} samples={}", mode,
-                    fpsSamples == 0 ? 0 : fpsSum / fpsSamples, fpsSamples);
+            long calls = Math.max(1, com.itmecasey.primamateria.client.SieveStats.calls);
+            LOGGER.info("PRIMAMATERIA-SHOTS fps mode={} sieves=20 average_fps={} samples={} renderer_us_per_sieve={} drawn={}", mode,
+                    fpsSamples == 0 ? 0 : fpsSum / fpsSamples, fpsSamples,
+                    String.format(java.util.Locale.ROOT, "%.1f", com.itmecasey.primamateria.client.SieveStats.nanos / 1000.0 / calls),
+                    com.itmecasey.primamateria.client.SieveStats.drawn);
         });
     }
 

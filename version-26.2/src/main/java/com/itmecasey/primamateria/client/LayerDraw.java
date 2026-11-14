@@ -14,10 +14,10 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
  */
 final class LayerDraw implements SubmitNodeCollector.CustomGeometryRenderer {
     /** Height of one quarter of a load, in model pixels. */
-    static final float QUARTER = 1.1F;
+    static final float QUARTER = 0.8F;
     private static final float X0 = 4.45F;
     private static final float X1 = 11.55F;
-    private static final float BASE = 10F;
+    private static final float BASE = 11.5F;
     private static final float[] GRID = {X0, 8F, X1};
 
     private final SieveAnimator animator;

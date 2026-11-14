@@ -22,7 +22,7 @@ BASH = r"C:\Program Files\Git\usr\bin\bash.exe"
 TIMEOUT = 900
 OPTIONS = {
     "tutorialStep": "none", "onboardAccessibility": "false", "skipMultiplayerWarning": "true", "joinedFirstServer": "true",
-    "pauseOnLostFocus": "false", "fullscreen": "false", "guiScale": "3", "lang": "en_us",
+    "pauseOnLostFocus": "false", "enableVsync": "false", "maxFps": "260", "fullscreen": "false", "guiScale": "3", "lang": "en_us",
 }
 
 

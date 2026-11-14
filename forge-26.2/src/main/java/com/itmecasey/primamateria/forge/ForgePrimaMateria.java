@@ -16,7 +16,9 @@ public final class ForgePrimaMateria {
     public ForgePrimaMateria(FMLJavaModLoadingContext context) {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         RegisterEvent.getBus(context.getModBusGroup()).addListener(ForgePrimaMateria::register);
-        ForgeClient.install(context);
+        if (net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient()) {
+            ForgeClient.install(context);
+        }
         Dev.call("com.itmecasey.primamateria.forge.dev.ForgeDev", "install", context);
     }
 

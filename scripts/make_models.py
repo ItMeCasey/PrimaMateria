@@ -94,17 +94,17 @@ def sieve_model():
         frame.append(box("rivet_" + n, x, 11, z0, x + 0.5, 11.5, z0 + 0.5, "brass"))
 
     tray = [
-        box("tray_n", 3.5, 9, 3.5, 12.5, 15, 4.5, "wood"), box("tray_s", 3.5, 9, 11.5, 12.5, 15, 12.5, "wood"),
-        box("tray_w", 3.5, 9, 4.5, 4.5, 15, 11.5, "wood"), box("tray_e", 11.5, 9, 4.5, 12.5, 15, 11.5, "wood"),
+        box("tray_n", 3.5, 10, 3.5, 12.5, 15, 4.5, "wood"), box("tray_s", 3.5, 10, 11.5, 12.5, 15, 12.5, "wood"),
+        box("tray_w", 3.5, 10, 4.5, 4.5, 15, 11.5, "wood"), box("tray_e", 11.5, 10, 4.5, 12.5, 15, 11.5, "wood"),
         box("tray_rivet_nw", 3.5, 15, 3.5, 4, 15.5, 4, "brass"), box("tray_rivet_ne", 12, 15, 3.5, 12.5, 15.5, 4, "brass"),
         box("tray_rivet_sw", 3.5, 15, 12, 4, 15.5, 12.5, "brass"), box("tray_rivet_se", 12, 15, 12, 12.5, 15.5, 12.5, "brass"),
     ]
     straps = []
     for n, (x, z0, z1) in {"nw": (3.5, 3, 3.5), "ne": (11.5, 3, 3.5), "sw": (3.5, 12.5, 13), "se": (11.5, 12.5, 13)}.items():
-        straps.append(Group("strap_" + n, (x + 0.5, 13, (z0 + z1) / 2), [box("strap_" + n, x, 9.5, z0, x + 1, 13, z1, "brass")]))
-    mesh = Group("mesh", (8, 10, 8), [box("mesh", 4, 9.5, 4, 12, 10, 12, "mesh")],
-                 [Group("finds", (8, 10, 8))])
-    layer = Group("layer", (8, 10, 8))
+        straps.append(Group("strap_" + n, (x + 0.5, 13, (z0 + z1) / 2), [box("strap_" + n, x, 10.5, z0, x + 1, 13, z1, "brass")]))
+    mesh = Group("mesh", (8, 11.5, 8), [box("mesh", 4, 11, 4, 12, 11.5, 12, "mesh")],
+                 [Group("finds", (8, 11.5, 8))])
+    layer = Group("layer", (8, 11.5, 8))
     tray_g = Group("tray", (8, 13, 8), tray, [mesh, layer])
     chute = Group("chute", (8, 8, 8))
     return Group("frame", (8, 0, 8), frame, [tray_g] + straps + [chute], static=True)
