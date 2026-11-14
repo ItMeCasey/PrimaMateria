@@ -93,6 +93,7 @@ Spend: none
 - [ ] 200-sieve performance scene measured in full, reduced and off (w:2)
 - [x] Ore compat: sifting, crushing, melting and casting for the materials of the 26.2 and 26.3 lists by item tag, tag results, optional tag entries, inert without the other mods (docs/ORE_COMPAT.md, scripts/make_compat.py) (w:4)
 - [x] A molten fluid, bucket and look for every metal, vanilla and compat (42 metals) (w:3)
+- [x] Machines fill and empty held items through the loader's item fluid handler (no bucket table); furnace drive lit model shares the unlit geometry; BEI shows fluids as buckets with amounts (w:3)
 - [ ] Casey plays a fresh Void Island; balance pass on the data files (w:3)
 
 ## Branding and Docs
