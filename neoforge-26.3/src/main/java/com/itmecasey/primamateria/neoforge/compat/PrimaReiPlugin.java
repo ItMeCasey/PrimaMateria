@@ -197,6 +197,16 @@ public class PrimaReiPlugin implements REIClientPlugin {
         }
     }
 
+    /** Opens REI's recipe screen for an item (the development tour calls it by name). */
+    public static void tourShow(String itemId, boolean uses) {
+        ItemStack stack = Stacks.stack(itemId, 1);
+        if (stack.isEmpty()) {
+            return;
+        }
+        me.shedaniel.rei.api.client.view.ViewSearchBuilder b = me.shedaniel.rei.api.client.view.ViewSearchBuilder.builder();
+        (uses ? b.addUsagesFor(EntryStacks.of(stack)) : b.addRecipesFor(EntryStacks.of(stack))).open();
+    }
+
     @Override
     public void registerCategories(CategoryRegistry registry) {
         for (Cards.Category c : Cards.Category.values()) {

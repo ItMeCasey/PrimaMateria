@@ -54,6 +54,29 @@ public class PrimaJeiPlugin implements IModPlugin {
         };
     }
 
+    private static volatile mezz.jei.api.runtime.IJeiRuntime runtime;
+
+    @Override
+    public void onRuntimeAvailable(mezz.jei.api.runtime.IJeiRuntime value) {
+        runtime = value;
+    }
+
+    @Override
+    public void onRuntimeUnavailable() {
+        runtime = null;
+    }
+
+    /** Opens JEI's recipe screen for an item (the development tour calls it by name). */
+    public static void tourShow(String itemId, boolean uses) {
+        mezz.jei.api.runtime.IJeiRuntime rt = runtime;
+        ItemStack stack = Stacks.stack(itemId, 1);
+        if (rt == null || stack.isEmpty()) {
+            return;
+        }
+        rt.getRecipesGui().show(rt.getJeiHelpers().getFocusFactory().createFocus(
+                uses ? RecipeIngredientRole.INPUT : RecipeIngredientRole.OUTPUT, mezz.jei.api.constants.VanillaTypes.ITEM_STACK, stack));
+    }
+
     @Override
     public Identifier getPluginUid() {
         return Identifier.fromNamespaceAndPath(Ids.MODID, "jei");

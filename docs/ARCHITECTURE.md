@@ -341,3 +341,24 @@ Delivers: wiki, listing text, CI files. The CurseForge description describes the
 3. Integration (one builder): B's real models into C's renderers, `sync_versions.py` to 26.3 with its patches, full self test on four builds, client tour on one Forge and one NeoForge build.
 4. Casey plays; balance pass on the data files only.
 5. The PM pushes, runs CI, creates the repository and the CurseForge project, tags `2026.11.1` and releases. Builders commit locally and never push.
+
+## 8. Requests from workstream D (integrations)
+
+Written 2026-11-13 by workstream D. None of these change a frozen file; they are what the other workstreams need to do so the integrations show real data.
+
+1. **Block entities implement `view.ViewProvider`** (new file in `common/.../view/`, one method `Object view()` returning the block entity's view record). SMWTI, Jade and the script reads (`sieveAt` and the others) find the state through it (`compat/GameAccess`). The record must also exist on the client (synced), because Jade reads the client side.
+2. **Apply script content after each reload.** After the datapack reload on the server, workstream A builds its `RecipeLookup.Snapshot`, calls `script.ScriptContent.apply(snapshot)` and uses the result both for gameplay and for `RecipeLookup.set` (and the client sync). With no script changes `apply` returns the same snapshot, so the call is free. Script changes are kept in script order; a reload that re-runs scripts starts with `PrimaMateria.reset()`.
+3. **Fire the `GameEvents` channels** (already frozen). The script bridge listens to all six.
+4. **`PrimaMateria.init` calls `script.ModJsBridge.install()` by name** (already so). It now also installs the game state lookup (`compat.GameAccess`), writes the KubeJS helper script when KubeJS is present and, in dev runs, installs `dev.DemoRecipes`.
+
+What workstream D added outside its own folders (one line each, listed so they survive a merge):
+
+- `common/.../view/ViewProvider.java`, `view/ViewAccess.java`: new files.
+- `common/.../viewer/` (new): `Cards` (the shared card model and layout, moved here from the planned `compat/Cards` so it can be unit tested without Minecraft), `Fmt`, `DropTable`, `InfoLines`.
+- `lang/en_us.json`: keys `viewer.primamateria.category.*` and `viewer.primamateria.info.*`.
+- Each `build.gradle`: the "Optional integrations" block at the end (compile-only SMWTI, JEI, REI, Architectury, Cloth Config, Jade; `-Pviewers=` for dev runs).
+- `version-26.2/src/dev/.../SelfTest.java`: one line, `failures += IntegrationCheck.run(server);`.
+- `scripts/server_check.py`: the `PM_GRADLE_ARGS` environment variable (extra Gradle arguments, `-Pviewers=modjs` also copies the ModJS test script) and `PRIMAMATERIA_DEMO=1`.
+- New dev tools: `scripts/integration_tour.py`, `scripts/fixtures/`, `IntegrationTour`, `IntegrationCheck` and `DemoRecipes` (version dev), `IntegrationDev` (NeoForge dev).
+
+Loader layout of the integrations: BEI, SMWTI and the shared helpers (`Stacks`, `GameAccess`) are in `version-26.x/.../compat/` and ship in all four jars. JEI, REI and Jade only exist for NeoForge, so their plugins live in `neoforge-26.x/src/main/java/.../neoforge/compat/` (copied by hand between 26.2 and 26.3; they are not generated).

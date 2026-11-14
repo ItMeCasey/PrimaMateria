@@ -18,6 +18,7 @@ public final class DemoRecipes {
         if (System.getenv("PRIMAMATERIA_DEMO") != null && RecipeLookup.get().sifting().isEmpty()) {
             RecipeLookup.set(snapshot());
         }
+        com.itmecasey.primamateria.Dev.call("com.itmecasey.primamateria.neoforge.dev.IntegrationDev", "install");
     }
 
     public static Snapshot snapshot() {
