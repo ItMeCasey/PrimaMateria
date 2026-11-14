@@ -6,8 +6,10 @@ import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.PrimaMateria;
 import com.itmecasey.primamateria.data.PrimaReload;
 import com.itmecasey.primamateria.recipe.PrimaRecipes;
+import com.itmecasey.primamateria.world.StartIslandPlacer;
 import net.minecraft.core.registries.Registries;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -21,6 +23,7 @@ public final class ForgePrimaMateria {
         RegisterEvent.getBus(context.getModBusGroup()).addListener(ForgePrimaMateria::register);
         ForgeClient.install(context);
         AddReloadListenerEvent.BUS.addListener((AddReloadListenerEvent e) -> e.addListener(new PrimaReload()));
+        ServerStartedEvent.BUS.addListener((ServerStartedEvent e) -> StartIslandPlacer.onServerStarted(e.getServer()));
         Dev.call("com.itmecasey.primamateria.forge.dev.ForgeDev", "install", context);
     }
 

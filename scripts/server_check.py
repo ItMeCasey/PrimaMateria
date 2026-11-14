@@ -9,6 +9,7 @@ server's "Done" line, checks that the log names the mod and has no mod-loading e
 """
 import os
 import re
+import shutil
 import subprocess
 import sys
 import threading
@@ -19,6 +20,10 @@ ROOT = Path(__file__).resolve().parent.parent
 # Ports 8734 to 8737 are the main set; a session working in its own worktree sets PRIMA_PORT_BASE to one of its reserved sets
 # (8738, 8742, 8746, 8750, 8754, each four ports in the same layer order) so parallel runs never collide.
 PORT_BASE = int(os.environ.get("PRIMA_PORT_BASE", "8734"))
+# PRIMA_LEVEL_TYPE=primamateria:void_island starts the server with that world preset in a fresh world folder (run/world_void) and
+# turns on the extra void-world checks of the self test. The default is the flat test world.
+LEVEL_TYPE = os.environ.get("PRIMA_LEVEL_TYPE", "minecraft:flat")
+VOID_MODE = LEVEL_TYPE != "minecraft:flat"
 PORTS = {
     "neoforge-26.2": PORT_BASE, "forge-26.2": PORT_BASE + 1, "neoforge-26.3": PORT_BASE + 2, "forge-26.3": PORT_BASE + 3,
 }
@@ -70,10 +75,15 @@ def check(layer):
     run.mkdir(exist_ok=True)
     (run / "eula.txt").write_text("eula=true\n")
     (run / "server.properties").write_text(
-        f"server-port={PORTS[layer]}\nonline-mode=false\nlevel-type=minecraft\\:flat\nspawn-protection=0\n"
-        "motd=PrimaMateria server check\nmax-tick-time=-1\n")
+        f"server-port={PORTS[layer]}\nonline-mode=false\nlevel-type=" + LEVEL_TYPE.replace(":", "\\:") + "\nspawn-protection=0\n"
+        + ("level-name=world_void\n" if VOID_MODE else "")
+        + "motd=PrimaMateria server check\nmax-tick-time=-1\n")
     log = []
+    if VOID_MODE:
+        shutil.rmtree(run / "world_void", ignore_errors=True)
     env = dict(os.environ, PRIMAMATERIA_SELFTEST="1", PRIMAMATERIA_DEMO="1")
+    if VOID_MODE:
+        env["PRIMAMATERIA_VOID_WORLD"] = "1"
     # PM_GRADLE_ARGS adds Gradle arguments, for example "-Pviewers=modjs" to run with the ModJS jar (integration check): the ModJS test
     # script is then copied into the run folder, and removed again when the check is done.
     extra = os.environ.get("PM_GRADLE_ARGS", "").split()
@@ -121,6 +131,8 @@ def check(layer):
     if not re.search(r"SELFTEST DONE failures=0", out) or passes == 0:
         bad = [l for l in log if "SELFTEST FAIL" in l or "SELFTEST error" in l]
         return f"SERVER FAIL {layer}: self test did not finish clean (passes={passes}) {bad[:2]}"
+    if VOID_MODE and "SELFTEST PASS void_world_island_at_spawn" not in out:
+        return f"SERVER FAIL {layer}: the void world check never passed"
     return f"SERVER PASS {layer} (port {PORTS[layer]}, {passes} self-test checks, {int(time.time() - start)}s)"
 
 

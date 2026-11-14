@@ -6,12 +6,14 @@ import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.PrimaMateria;
 import com.itmecasey.primamateria.data.PrimaReload;
 import com.itmecasey.primamateria.recipe.PrimaRecipes;
+import com.itmecasey.primamateria.world.StartIslandPlacer;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 /** NeoForge entry point. Registers the content; workstream A adds capabilities, networking and reload listeners here. */
@@ -21,6 +23,7 @@ public final class NeoForgePrimaMateria {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         modBus.addListener(NeoForgePrimaMateria::register);
         NeoForge.EVENT_BUS.addListener((AddServerReloadListenersEvent e) -> e.addListener(ModContent.id("data"), new PrimaReload()));
+        NeoForge.EVENT_BUS.addListener((ServerStartedEvent e) -> StartIslandPlacer.onServerStarted(e.getServer()));
         Dev.call("com.itmecasey.primamateria.neoforge.dev.NeoForgeDev", "install", modBus);
     }
 

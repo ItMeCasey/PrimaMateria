@@ -73,6 +73,7 @@ public final class SelfTest {
             BarrelSelfTest.run(server, server.overworld());
             // each feature adds one line here: FeatureSelfTest.run(server, server.overworld());
             failures += IntegrationCheck.run(server);
+            WorldSelfTest.run(server, server.overworld());
         } catch (RuntimeException e) {
             LOGGER.error("SELFTEST error", e);
             verdict("selftest_ran_clean", false, e.toString());
