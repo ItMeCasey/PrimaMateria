@@ -4,6 +4,7 @@ import com.itmecasey.primamateria.Settings;
 import com.itmecasey.primamateria.blockentity.BarrelBlockEntity;
 import com.itmecasey.primamateria.data.CompostValues;
 import com.itmecasey.primamateria.fluid.FluidBuckets;
+import com.itmecasey.primamateria.fluid.FluidIds;
 import com.itmecasey.primamateria.recipe.BarrelRecipes;
 import com.itmecasey.primamateria.recipe.CompostingRecipe;
 import com.itmecasey.primamateria.sift.Drop;
@@ -148,10 +149,10 @@ public final class BarrelLogic {
     public static String scoop(ServerLevel level, BarrelBlockEntity be) {
         BarrelState state = be.state();
         String fluid = state.fluid();
-        if (fluid.isEmpty() || FluidBuckets.bucketOf(fluid).isEmpty() || !state.canDrain(FluidBuckets.BUCKET_AMOUNT)) {
+        if (fluid.isEmpty() || FluidIds.bucketOf(fluid).isEmpty() || !state.canDrain(FluidBuckets.BUCKET_AMOUNT)) {
             return null;
         }
-        Identifier bucket = Identifier.tryParse(FluidBuckets.bucketOf(fluid).get());
+        Identifier bucket = Identifier.tryParse(FluidIds.bucketOf(fluid).get());
         if (bucket == null || !BuiltInRegistries.ITEM.containsKey(bucket)) {
             return null;
         }
@@ -171,7 +172,7 @@ public final class BarrelLogic {
             return takeResult(level, be, player) ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
         String itemId = Transfer.itemId(stack);
-        java.util.Optional<String> carried = FluidBuckets.fluidOf(itemId);
+        java.util.Optional<String> carried = FluidIds.carriedBy(stack);
         if (carried.isPresent()) {
             if (pour(level, be, carried.get())) {
                 swapBucket(player, hand, stack, new ItemStack(Items.BUCKET));

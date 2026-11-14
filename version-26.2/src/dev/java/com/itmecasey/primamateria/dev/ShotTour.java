@@ -85,7 +85,7 @@ public final class ShotTour {
         }
     }
 
-    private static void quit(Minecraft minecraft) {
+    static void quit(Minecraft minecraft) {
         minecraft.options.pauseOnLostFocus = pauseOnLostFocus;
         LOGGER.info("PRIMAMATERIA-SHOTS DONE");
         stage = Stage.DONE;
@@ -205,6 +205,10 @@ public final class ShotTour {
 
     private static void plan() {
         int y = ground;
+        if ("fluids".equals(System.getenv("PRIMAMATERIA_SHOTS"))) {
+            FluidTour.plan(y);
+            return;
+        }
         BlockPos s0 = new BlockPos(0, y, 0);
         then(0, () -> {
             server("gamerule advance_time false", "gamerule advance_weather false", "gamerule spawn_mobs false", "gamerule spawn_monsters false",

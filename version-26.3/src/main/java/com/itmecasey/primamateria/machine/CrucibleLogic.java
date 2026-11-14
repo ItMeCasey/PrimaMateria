@@ -3,6 +3,7 @@ package com.itmecasey.primamateria.machine;
 import com.itmecasey.primamateria.blockentity.CastingTrayBlockEntity;
 import com.itmecasey.primamateria.blockentity.CrucibleBlockEntity;
 import com.itmecasey.primamateria.fluid.FluidBuckets;
+import com.itmecasey.primamateria.fluid.FluidIds;
 import com.itmecasey.primamateria.recipe.CrucibleRecipes;
 import com.itmecasey.primamateria.util.Transfer;
 import java.util.Optional;
@@ -25,6 +26,11 @@ public final class CrucibleLogic {
         return fluid.equals("minecraft:lava") || fluid.startsWith("primamateria:molten_");
     }
 
+    /** What a crucible or a tray takes from a bucket: a hot fluid, or any fluid of any mod that a casting recipe turns into an item. */
+    public static boolean accepts(ServerLevel level, String fluid) {
+        return hot(fluid) || CrucibleRecipes.castFor(level.recipeAccess(), fluid) != null;
+    }
+
     // ---- crucible ----
 
     public static InteractionResult useCrucible(ServerLevel level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
@@ -41,10 +47,10 @@ public final class CrucibleLogic {
             return InteractionResult.SUCCESS;
         }
         String id = Transfer.itemId(stack);
-        Optional<String> bucketFluid = FluidBuckets.fluidOf(id);
+        Optional<String> bucketFluid = FluidIds.carriedBy(stack);
         if (bucketFluid.isPresent()) {
             String fluid = bucketFluid.get();
-            if (!hot(fluid)) {
+            if (!accepts(level, fluid)) {
                 return InteractionResult.PASS;
             }
             if (be.state().fill(fluid, FluidBuckets.BUCKET_AMOUNT)) {
@@ -55,7 +61,7 @@ public final class CrucibleLogic {
             return InteractionResult.SUCCESS;
         }
         if (id.equals(FluidBuckets.EMPTY_BUCKET)) {
-            Optional<String> full = FluidBuckets.bucketOf(be.state().fluid());
+            Optional<String> full = FluidIds.bucketOf(be.state().fluid());
             if (full.isPresent() && be.state().drain(FluidBuckets.BUCKET_AMOUNT)) {
                 be.changed();
                 level.playSound(null, pos, SoundEvents.BUCKET_FILL_LAVA, SoundSource.BLOCKS, 0.8F, 1.0F);
@@ -90,8 +96,8 @@ public final class CrucibleLogic {
             Transfer.giveBack(player, Transfer.stackOf(item, taken));
             return InteractionResult.SUCCESS;
         }
-        Optional<String> bucketFluid = FluidBuckets.fluidOf(Transfer.itemId(stack));
-        if (bucketFluid.isEmpty() || !hot(bucketFluid.get())) {
+        Optional<String> bucketFluid = FluidIds.carriedBy(stack);
+        if (bucketFluid.isEmpty() || !accepts(level, bucketFluid.get())) {
             return InteractionResult.PASS;
         }
         CrucibleRecipes.Cast cast = CrucibleRecipes.castFor(level.recipeAccess(), bucketFluid.get());

@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Which bucket items carry which fluid. Barrels and crucibles keep their fluid as a plain id and an amount in mB; a bucket fills
- * or empties 1000 mB. Water and lava are the game's; brine and the three molten metals are ours (internal to our machines in
- * the first release: they have buckets but no placeable world fluid).
+ * Which bucket items carry which fluid, for the buckets we know by id: the game's water and lava buckets and our four. Barrels and
+ * crucibles keep their fluid as a plain id and an amount in mB; a bucket fills or empties 1000 mB. Brine and the three molten
+ * metals are real fluids with real bucket items; the game side asks {@code FluidIds} first, which also finds any other mod's
+ * bucket by its fluid, and falls back to this table.
  */
 public final class FluidBuckets {
     public static final int BUCKET_AMOUNT = 1000;

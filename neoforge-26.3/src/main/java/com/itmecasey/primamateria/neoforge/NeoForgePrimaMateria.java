@@ -4,6 +4,7 @@ import com.itmecasey.primamateria.Dev;
 import com.itmecasey.primamateria.Ids;
 import com.itmecasey.primamateria.ModContent;
 import com.itmecasey.primamateria.PrimaMateria;
+import com.itmecasey.primamateria.fluid.ModFluids;
 import com.itmecasey.primamateria.data.PrimaReload;
 import com.itmecasey.primamateria.recipe.PrimaRecipes;
 import com.itmecasey.primamateria.world.StartIslandPlacer;
@@ -33,6 +34,7 @@ public final class NeoForgePrimaMateria {
         PrimaMateria.init(FMLPaths.CONFIGDIR::get);
         modBus.addListener(NeoForgePrimaMateria::register);
         modBus.addListener(NeoForgePrimaMateria::capabilities);
+        modBus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent e) -> e.enqueueWork(com.itmecasey.primamateria.fluid.FluidDispense::register));
         NeoForge.EVENT_BUS.addListener((AddServerReloadListenersEvent e) -> e.addListener(ModContent.id("data"), new PrimaReload()));
         NeoForge.EVENT_BUS.addListener((ServerStartedEvent e) -> StartIslandPlacer.onServerStarted(e.getServer()));
         // A hammer crushes the block it breaks: HammerLogic does the work and the original break is canceled.
@@ -48,6 +50,10 @@ public final class NeoForgePrimaMateria {
     private static void capabilities(RegisterCapabilitiesEvent event) {
         // the powered drive takes energy from every side
         event.registerBlockEntity(Capabilities.Energy.BLOCK, ModContent.POWERED_DRIVE_BE, (be, side) -> new DriveEnergy(be));
+        // the barrels, the crucible and the casting tray offer their fluid to pipes and tanks
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, ModContent.BARREL_BE, (be, side) -> MachineFluidHandler.of(be));
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, ModContent.CRUCIBLE_BE, (be, side) -> MachineFluidHandler.of(be));
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK, ModContent.TRAY_BE, (be, side) -> MachineFluidHandler.of(be));
     }
 
     /** The powered drive's energy as other mods see it: it can be filled and never drained. */
@@ -100,6 +106,10 @@ public final class NeoForgePrimaMateria {
     }
 
     private static void register(RegisterEvent event) {
+        event.register(net.neoforged.neoforge.registries.NeoForgeRegistries.Keys.FLUID_TYPES,
+                helper -> NeoForgeFluids.registerTypes((name, v) -> helper.register(ModContent.id(name), v)));
+        event.register(Registries.FLUID, helper -> ModFluids.registerFluids((name, v) -> helper.register(ModContent.id(name), v)));
+        event.register(Registries.BLOCK, helper -> ModFluids.registerBlocks((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.BLOCK, helper -> ModContent.registerBlocks((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.ITEM, helper -> ModContent.registerItems((name, v) -> helper.register(ModContent.id(name), v)));
         event.register(Registries.BLOCK_ENTITY_TYPE, helper -> ModContent.registerBlockEntities((name, v) -> helper.register(ModContent.id(name), v)));

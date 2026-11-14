@@ -99,6 +99,12 @@ public final class CrucibleState {
         return true;
     }
 
+    /** Puts the fluid back to a saved id and amount (a rolled back transaction); touches nothing else. */
+    public void restoreFluid(String fluidId, int mb) {
+        amount = Math.max(0, Math.min(CAPACITY, mb));
+        fluid = amount > 0 && fluidId != null ? fluidId : "";
+    }
+
     /** Takes {@code mb} out only if that much is there. Returns whether it did. */
     public boolean drain(int mb) {
         if (mb <= 0 || amount < mb) {

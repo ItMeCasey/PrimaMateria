@@ -54,6 +54,15 @@ def patch_drive_fuel():
     p.write_text(s, encoding="utf-8", newline=NL)
 
 
+def patch_push_reaction():
+    """26.3 renamed the push reaction DESTROY (a block that is broken when pushed, as liquids are) to POPPED."""
+    p = DST / "main/java" / PKG / "fluid/ModFluids.java"
+    s = p.read_text(encoding="utf-8")
+    assert "PushReaction.DESTROY" in s
+    s = s.replace("PushReaction.DESTROY", "PushReaction.POPPED")
+    p.write_text(s, encoding="utf-8", newline=NL)
+
+
 # Add patch functions here and list them in PATCHES. Each reads a file under DST, replaces text, asserts the old form is gone
 # and writes it back with LF line endings.
 PATCHES = [patch_drive_fuel,
@@ -61,7 +70,7 @@ PATCHES = [patch_drive_fuel,
            lambda: patch_block_codec("AutoHammerBlock", "AutoHammerBlock"), lambda: patch_block_codec("DriveBlock", "DriveBlock"),
            lambda: patch_block_codec("SievePreviewBlock", "SievePreviewBlock"),
            lambda: patch_block_codec("CrucibleBlock", "CrucibleBlock"), lambda: patch_block_codec("CastingTrayBlock", "CastingTrayBlock"),
-           lambda: patch_block_codec("MachinePreviewBlock", "MachinePreviewBlock")]
+           lambda: patch_block_codec("MachinePreviewBlock", "MachinePreviewBlock"), patch_push_reaction]
 
 
 def copy_tree(name):
@@ -87,8 +96,14 @@ def copy_loader_entries():
     registration added for 26.2 can never be missing in 26.3. The client classes and the integration plugins are not touched."""
     names = {
         "neoforge": ["main/java/com/itmecasey/primamateria/neoforge/NeoForgePrimaMateria.java",
+                     "main/java/com/itmecasey/primamateria/neoforge/NeoForgeFluids.java",
+                     "main/java/com/itmecasey/primamateria/neoforge/NeoForgeFluidClient.java",
+                     "main/java/com/itmecasey/primamateria/neoforge/MachineFluidHandler.java",
                      "dev/java/com/itmecasey/primamateria/neoforge/dev/NeoForgeDev.java"],
         "forge": ["main/java/com/itmecasey/primamateria/forge/ForgePrimaMateria.java",
+                  "main/java/com/itmecasey/primamateria/forge/ForgeFluids.java",
+                  "main/java/com/itmecasey/primamateria/forge/ForgeFluidClient.java",
+                  "main/java/com/itmecasey/primamateria/forge/MachineFluidHandler.java",
                   "dev/java/com/itmecasey/primamateria/forge/dev/ForgeDev.java"],
     }
     for loader, files in names.items():
