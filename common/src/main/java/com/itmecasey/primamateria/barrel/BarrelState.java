@@ -174,6 +174,12 @@ public final class BarrelState {
         return accepted;
     }
 
+    /** Puts the fluid back to a saved id and amount (a rolled back transaction); touches nothing else. */
+    public void restoreFluid(String f, int mb) {
+        amount = Math.max(0, Math.min(CAPACITY, mb));
+        fluid = amount > 0 && f != null ? f : "";
+    }
+
     /** A bucket takes fluid only while nothing is working in the barrel. */
     public boolean canDrain(int mb) {
         return compost == 0 && amount >= mb && mb > 0 && soak == null && steep == null && crystals.isEmpty();
