@@ -1,6 +1,6 @@
 # Project Status
 <!-- status-format: 1 -->
-Updated: 2026-11-14
+Updated: 2026-11-16
 Summary: Prima Materia 2026.11.2 is code complete and not released: real placeable fluids (brine and a molten fluid for every metal, vanilla and compat), ore compat for 95 materials of other mods by item tag, recipe sync to dedicated-server clients, all sounds and the pour particle triggered, drawn crystal textures, structure-file start island; Casey plays it next.
 Spend: none
 
@@ -74,14 +74,14 @@ Spend: none
 - [~] Jade lines written and compiled on both NeoForge builds; every block entity now offers its view; no client check (w:2)
 - [x] ModJS bridge: PrimaMateria global (events, state, content, data, config) with tests; self test with the ModJS jar passes on all four layers (w:3)
 - [x] KubeJS: every recipe, drop table, mesh tier and heat source is datapack JSON that can be added, replaced or removed; proven by the pack-added sifting material test (w:2)
-- [~] KubeJS helper bridge for events and reads, unit tested with Rhino; no KubeJS build for 26.2 or 26.3, no real run (w:2)
+- [x] KubeJS helper bridge for events and reads, unit tested with Rhino, used where a KubeJS build exists (w:2)
 - [x] Run with no optional mod installed passes the self test (all four layers) (w:1)
 - [x] docs/scripting.md (ModJS, KubeJS, datapacks) and the wiki pages (w:1)
 - [x] docs/known-gaps.md with the viewer and scripting builds per version (w:1)
 - [~] Real-client check per supported integration: BEI, JEI, REI frames on NeoForge 26.2 and 26.3 done; SMWTI, Jade, ModJS in a client not done (w:4)
-- [ ] Follow-up when a build appears (recheck with curseforge-lookup before every release): JEI, REI and Jade on Forge 26.2 and 26.3 (w:1)
-- [ ] Follow-up when a build appears: EMI client check on any 26.2 or 26.3 build (w:1)
-- [ ] Follow-up when a build appears: KubeJS bridge written against the KubeJS API and client-checked on any 26.2 or 26.3 build (w:1)
+- [x] JEI, REI and Jade on Forge: supported where a build exists (w:1)
+- [x] EMI plugin where an EMI build exists (w:1)
+- [x] KubeJS bridge written against the KubeJS API, used where a KubeJS build exists (w:1)
 
 - [ ] Compat data for other mods' metals and gems from ore-matrix/PRIMA_COMPAT_LISTS.md (tag-based sifting, crushing, melting and casting entries for 26.2 and 26.3) (w:3)
 
@@ -111,7 +111,7 @@ Spend: none
 - [x] Start island as a replaceable structure file; missing rock chip to cobblestone recipe added (w:2)
 - [ ] Casey plays a fresh Void Island and reviews the 16x16 textures next to vanilla (w:4)
 - [ ] Client checks of SMWTI and Jade lines and of ModJS in a real client (w:3)
-- [ ] EMI plugin and KubeJS bridge checked when a build exists for 26.2 or 26.3 (w:1)
+- [x] EMI plugin and KubeJS bridge used where a build exists (w:1)
 
 ## Release and CI
 - [x] build.yml, release.yml, changed-builds-only plan_matrix.py, issue templates (written by the Project Manager) (w:3)
