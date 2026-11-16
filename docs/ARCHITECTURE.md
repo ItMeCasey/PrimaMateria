@@ -2,7 +2,7 @@
 
 Forge and NeoForge on Minecraft 26.2 and 26.3 only. Four jars' worth of code, combined into one jar per Minecraft version the way Barely Crafting does it. Java 25. Mod id `primamateria`, package `com.itmecasey.primamateria`, version `2026.11.1`.
 
-The layout is a copy of `C:\Users\casey\Desktop\BarelyCrafting` (four modules, shared `common/`, `version-26.2` as the source of truth, `version-26.3` generated) with ideas from `C:\Users\casey\Desktop\BarelyStorage` (an `art/` style model pipeline). Read those two before scaffolding.
+The layout is a copy of `C:\Users\casey\Desktop\Minecraft Projects\BarelyCrafting` (four modules, shared `common/`, `version-26.2` as the source of truth, `version-26.3` generated) with ideas from `C:\Users\casey\Desktop\Minecraft Projects\BarelyStorage` (an `art/` style model pipeline). Read those two before scaffolding.
 
 ## 1. Folders
 
